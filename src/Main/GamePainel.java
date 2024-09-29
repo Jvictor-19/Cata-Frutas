@@ -2,51 +2,67 @@ package Main;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import javax.swing.JPanel;
 
-public class GamePainel extends JPanel implements Runnable{
+public class GamePainel extends JPanel implements Runnable {
 	
-	// Tamanho original de cada tile (um bloco do jogo) em pixels
-	// Tile representa uma unidade de superfície na tela do jogo
-	final int originalTilesize = 16;
-	final int scale = 3; //Fator de escala
-	
-	// Tamanho dos tiles após a aplicação da escala
+	private static final long serialVersionUID = 1L;
+    
+    final int originalTilesize = 16;
+    final int scale = 3;
+    
     final int tilesize = originalTilesize * scale;
-    // Número máximo de colunas na tela
-    final int maxScreenCol = 10;
-    // Número máximo de linhas na tela
-    final int maxScreenRow = 10;
-    // Largura total da tela do jogo (em pixels)
-    final int screenWidth = tilesize * maxScreenCol;
-    // Altura total da tela do jogo (em pixels)
-    final int screenHeight = tilesize * maxScreenRow;
-    
-    // Thread que controlará o loop do jogo
-	Thread gameThread;
-	
-	// Construtor da classe
-    public GamePainel() {
-        
-        // Define o tamanho preferido do painel do jogo (largura e altura)
+    final int maxScreenCol;
+    final int maxScreenRow;
+    final int screenWidth;
+    final int screenHeight;
+
+    Thread gameThread;
+
+    public GamePainel(int n) {
+        // Define a dimensão da floresta como n x n
+        maxScreenCol = n;
+        maxScreenRow = n;
+        screenWidth = tilesize * maxScreenCol;
+        screenHeight = tilesize * maxScreenRow;
+
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        // Define o fundo do painel como preto
-        this.setBackground(Color.black);
-        // Ativa o "double buffering" para melhorar o desempenho gráfico
+        this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
+        
+        // Iniciar o thread do jogo
+        startGameThread();
     }
-    
-    // Método para iniciar a thread do jogo
+
     public void startGameThread() {
-        // Cria uma nova thread e passa o GamePainel como o alvo a ser executado (run())
         gameThread = new Thread(this);
-        // Inicia a thread, o que fará o método run() ser executado
         gameThread.start();
     }
 
-    // Método run() que será executado quando a thread do jogo começar
     @Override
     public void run() {
-        // O loop principal do jogo será implementado aqui para atualizar o estado e desenhar na tela
+        // O loop principal do jogo deve ser implementado aqui
+        while (gameThread != null) {
+            // Atualizar o estado do jogo e redesenhar a tela
+            updateGame();
+            repaint(); // Chama o método paintComponent() para desenhar o painel
+            try {
+                Thread.sleep(1000 / 60); // Tenta rodar a 60 FPS
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void updateGame() {
+        // Lógica para atualizar o estado do jogo
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // Lógica para desenhar os elementos do jogo
+        // Exemplo: desenhar a floresta com tiles, personagens, etc.
     }
 }

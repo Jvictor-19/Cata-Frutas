@@ -13,15 +13,27 @@ public class Main {
 		
 		// Impede que a janela seja redimensionada pelo usuário
 		window.setResizable(false);
+		
+		//Título da janela como "Cata Frutas"
 		window.setTitle("Cata Frutas");
 		
-		GamePainel gamePainel = new GamePainel();
-		window.add(gamePainel);
+		// -----------
+		//Cria uma instância de 'GamePainel', que é onde o jogo será desenhado
+		//GamePainel gamePainel = new GamePainel(5);
+		// Exibe o menu inicial para configurar o jogo
+        MenuInicial menuInicial = new MenuInicial();
+        window.add(menuInicial);
 		
+		// Adiciona o 'GamePainel' à janela para que seja exibido
+		//window.add(gamePainel);
+		
+		// Ajusta o tamanho da janela de acordo com o tamanho preferido do 'GamePainel'
 		window.pack();
 		
-		window.setLocationRelativeTo(null);
-		window.setVisible(true);
+		window.setLocationRelativeTo(null); //Centralizar a janela na tela
+		window.setVisible(true); //Tornar a janela visível para o usuário
+		
+		//gamePainel.startGameThread();
 	}
 
 }
