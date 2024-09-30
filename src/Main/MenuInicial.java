@@ -50,43 +50,43 @@ public class MenuInicial extends JPanel {
         });
 
         // Define o tamanho do painel
-        setPreferredSize(new Dimension(400, 323)); 
+        setPreferredSize(new Dimension(467, 488)); 
         
         pedras = new JTextField();
-        pedras.setBounds(253, 85, 114, 19);
+        pedras.setBounds(253, 72, 114, 19);
         add(pedras);
         pedras.setColumns(10);
         
         JLabel lblQuantidadeDePedras = new JLabel("Pedras");
-        lblQuantidadeDePedras.setBounds(27, 71, 170, 15);
+        lblQuantidadeDePedras.setBounds(17, 63, 170, 15);
         add(lblQuantidadeDePedras);
         
         lblMaracujjs = new JLabel("Maracujás");
-        lblMaracujjs.setBounds(17, 114, 170, 15);
+        lblMaracujjs.setBounds(17, 87, 170, 15);
         add(lblMaracujjs);
         
         lblLaranja = new JLabel("Laranja");
-        lblLaranja.setBounds(17, 141, 70, 15);
+        lblLaranja.setBounds(17, 106, 70, 15);
         add(lblLaranja);
         
         lblNewLabel = new JLabel("Abacate");
-        lblNewLabel.setBounds(12, 164, 70, 15);
+        lblNewLabel.setBounds(17, 133, 70, 15);
         add(lblNewLabel);
         
         lblNewLabel_1 = new JLabel("Coco");
-        lblNewLabel_1.setBounds(17, 191, 70, 15);
+        lblNewLabel_1.setBounds(17, 160, 70, 15);
         add(lblNewLabel_1);
         
         lblAcerola = new JLabel("Acerola");
-        lblAcerola.setBounds(17, 218, 70, 15);
+        lblAcerola.setBounds(12, 175, 70, 15);
         add(lblAcerola);
         
         lblAmora = new JLabel("Amora");
-        lblAmora.setBounds(12, 243, 70, 15);
+        lblAmora.setBounds(12, 187, 70, 15);
         add(lblAmora);
         
         lblGoiaba = new JLabel("Goiaba");
-        lblGoiaba.setBounds(17, 271, 70, 15);
+        lblGoiaba.setBounds(12, 218, 70, 15);
         add(lblGoiaba);
         
         lblBichadas = new JLabel("Bichadas");
