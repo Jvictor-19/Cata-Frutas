@@ -58,7 +58,7 @@ public class MenuInicial extends JPanel {
         pedras.setColumns(10);
         
         JLabel lblQuantidadeDePedras = new JLabel("Pedras");
-        lblQuantidadeDePedras.setBounds(17, 63, 170, 15);
+        lblQuantidadeDePedras.setBounds(17, 60, 170, 15);
         add(lblQuantidadeDePedras);
         
         lblMaracujjs = new JLabel("Maracujás");
@@ -66,7 +66,7 @@ public class MenuInicial extends JPanel {
         add(lblMaracujjs);
         
         lblLaranja = new JLabel("Laranja");
-        lblLaranja.setBounds(17, 106, 70, 15);
+        lblLaranja.setBounds(17, 116, 70, 15);
         add(lblLaranja);
         
         lblNewLabel = new JLabel("Abacate");
