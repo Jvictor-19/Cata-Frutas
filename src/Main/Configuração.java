@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Configuração extends JPanel {
 
@@ -12,33 +14,30 @@ public class Configuração extends JPanel {
     private JTextField tamanhoCampo;
     private JButton iniciarButton;
     private JTextField pedras;
-    private JLabel lblMaracujjs;
-    private JLabel lblLaranja;
-    private JLabel lblNewLabel;
-    private JLabel lblNewLabel_1;
-    private JLabel lblAcerola;
-    private JLabel lblAmora;
-    private JLabel lblGoiaba;
-    private JLabel lblBichadas;
-    private JLabel lblMochila;
 
     public Configuração() {
-        // Configurações do painel
-        setLayout(null); // Desativar o layout padrão
+        setLayout(null); 
+        setSize(800, 600);
 
         // Criação dos componentes
         JLabel tamanhoLabel = new JLabel("Dimensão da floresta (n x n):");
-        tamanhoLabel.setBounds(17, 29, 232, 30); // Define a posição e o tamanho do rótulo
-
+        tamanhoLabel.setBounds(17, 29, 232, 30); 
         tamanhoCampo = new JTextField();
-        tamanhoCampo.setBounds(267, 30, 100, 30); // Define a posição e o tamanho do campo de texto
+        tamanhoCampo.setBounds(250, 30, 100, 30); 
 
         iniciarButton = new JButton("Iniciar Jogo");
-        iniciarButton.setBounds(120, 271, 150, 40); // Define a posição e o tamanho do botão
+        iniciarButton.setBounds(120, 271, 150, 40); 
 
+        JLabel lblQuantidadeDePedras = new JLabel("Quantidade de Pedras:");
+        lblQuantidadeDePedras.setBounds(17, 60, 170, 15);
+        pedras = new JTextField();
+        pedras.setBounds(250, 60, 100, 30);
+        
         // Adiciona os componentes ao painel
         add(tamanhoLabel);
         add(tamanhoCampo);
+        add(lblQuantidadeDePedras);
+        add(pedras);
         add(iniciarButton);
 
         // Adiciona o ouvinte de ação ao botão
@@ -48,83 +47,50 @@ public class Configuração extends JPanel {
                 iniciarJogo();
             }
         });
-
-        // Define o tamanho do painel
-        setPreferredSize(new Dimension(467, 488)); 
-        
-        pedras = new JTextField();
-        pedras.setBounds(253, 72, 114, 19);
-        add(pedras);
-        pedras.setColumns(10);
-        
-        JLabel lblQuantidadeDePedras = new JLabel("Pedras");
-        lblQuantidadeDePedras.setBounds(17, 60, 170, 15);
-        add(lblQuantidadeDePedras);
-        
-        lblMaracujjs = new JLabel("Maracujás");
-        lblMaracujjs.setBounds(17, 87, 170, 15);
-        add(lblMaracujjs);
-        
-        lblLaranja = new JLabel("Laranja");
-        lblLaranja.setBounds(17, 116, 70, 15);
-        add(lblLaranja);
-        
-        lblNewLabel = new JLabel("Abacate");
-        lblNewLabel.setBounds(17, 133, 70, 15);
-        add(lblNewLabel);
-        
-        lblNewLabel_1 = new JLabel("Coco");
-        lblNewLabel_1.setBounds(17, 160, 70, 15);
-        add(lblNewLabel_1);
-        
-        lblAcerola = new JLabel("Acerola");
-        lblAcerola.setBounds(12, 175, 70, 15);
-        add(lblAcerola);
-        
-        lblAmora = new JLabel("Amora");
-        lblAmora.setBounds(12, 187, 70, 15);
-        add(lblAmora);
-        
-        lblGoiaba = new JLabel("Goiaba");
-        lblGoiaba.setBounds(12, 218, 70, 15);
-        add(lblGoiaba);
-        
-        lblBichadas = new JLabel("Bichadas");
-        lblBichadas.setBounds(127, 191, 70, 15);
-        add(lblBichadas);
-        
-        lblMochila = new JLabel("Mochila");
-        lblMochila.setBounds(127, 218, 70, 15);
-        add(lblMochila);
     }
 
     private void iniciarJogo() {
-        // Pega o valor da dimensão do campo de texto
-        String input = tamanhoCampo.getText();
-        int n;
+        String tamanhoFloresta = tamanhoCampo.getText();
+        String qtdPedras = pedras.getText();
 
         try {
-            n = Integer.parseInt(input);
-            if (n <= 5) {
+            // Valida se os campos foram preenchidos corretamente
+            int n = Integer.parseInt(tamanhoFloresta);
+            int pedras = Integer.parseInt(qtdPedras);
+
+            if (n <= 5 || pedras < 0) {
                 throw new NumberFormatException();
             }
-            // Cria uma nova janela para o jogo
+
+            // Salvar as configurações em um arquivo de texto
+            salvarConfiguracoes(tamanhoFloresta, qtdPedras);
+
+            // Criar uma nova janela do jogo
             JFrame gameWindow = new JFrame();
             gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameWindow.setResizable(false);
             gameWindow.setTitle("Cata Frutas");
 
-            TelaJogo gamePainel = new TelaJogo(n);
+            TelaJogo gamePainel = new TelaJogo(n); // Passa a dimensão da floresta
             gameWindow.getContentPane().add(gamePainel);
             gameWindow.pack();
             gameWindow.setLocationRelativeTo(null);
             gameWindow.setVisible(true);
 
-            // Opcional: Fecha o menu inicial se não for mais necessário
+            // Fechar a tela de configuração
             SwingUtilities.getWindowAncestor(this).dispose(); 
             
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Por favor, insira um número válido maior que zero.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor, insira valores válidos.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void salvarConfiguracoes(String tamanho, String pedras) {
+        try (FileWriter writer = new FileWriter("config.txt")) {
+            writer.write("Dimensão: " + tamanho + "\n");
+            writer.write("Pedras: " + pedras + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

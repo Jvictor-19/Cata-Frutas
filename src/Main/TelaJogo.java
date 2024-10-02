@@ -4,52 +4,65 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class TelaJogo extends JPanel implements Runnable {
 
     private static final long serialVersionUID = 1L;
 
-    final int originalTilesize = 16; // Tamanho original do tile
-    final int scale = 3; // Fator de escala para o tamanho do tile
+    final int originalTilesize = 16; 
+    final int scale = 3; 
+    final int tilesize = originalTilesize * scale;
+    
+    int maxScreenCol;
+    int maxScreenRow;
+    int screenWidth;
+    int screenHeight;
 
-    final int tilesize = originalTilesize * scale; // Tamanho do tile escalado
-    final int maxScreenCol; // Colunas máximas na tela
-    final int maxScreenRow; // Linhas máximas na tela
-    final int screenWidth; // Largura da tela
-    final int screenHeight; // Altura da tela
-
-    Thread gameThread; // Thread do jogo
+    Thread gameThread;
 
     public TelaJogo(int n) {
-        
-        // Define a dimensão da floresta como n x n
-        maxScreenCol = n;
-        maxScreenRow = n;
-        screenWidth = tilesize * maxScreenCol;
-        screenHeight = tilesize * maxScreenRow;
+        // Define as configurações iniciais a partir do valor passado
+        this.maxScreenCol = n;
+        this.maxScreenRow = n;
+        this.screenWidth = tilesize * maxScreenCol;
+        this.screenHeight = tilesize * maxScreenRow;
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.lightGray); // Cor de fundo do painel
-        this.setDoubleBuffered(true); // Permite o uso de buffer duplo para melhor desempenho
+        this.setBackground(Color.lightGray); 
+        this.setDoubleBuffered(true); 
 
-        // Iniciar o thread do jogo
+        // Tenta carregar as configurações de arquivo
+        carregarConfiguracoes();
+
         startGameThread();
+    }
+
+    private void carregarConfiguracoes() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("config.txt"))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                System.out.println(linha); // Aqui você pode adicionar lógica para configurar o terreno com base no arquivo
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void startGameThread() {
         gameThread = new Thread(this);
-        gameThread.start(); // Inicia a thread do jogo
+        gameThread.start(); 
     }
 
     @Override
     public void run() {
-        // O loop principal do jogo deve ser implementado aqui
         while (gameThread != null) {
-            // Atualizar o estado do jogo e redesenhar a tela
             updateGame();
-            repaint(); // Chama o método paintComponent() para desenhar o painel
+            repaint(); 
             try {
-                Thread.sleep(1000 / 60); // Tenta rodar a 60 FPS
+                Thread.sleep(1000 / 60); 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -58,13 +71,11 @@ public class TelaJogo extends JPanel implements Runnable {
 
     private void updateGame() {
         // Lógica para atualizar o estado do jogo
-        // Adicione a lógica de atualização aqui
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Lógica para desenhar os elementos do jogo
-        // Exemplo: desenhar a floresta com tiles, personagens, etc.
+        // Lógica para desenhar o terreno, as pedras, etc.
     }
 }
