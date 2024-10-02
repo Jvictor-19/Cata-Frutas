@@ -4,48 +4,65 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class TelaJogo extends JPanel implements Runnable {
 
     private static final long serialVersionUID = 1L;
 
-    final int tamanhoTileOriginal = 16; // Tamanho original do tile
-    final int escala = 3; // Fator de escala para o tamanho do tile
-    final int tamanhoTile = tamanhoTileOriginal * escala; // Tamanho do tile escalado
-    final int maxColunasTela; // Colunas máximas na tela
-    final int maxLinhasTela; // Linhas máximas na tela
-    final int larguraTela; // Largura da tela
-    final int alturaTela; // Altura da tela
+    final int originalTilesize = 16; 
+    final int scale = 3; 
+    final int tilesize = originalTilesize * scale;
+    
+    int maxScreenCol;
+    int maxScreenRow;
+    int screenWidth;
+    int screenHeight;
 
-    Thread threadJogo; // Thread do jogo
+    Thread gameThread;
 
     // Construtor que recebe a dimensão da floresta
     public TelaJogo(int n) {
-        maxColunasTela = n;
-        maxLinhasTela = n;
-        larguraTela = tamanhoTile * maxColunasTela;
-        alturaTela = tamanhoTile * maxLinhasTela;
+        this.maxScreenCol = n;
+        this.maxScreenRow = n;
+        this.screenWidth = tilesize * maxScreenCol;
+        this.screenHeight = tilesize * maxScreenRow;
 
-        this.setPreferredSize(new Dimension(larguraTela, alturaTela));
-        this.setBackground(Color.lightGray);
-        this.setDoubleBuffered(true);
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setBackground(Color.lightGray); 
+        this.setDoubleBuffered(true); 
 
-        iniciarThreadJogo(); // Inicia a thread do jogo
+        // Tenta carregar as configurações de arquivo
+        carregarConfiguracoes();
+
+        startGameThread();
     }
 
-    // Inicia a thread do jogo
-    public void iniciarThreadJogo() {
-        threadJogo = new Thread(this);
-        threadJogo.start(); // Inicia a thread do jogo
+    private void carregarConfiguracoes() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/Arquivo/configuracaoJogo.txt"))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                System.out.println(linha); // Aqui você pode adicionar lógica para configurar o terreno com base no arquivo
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startGameThread() {
+        gameThread = new Thread(this);
+        gameThread.start(); 
     }
 
     @Override
     public void run() {
-        while (threadJogo != null) {
-            atualizarJogo();
-            repaint(); // Chama o método paintComponent() para desenhar o painel
+        while (gameThread != null) {
+            updateGame();
+            repaint(); 
             try {
-                Thread.sleep(1000 / 60); // Tenta rodar a 60 FPS
+                Thread.sleep(1000 / 60); 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -53,23 +70,23 @@ public class TelaJogo extends JPanel implements Runnable {
     }
 
     // Método responsável por atualizar o estado do jogo
-    private void atualizarJogo() {
+    private void updateGame() {
         // Lógica para atualizar o estado do jogo
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Desenha a matriz de imagens (tiles)
-        for (int linha = 0; linha < maxLinhasTela; linha++) {
-            for (int coluna = 0; coluna < maxColunasTela; coluna++) {
+        // Lógica para desenhar o terreno, as pedras, etc.
+        for (int linha = 0; linha < maxScreenRow; linha++) {
+            for (int coluna = 0; coluna < maxScreenCol; coluna++) {
                 // Desenha um quadrado colorido ou uma letra
-                g.setColor(Color.RED); // Mude a cor se desejar
-                g.fillRect(coluna * tamanhoTile, linha * tamanhoTile, tamanhoTile, tamanhoTile);
+                g.setColor(Color.BLACK); // Mude a cor se desejar
+                g.fillRect(coluna * tilesize, linha * tilesize, tilesize, tilesize);
                 
                 // Para desenhar letras
-                g.setColor(Color.BLACK);
-                g.drawString("S", coluna * tamanhoTile + 5, linha * tamanhoTile + 15); // Ajuste a posição da letra
+                g.setColor(Color.WHITE);
+                g.drawString("S", coluna * tilesize + 5, linha * tilesize + 15); // Ajuste a posição da letra
             }
         }
     }
