@@ -1,2 +1,11 @@
-Dimensão: 6
-Pedras: 50
+Dimensão: 10
+Pedras: 2
+Maracujá: 2 2
+Laranja: 2 2
+Abacate: 2 2
+Coco: 2 2
+Acerola: 2 2
+Amora: 2 2
+Goiaba: 2 2
+Bichadas: 2
+Mochila: 2

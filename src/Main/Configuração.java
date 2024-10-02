@@ -206,6 +206,16 @@ public class Configuração extends JPanel {
         try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
             writer.write("Dimensão: " + tamanho + "\n");
             writer.write("Pedras: " + pedras + "\n");
+            writer.write("Maracujá: " + pedras + " " + pedras +"\n");
+            writer.write("Laranja: " + pedras + " " + pedras +"\n");
+            writer.write("Abacate: " + pedras + " " + pedras +"\n");
+            writer.write("Coco: " + pedras + " " + pedras +"\n");
+            writer.write("Acerola: " + pedras + " " + pedras +"\n");
+            writer.write("Amora: " + pedras + " " + pedras +"\n");
+            writer.write("Goiaba: " + pedras + " " + pedras + "\n");
+            writer.write("Bichadas: " + pedras + "\n");
+            writer.write("Mochila: " + pedras + "\n");
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

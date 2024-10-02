@@ -6,5 +6,6 @@ public class Main {
         // Executa a tela inicial
         TelaInicial telaInicial = new TelaInicial();
         telaInicial.setVisible(true);
+
     }
 }
