@@ -54,6 +54,7 @@ public class HomeScreen extends JFrame {
 
         // Botão Créditos
         JButton creditsButton = new JButton("Créditos");
+        
         creditsButton.setBounds(340, 460, 120, 50);
         background.add(creditsButton);
 
@@ -71,6 +72,8 @@ public class HomeScreen extends JFrame {
         // Tornar visível
         setVisible(true);
     }
+
+    
 
     public static void main(String[] args) {
         new HomeScreen();
