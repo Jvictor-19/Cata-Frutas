@@ -6,21 +6,22 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class GamePainel extends JPanel implements Runnable {
-	
-	private static final long serialVersionUID = 1L;
-    
-    final int originalTilesize = 16;
-    final int scale = 3;
-    
-    final int tilesize = originalTilesize * scale;
-    final int maxScreenCol;
-    final int maxScreenRow;
-    final int screenWidth;
-    final int screenHeight;
 
-    Thread gameThread;
+    private static final long serialVersionUID = 1L;
+
+    final int originalTilesize = 16; // Tamanho original do tile
+    final int scale = 3; // Fator de escala para o tamanho do tile
+
+    final int tilesize = originalTilesize * scale; // Tamanho do tile escalado
+    final int maxScreenCol; // Colunas máximas na tela
+    final int maxScreenRow; // Linhas máximas na tela
+    final int screenWidth; // Largura da tela
+    final int screenHeight; // Altura da tela
+
+    Thread gameThread; // Thread do jogo
 
     public GamePainel(int n) {
+        
         // Define a dimensão da floresta como n x n
         maxScreenCol = n;
         maxScreenRow = n;
@@ -28,16 +29,16 @@ public class GamePainel extends JPanel implements Runnable {
         screenHeight = tilesize * maxScreenRow;
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.lightGray);
-        this.setDoubleBuffered(true);
-        
+        this.setBackground(Color.lightGray); // Cor de fundo do painel
+        this.setDoubleBuffered(true); // Permite o uso de buffer duplo para melhor desempenho
+
         // Iniciar o thread do jogo
         startGameThread();
     }
 
     public void startGameThread() {
         gameThread = new Thread(this);
-        gameThread.start();
+        gameThread.start(); // Inicia a thread do jogo
     }
 
     @Override
@@ -57,6 +58,7 @@ public class GamePainel extends JPanel implements Runnable {
 
     private void updateGame() {
         // Lógica para atualizar o estado do jogo
+        // Adicione a lógica de atualização aqui
     }
 
     @Override
