@@ -1,8 +1,9 @@
 package Main;
-//Compppp
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,13 +16,16 @@ public class TelaJogo extends JPanel implements Runnable {
     final int originalTilesize = 16; 
     final int scale = 3; 
     final int tilesize = originalTilesize * scale;
-    
+
     int maxScreenCol;
     int maxScreenRow;
     int screenWidth;
     int screenHeight;
 
     Thread gameThread;
+
+    // Caminho para a imagem do tile
+    private ImageIcon tileImage;
 
     // Construtor que recebe a dimensão da floresta
     public TelaJogo(int n) {
@@ -33,6 +37,9 @@ public class TelaJogo extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.lightGray); 
         this.setDoubleBuffered(true); 
+
+        // Carrega a imagem do tile
+        tileImage = new ImageIcon("src/imagens/grama.png"); // Atualize com o caminho da sua imagem
 
         // Tenta carregar as configurações de arquivo
         carregarConfiguracoes();
@@ -80,13 +87,8 @@ public class TelaJogo extends JPanel implements Runnable {
         // Lógica para desenhar o terreno, as pedras, etc.
         for (int linha = 0; linha < maxScreenRow; linha++) {
             for (int coluna = 0; coluna < maxScreenCol; coluna++) {
-                // Desenha um quadrado colorido ou uma letra
-                g.setColor(Color.BLACK); // Mude a cor se desejar
-                g.fillRect(coluna * tilesize, linha * tilesize, tilesize, tilesize);
-                
-                // Para desenhar letras
-                g.setColor(Color.WHITE);
-                g.drawString("S", coluna * tilesize + 5, linha * tilesize + 15); // Ajuste a posição da letra
+                // Desenha a imagem do tile
+                g.drawImage(tileImage.getImage(), coluna * tilesize, linha * tilesize, tilesize, tilesize, null);
             }
         }
     }

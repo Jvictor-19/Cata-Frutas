@@ -1,2 +1,3 @@
-Dimensão: 10
-Pedras: 6
+irandi_branch
+Dimensão: 12
+Pedras: 2
