@@ -1,8 +1,9 @@
 package Main;
-//Compppp
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -23,8 +24,11 @@ public class TelaJogo extends JPanel implements Runnable {
 
     Thread gameThread;
 
+    // Caminho para a imagem do tile
+    private ImageIcon tileImage;
+
+    // Construtor que recebe a dimensão da floresta
     public TelaJogo(int n) {
-        // Define as configurações iniciais a partir do valor passado
         this.maxScreenCol = n;
         this.maxScreenRow = n;
         this.screenWidth = tilesize * maxScreenCol;
@@ -33,6 +37,9 @@ public class TelaJogo extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.lightGray); 
         this.setDoubleBuffered(true); 
+
+        // Carrega a imagem do tile
+        tileImage = new ImageIcon("src/Arquivo/caminho/para/sua/imagem.png"); // Atualize com o caminho da sua imagem
 
         // Tenta carregar as configurações de arquivo
         carregarConfiguracoes();
@@ -69,6 +76,7 @@ public class TelaJogo extends JPanel implements Runnable {
         }
     }
 
+    // Método responsável por atualizar o estado do jogo
     private void updateGame() {
         // Lógica para atualizar o estado do jogo
     }
@@ -77,5 +85,15 @@ public class TelaJogo extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Lógica para desenhar o terreno, as pedras, etc.
+        for (int linha = 0; linha < maxScreenRow; linha++) {
+            for (int coluna = 0; coluna < maxScreenCol; coluna++) {
+                // Desenha a imagem do tile
+                g.drawImage(tileImage.getImage(), coluna * tilesize, linha * tilesize, tilesize, tilesize, null);
+                
+                // Para desenhar letras
+                g.setColor(Color.BLACK);
+                g.drawString("S", coluna * tilesize + 5, linha * tilesize + 15); // Ajuste a posição da letra
+            }
+        }
     }
 }
