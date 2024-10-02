@@ -1,2 +1,2 @@
-Dimensão: 7
-Pedras: 3
+Dimensão: 10
+Pedras: 2
