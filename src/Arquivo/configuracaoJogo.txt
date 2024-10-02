@@ -1,11 +1,11 @@
 Dimensão: 10
-Pedras: 2
-Maracujá: 2 2
-Laranja: 2 2
-Abacate: 2 2
-Coco: 2 2
-Acerola: 2 2
-Amora: 2 2
-Goiaba: 2 2
-Bichadas: 2
-Mochila: 2
+Pedras: 3
+Maracujá: 3 3
+Laranja: 3 3
+Abacate: 3 3
+Coco: 3 3
+Acerola: 3 3
+Amora: 3 3
+Goiaba: 3 3
+Bichadas: 3
+Mochila: 3
