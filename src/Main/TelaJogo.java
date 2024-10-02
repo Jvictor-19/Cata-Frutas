@@ -25,69 +25,69 @@ public class TelaJogo extends JPanel implements Runnable {
     Thread gameThread;
 
     // Caminho para a imagem do tile
-    private ImageIcon tileImage;
+private ImageIcon tileImage;
 
-    // Construtor que recebe a dimensão da floresta
-    public TelaJogo(int n) {
-        this.maxScreenCol = n;
-        this.maxScreenRow = n;
-        this.screenWidth = tilesize * maxScreenCol;
-        this.screenHeight = tilesize * maxScreenRow;
+// Construtor que recebe a dimensão da floresta
+public TelaJogo(int n) {
+    this.maxScreenCol = n;
+    this.maxScreenRow = n;
+    this.screenWidth = tilesize * maxScreenCol;
+    this.screenHeight = tilesize * maxScreenRow;
 
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.lightGray); 
-        this.setDoubleBuffered(true); 
+    this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+    this.setBackground(Color.lightGray); 
+    this.setDoubleBuffered(true); 
 
-        // Carrega a imagem do tile
-        tileImage = new ImageIcon("src/imagens/grama.png"); // Atualize com o caminho da sua imagem
+    // Carrega a imagem do tile
+    tileImage = new ImageIcon("src/imagens/grama.png"); // Atualize com o caminho da sua imagem
 
-        // Tenta carregar as configurações de arquivo
-        carregarConfiguracoes();
+    // Tenta carregar as configurações de arquivo
+    carregarConfiguracoes();
 
-        startGameThread();
+    startGameThread();
+}
+
+private void carregarConfiguracoes() {
+    try (BufferedReader reader = new BufferedReader(new FileReader("src/Arquivo/configuracaoJogo.txt"))) {
+        String linha;
+        while ((linha = reader.readLine()) != null) {
+            System.out.println(linha); // Aqui você pode adicionar lógica para configurar o terreno com base no arquivo
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
 
-    private void carregarConfiguracoes() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/Arquivo/configuracaoJogo.txt"))) {
-            String linha;
-            while ((linha = reader.readLine()) != null) {
-                System.out.println(linha); // Aqui você pode adicionar lógica para configurar o terreno com base no arquivo
-            }
-        } catch (IOException e) {
+public void startGameThread() {
+    gameThread = new Thread(this);
+    gameThread.start(); 
+}
+
+@Override
+public void run() {
+    while (gameThread != null) {
+        updateGame();
+        repaint(); 
+        try {
+            Thread.sleep(1000 / 60); 
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
+}
 
-    public void startGameThread() {
-        gameThread = new Thread(this);
-        gameThread.start(); 
-    }
+// Método responsável por atualizar o estado do jogo
+private void updateGame() {
+    // Lógica para atualizar o estado do jogo
+}
 
-    @Override
-    public void run() {
-        while (gameThread != null) {
-            updateGame();
-            repaint(); 
-            try {
-                Thread.sleep(1000 / 60); 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    // Método responsável por atualizar o estado do jogo
-    private void updateGame() {
-        // Lógica para atualizar o estado do jogo
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        // Lógica para desenhar o terreno, as pedras, etc.
-        for (int linha = 0; linha < maxScreenRow; linha++) {
-            for (int coluna = 0; coluna < maxScreenCol; coluna++) {
-                // Desenha a imagem do tile
+@Override
+protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    // Lógica para desenhar o terreno, as pedras, etc.
+    for (int linha = 0; linha < maxScreenRow; linha++) {
+        for (int coluna = 0; coluna < maxScreenCol; coluna++) {
+            // Desenha a imagem do tile
                 g.drawImage(tileImage.getImage(), coluna * tilesize, linha * tilesize, tilesize, tilesize, null);
             }
         }
