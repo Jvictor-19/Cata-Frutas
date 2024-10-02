@@ -58,17 +58,6 @@ public class HomeScreen extends JFrame {
         creditsButton.setBounds(340, 460, 120, 50);
         background.add(creditsButton);
 
-        // Botão Sair
-        JButton exitButton = new JButton("Sair");
-        exitButton.setBounds(340, 520, 120, 50);
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0); // Fecha o aplicativo
-            }
-        });
-        background.add(exitButton);
-
         // Tornar visível
         setVisible(true);
     }
