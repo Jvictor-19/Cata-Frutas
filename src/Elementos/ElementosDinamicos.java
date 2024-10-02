@@ -3,12 +3,12 @@ package Elementos;
 import javax.swing.ImageIcon;
 
 //classe abstrata que define um elemento com posição e ícone com seus gets e sets
-public abstract class Elementos {
+public abstract class ElementosDinamicos {
 
     private int[] posicao;
     private ImageIcon icone;
 
-    public Elementos() {
+    public ElementosDinamicos() {
         posicao = new int[2];
     }
 
