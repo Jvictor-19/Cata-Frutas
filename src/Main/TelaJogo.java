@@ -41,7 +41,7 @@ public class TelaJogo extends JPanel implements Runnable {
     }
 
     private void carregarConfiguracoes() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("config.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/Arquivo/configuracaoJogo.txt"))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 System.out.println(linha); // Aqui você pode adicionar lógica para configurar o terreno com base no arquivo
