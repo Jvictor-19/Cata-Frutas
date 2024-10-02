@@ -172,6 +172,22 @@ public class Configuração extends JPanel {
     private void iniciarJogo() {
         String tamanhoFloresta = tamanhoCampo.getText();
         String qtdPedras = pedras.getText();
+        String qtdMaracujas = maracujas.getText();
+        String qtdMaracujaNoChao = maracujaNoChao.getText();
+        String qtdLaranjeira = laranjeira.getText();
+        String qtdLaranjaNoChao = laranjaNoChao.getText();
+        String qtdAbacateiro = abacateiro.getText();
+        String qtdAbacateNoChao = abacateNoChao.getText();
+        String qtdCoqueiro = Coqueiro.getText();
+        String qtdCocoNoChao = cocoNoChao.getText();
+        String qtdAceroleira = aceroleira.getText();
+        String qtdAcerolaNoChao = acerolaNoChao.getText();
+        String qtdAmoreira = amoreira.getText();
+        String qtdAmoraNoChao = amoraNoChao.getText();
+        String qtdGaiabeira = gaiabeira.getText();
+        String qtdGoiabaNoChao = goiabaNoChao.getText();
+        String porcentagem = porcentagemBichadas.getText();
+        String capacidadeMochila = capacidadeDaMochila.getText();
 
         try {
             // Valida se os campos foram preenchidos corretamente
@@ -183,7 +199,11 @@ public class Configuração extends JPanel {
             }
 
             // Salvar as configurações em um arquivo de texto
-            salvarConfiguracoes(tamanhoFloresta, qtdPedras);
+            salvarConfiguracoes(tamanhoFloresta, qtdPedras, qtdMaracujas, qtdMaracujaNoChao, 
+                qtdLaranjeira, qtdLaranjaNoChao, qtdAbacateiro, qtdAbacateNoChao,
+                qtdCoqueiro, qtdCocoNoChao, qtdAceroleira, qtdAcerolaNoChao, 
+                qtdAmoreira, qtdAmoraNoChao, qtdGaiabeira, qtdGoiabaNoChao,
+                porcentagem, capacidadeMochila);
 
             // Criar uma nova janela do jogo
             JFrame gameWindow = new JFrame("Cata Frutas");
@@ -202,23 +222,28 @@ public class Configuração extends JPanel {
         }
     }
 
-    private void salvarConfiguracoes(String tamanho, String pedras) {
+    private void salvarConfiguracoes(String tamanho, String pedras, String maracujas, String maracujaNoChao, 
+                                      String laranjeira, String laranjaNoChao, String abacateiro, String abacateNoChao,
+                                      String coqueiro, String cocoNoChao, String aceroleira, String acerolaNoChao, 
+                                      String amoreira, String amoraNoChao, String gaiabeira, String goiabaNoChao,
+                                      String porcentagem, String capacidadeMochila) {
         try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
-            writer.write("Dimensão: " + tamanho + "\n");
-            writer.write("Pedras: " + pedras + "\n");
-            writer.write("Maracujá: " + pedras + " " + pedras +"\n");
-            writer.write("Laranja: " + pedras + " " + pedras +"\n");
-            writer.write("Abacate: " + pedras + " " + pedras +"\n");
-            writer.write("Coco: " + pedras + " " + pedras +"\n");
-            writer.write("Acerola: " + pedras + " " + pedras +"\n");
-            writer.write("Amora: " + pedras + " " + pedras +"\n");
-            writer.write("Goiaba: " + pedras + " " + pedras + "\n");
-            writer.write("Bichadas: " + pedras + "\n");
-            writer.write("Mochila: " + pedras + "\n");
+            writer.write("dimensao: " + tamanho + "\n");
+            writer.write("pedras: " + pedras + "\n");
+            writer.write("maracujas: " + maracujas + " " + maracujaNoChao + "\n");
+            writer.write("laranja: " + laranjeira + " " + laranjaNoChao + "\n");
+            writer.write("abacate: " + abacateiro + " " + abacateNoChao + "\n");
+            writer.write("coco: " + coqueiro + " " + cocoNoChao + "\n");
+            writer.write("acerola: " + aceroleira + " " + acerolaNoChao + "\n");
+            writer.write("amora: " + amoreira + " " + amoraNoChao + "\n");
+            writer.write("goiaba: " + gaiabeira + " " + goiabaNoChao + "\n");
+            writer.write("bichadas: " + porcentagem + "\n");
+            writer.write("mochila: " + capacidadeMochila + "\n");
             
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }
 //teste
