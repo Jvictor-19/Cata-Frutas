@@ -16,7 +16,7 @@ public class TelaJogo extends JPanel implements Runnable {
     final int originalTilesize = 16; 
     final int scale = 3; 
     final int tilesize = originalTilesize * scale;
-    
+
     int maxScreenCol;
     int maxScreenRow;
     int screenWidth;
@@ -39,7 +39,7 @@ public class TelaJogo extends JPanel implements Runnable {
         this.setDoubleBuffered(true); 
 
         // Carrega a imagem do tile
-        tileImage = new ImageIcon("src/Arquivo/caminho/para/sua/imagem.png"); // Atualize com o caminho da sua imagem
+        tileImage = new ImageIcon("src/imagens/grama.png"); // Atualize com o caminho da sua imagem
 
         // Tenta carregar as configurações de arquivo
         carregarConfiguracoes();
@@ -89,10 +89,6 @@ public class TelaJogo extends JPanel implements Runnable {
             for (int coluna = 0; coluna < maxScreenCol; coluna++) {
                 // Desenha a imagem do tile
                 g.drawImage(tileImage.getImage(), coluna * tilesize, linha * tilesize, tilesize, tilesize, null);
-                
-                // Para desenhar letras
-                g.setColor(Color.BLACK);
-                g.drawString("S", coluna * tilesize + 5, linha * tilesize + 15); // Ajuste a posição da letra
             }
         }
     }

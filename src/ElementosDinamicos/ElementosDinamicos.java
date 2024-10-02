@@ -1,4 +1,4 @@
-package Elementos;
+package ElementosDinamicos;
 
 import javax.swing.ImageIcon;
 
