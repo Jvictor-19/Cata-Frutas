@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class TelaInicial extends JFrame {
 
     private boolean soundOn = true;
@@ -40,29 +39,25 @@ public class TelaInicial extends JFrame {
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Ao clicar, troca para Game.Painel
                 setVisible(false); // Esconde a tela inicial
-                JFrame gameFrame = new JFrame("Game"); // Cria a nova janela do jogo
+                JFrame gameFrame = new JFrame("Game");
                 gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gameFrame.setSize(800, 600);
                 gameFrame.setLocationRelativeTo(null);
-                gameFrame.add(new Configuração()); // Usa Game.Painel ao invés de GamePanel
-                gameFrame.setVisible(true); // Torna a nova janela visível
+                gameFrame.add(new Configuração()); // Adiciona o painel de configuração
+                gameFrame.setVisible(true);
             }
         });
         background.add(playButton);
 
         // Botão Créditos
         JButton creditsButton = new JButton("Créditos");
-        
         creditsButton.setBounds(340, 460, 120, 50);
         background.add(creditsButton);
 
         // Tornar visível
         setVisible(true);
     }
-
-    
 
     public static void main(String[] args) {
         new TelaInicial();
