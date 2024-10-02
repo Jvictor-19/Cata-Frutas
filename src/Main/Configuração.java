@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MenuInicial extends JPanel {
+public class Configuração extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +22,7 @@ public class MenuInicial extends JPanel {
     private JLabel lblBichadas;
     private JLabel lblMochila;
 
-    public MenuInicial() {
+    public Configuração() {
         // Configurações do painel
         setLayout(null); // Desativar o layout padrão
 
@@ -114,7 +114,7 @@ public class MenuInicial extends JPanel {
             gameWindow.setResizable(false);
             gameWindow.setTitle("Cata Frutas");
 
-            GamePainel gamePainel = new GamePainel(n);
+            TelaJogo gamePainel = new TelaJogo(n);
             gameWindow.getContentPane().add(gamePainel);
             gameWindow.pack();
             gameWindow.setLocationRelativeTo(null);

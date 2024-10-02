@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
-public class GamePainel extends JPanel implements Runnable {
+public class TelaJogo extends JPanel implements Runnable {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,7 @@ public class GamePainel extends JPanel implements Runnable {
 
     Thread gameThread; // Thread do jogo
 
-    public GamePainel(int n) {
+    public TelaJogo(int n) {
         
         // Define a dimensão da floresta como n x n
         maxScreenCol = n;

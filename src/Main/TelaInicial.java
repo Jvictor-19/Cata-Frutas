@@ -5,11 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class HomeScreen extends JFrame {
+public class TelaInicial extends JFrame {
 
     private boolean soundOn = true;
 
-    public HomeScreen() {
+    public TelaInicial() {
         // Configurações da janela
         setTitle("Home Screen");
         setSize(800, 600);
@@ -46,7 +46,7 @@ public class HomeScreen extends JFrame {
                 gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gameFrame.setSize(800, 600);
                 gameFrame.setLocationRelativeTo(null);
-                gameFrame.add(new MenuInicial()); // Usa Game.Painel ao invés de GamePanel
+                gameFrame.add(new Configuração()); // Usa Game.Painel ao invés de GamePanel
                 gameFrame.setVisible(true); // Torna a nova janela visível
             }
         });
@@ -65,6 +65,6 @@ public class HomeScreen extends JFrame {
     
 
     public static void main(String[] args) {
-        new HomeScreen();
+        new TelaInicial();
     }
 }
