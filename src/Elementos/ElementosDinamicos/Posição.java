@@ -1,14 +1,14 @@
-package ElementosDinamicos;
+package Elementos.ElementosDinamicos;
 
 import javax.swing.ImageIcon;
 
 //classe abstrata que define um elemento com posição e ícone com seus gets e sets
-public abstract class ElementosDinamicos {
+public abstract class Posição {
 
     private int[] posicao;
     private ImageIcon icone;
 
-    public ElementosDinamicos() {
+    public Posição() {
         posicao = new int[2];
     }
 
