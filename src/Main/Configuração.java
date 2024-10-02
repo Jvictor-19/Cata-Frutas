@@ -86,7 +86,7 @@ public class Configuração extends JPanel {
     }
 
     private void salvarConfiguracoes(String tamanho, String pedras) {
-        try (FileWriter writer = new FileWriter("config.txt")) {
+        try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
             writer.write("Dimensão: " + tamanho + "\n");
             writer.write("Pedras: " + pedras + "\n");
         } catch (IOException e) {

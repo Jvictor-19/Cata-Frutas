@@ -10,7 +10,7 @@ public class LerArquivo {
     public static HashMap<String, String> carregarConfiguracoes() {
         HashMap<String, String> configuracoes = new HashMap<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("configuracoes.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("configuracoesJogo.txt"))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] partes = linha.split("=");
