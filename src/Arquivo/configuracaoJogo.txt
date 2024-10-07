@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 dimensao: 10
 pedras: 3
 maracujas:  
@@ -9,3 +10,8 @@ amora:
 goiaba:  
 bichadas: 
 mochila: 
+=======
+Tamanho: 35
+Quantidade de Pedras: 6
+Quantidade de Laranjas: 7
+>>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e

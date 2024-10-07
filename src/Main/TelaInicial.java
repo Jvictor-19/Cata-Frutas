@@ -17,7 +17,7 @@ public class TelaInicial extends JFrame {
         setLayout(null);
 
         // Configurar o fundo da tela
-        JLabel background = new JLabel(new ImageIcon("path/to/your/background/image.jpg"));
+        JLabel background = new JLabel(new ImageIcon("src.jpg"));
         background.setBounds(0, 0, 800, 600);
         add(background);
 

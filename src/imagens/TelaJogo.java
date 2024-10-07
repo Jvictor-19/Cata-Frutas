@@ -1,4 +1,4 @@
-package Main;
+package imagens;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,17 +28,8 @@ public class TelaJogo extends JPanel implements Runnable {
     private boolean jogoPausado = false;  // Controle de pausa
     private Thread threadJogo;
 
-    // Limite máximo para as dimensões da matriz
-    private static final int LIMITE_MATRIZ = 30;
-
     // Adicionar os layouts
     public TelaJogo(int n, int quantidadePedras, int quantidadeLaranjasNoChao) {
-        // Verificar se n ultrapassa o limite e exibir mensagem
-        if (n > LIMITE_MATRIZ) {
-            JOptionPane.showMessageDialog(null, "Para melhor experiência, delimitamos a dimensão do jogo a uma matriz 30x30.", "Limite de Dimensão", JOptionPane.INFORMATION_MESSAGE);
-            n = LIMITE_MATRIZ;  // Ajustar n para o limite
-        }
-
         this.maxColunasTela = n;
         this.maxLinhasTela = n;
         this.quantidadePedras = quantidadePedras;
@@ -109,36 +100,6 @@ public class TelaJogo extends JPanel implements Runnable {
         int tamanhoTileHorizontal = larguraAreaJogo / maxColunasTela;
         int tamanhoTileVertical = alturaAreaJogo / maxLinhasTela;
 
-<<<<<<< HEAD
-    // Caminho para a imagem do tile
-private ImageIcon tileImage;
-
-// Construtor que recebe a dimensão da floresta
-public TelaJogo(int n) {
-    this.maxScreenCol = n;
-    this.maxScreenRow = n;
-    this.screenWidth = tilesize * maxScreenCol;
-    this.screenHeight = tilesize * maxScreenRow;
-
-    this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-    this.setBackground(Color.lightGray); 
-    this.setDoubleBuffered(true); 
-
-    // Carrega a imagem do tile
-    tileImage = new ImageIcon("src/imagens/grama.png"); // Atualize com o caminho da sua imagem
-
-    // Tenta carregar as configurações de arquivo
-    carregarConfiguracoes();
-
-    startGameThread();
-}
-
-private void carregarConfiguracoes() {
-    try (BufferedReader reader = new BufferedReader(new FileReader("src/Arquivo/configuracaoJogo.txt"))) {
-        String linha;
-        while ((linha = reader.readLine()) != null) {
-            System.out.println(linha); // Aqui você pode adicionar lógica para configurar o terreno com base no arquivo
-=======
         // Escolher o menor tamanho para garantir que a matriz fique dentro da tela
         tamanhoTile = Math.min(tamanhoTileHorizontal, tamanhoTileVertical);
         tamanhoTile = Math.max(tamanhoTileOriginal, tamanhoTile); // Remover limite inferior para o tamanho do tile
@@ -202,29 +163,9 @@ private void carregarConfiguracoes() {
         if (!jogoPausado) {
             threadJogo = new Thread(this);
             threadJogo.start();
->>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e
         }
-    } catch (IOException e) {
-        e.printStackTrace();
     }
-}
 
-<<<<<<< HEAD
-public void startGameThread() {
-    gameThread = new Thread(this);
-    gameThread.start(); 
-}
-
-@Override
-public void run() {
-    while (gameThread != null) {
-        updateGame();
-        repaint(); 
-        try {
-            Thread.sleep(1000 / 60); 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-=======
     public void pararJogo() {
         jogoPausado = true;
         threadJogo = null;  // Pausa o jogo
@@ -240,26 +181,9 @@ public void run() {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
->>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e
         }
     }
-}
 
-<<<<<<< HEAD
-// Método responsável por atualizar o estado do jogo
-private void updateGame() {
-    // Lógica para atualizar o estado do jogo
-}
-
-@Override
-protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    // Lógica para desenhar o terreno, as pedras, etc.
-    for (int linha = 0; linha < maxScreenRow; linha++) {
-        for (int coluna = 0; coluna < maxScreenCol; coluna++) {
-            // Desenha a imagem do tile
-                g.drawImage(tileImage.getImage(), coluna * tilesize, linha * tilesize, tilesize, tilesize, null);
-=======
     private void atualizarJogo() {
         // Lógica de atualização do jogo aqui
     }
@@ -271,7 +195,6 @@ protected void paintComponent(Graphics g) {
         for (int linha = 0; linha < maxLinhasTela; linha++) {
             for (int coluna = 0; coluna < maxColunasTela; coluna++) {
                 g.drawImage(imagemGrama.getImage(), coluna * tamanhoTile, linha * tamanhoTile, tamanhoTile, tamanhoTile, null);
->>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e
             }
         }
 
@@ -287,7 +210,7 @@ protected void paintComponent(Graphics g) {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Cata-Frutas");
-            TelaJogo telaJogo = new TelaJogo(10, 5, 5); // Exemplo de inicialização
+            TelaJogo telaJogo = new TelaJogo(10, 5, 5);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.getContentPane().add(telaJogo);
             frame.pack();

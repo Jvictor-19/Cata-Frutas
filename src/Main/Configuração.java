@@ -12,22 +12,7 @@ public class Configuração extends JPanel {
     private JTextField tamanhoCampo;
     private JButton iniciarButton;
     private JTextField pedras;
-    private JTextField maracujas;
-    private JTextField laranjeira;
-    private JTextField maracujaNoChao;
-    private JTextField laranjaNoChao;
-    private JTextField Coqueiro;
-    private JTextField cocoNoChao;
-    private JTextField abacateiro;
-    private JTextField abacateNoChao;
-    private JTextField aceroleira;
-    private JTextField acerolaNoChao;
-    private JTextField amoreira;
-    private JTextField amoraNoChao;
-    private JTextField gaiabeira;
-    private JTextField goiabaNoChao;
-    private JTextField porcentagemBichadas;
-    private JTextField capacidadeDaMochila;
+    private JTextField laranjas; // Corrigido para referência a laranjas
 
     public Configuração() {
         setLayout(null); 
@@ -44,6 +29,11 @@ public class Configuração extends JPanel {
         pedras = new JTextField();
         pedras.setBounds(250, 60, 100, 15);
         
+        JLabel lblQuantidadeDeLaranjas = new JLabel("Quantidade de Laranjas:");
+        lblQuantidadeDeLaranjas.setBounds(17, 87, 170, 15);
+        laranjas = new JTextField(); // Adicionada corretamente
+        laranjas.setBounds(250, 87, 100, 15);
+
         iniciarButton = new JButton("Iniciar Jogo");
         iniciarButton.setBounds(341, 431, 150, 40); 
 
@@ -52,6 +42,7 @@ public class Configuração extends JPanel {
         add(tamanhoCampo);
         add(lblQuantidadeDePedras);
         add(pedras);
+<<<<<<< HEAD
         add(iniciarButton);
         
         JLabel lblQuantidadeDeMaracujas = new JLabel("Quantidade de maracujujás:");
@@ -72,8 +63,13 @@ public class Configuração extends JPanel {
         
         JLabel lblQuantidadeDeLaranjas = new JLabel("Quantidade de laranjas");
         lblQuantidadeDeLaranjas.setBounds(17, 114, 204, 15);
+=======
+>>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e
         add(lblQuantidadeDeLaranjas);
+        add(laranjas);
+        add(iniciarButton);
         
+<<<<<<< HEAD
         laranjeira = new JTextField();
         laranjeira.setBounds(250, 112, 93, 15);
         add(laranjeira);
@@ -162,6 +158,8 @@ public class Configuração extends JPanel {
         capacidadeDaMochila.setBounds(250, 353, 93, 15);
         add(capacidadeDaMochila);
         
+=======
+>>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e
         // Adiciona o ouvinte de ação ao botão
         iniciarButton.addActionListener(new ActionListener() {
             @Override
@@ -173,10 +171,17 @@ public class Configuração extends JPanel {
 
     private void iniciarJogo() {
         String tamanhoFloresta = tamanhoCampo.getText();
+<<<<<<< HEAD
         
+=======
+        String qtdPedras = pedras.getText();
+        String qtdLaranjas = laranjas.getText();
+
+>>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e
         try {
             // Converte o tamanho da floresta e quantidade de pedras para int
             int n = Integer.parseInt(tamanhoFloresta);
+<<<<<<< HEAD
             int qtdPedras = Integer.parseInt(pedras.getText());
             int qtdMaracujas = Integer.parseInt(maracujas.getText());
             int qtdMaracujaNoChao = Integer.parseInt(maracujaNoChao.getText());
@@ -206,12 +211,23 @@ public class Configuração extends JPanel {
                 qtdCoqueiro, qtdCocoNoChao, qtdAceroleira, qtdAcerolaNoChao, 
                 qtdAmoreira, qtdAmoraNoChao, qtdGaiabeira, qtdGoiabaNoChao,
                 porcentagem, capacidadeMochila);
+=======
+            int quantidadePedras = Integer.parseInt(qtdPedras);
+            int quantidadeLaranjas = Integer.parseInt(qtdLaranjas);
+
+            if (n <= 5 || quantidadePedras < 0 || quantidadeLaranjas < 0) {
+                throw new NumberFormatException("Dimensão deve ser maior que 5 e quantidades não podem ser negativas.");
+            }
+
+            // Salvar as configurações em um arquivo de texto
+            salvarConfiguracoes(tamanhoFloresta, qtdPedras, qtdLaranjas);
+>>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e
 
             // Criar uma nova janela do jogo
             JFrame gameWindow = new JFrame("Cata Frutas");
             gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameWindow.setResizable(false);
-            TelaJogo gamePainel = new TelaJogo(n); // Passa a dimensão da floresta
+            TelaJogo gamePainel = new TelaJogo(n, quantidadePedras, quantidadeLaranjas); // Passa as dimensões e quantidades
             gameWindow.getContentPane().add(gamePainel);
             gameWindow.pack();
             gameWindow.setLocationRelativeTo(null);
@@ -224,6 +240,7 @@ public class Configuração extends JPanel {
         }
     }
 
+<<<<<<< HEAD
     private void salvarConfiguracoes(int tamanho, int pedras, int maracujas, int maracujaNoChao, 
                                       int laranjeira, int laranjaNoChao, int abacateiro, int abacateNoChao,
                                       int coqueiro, int cocoNoChao, int aceroleira, int acerolaNoChao, 
@@ -242,9 +259,15 @@ public class Configuração extends JPanel {
             writer.write("bichadas: " + porcentagem + "\n");
             writer.write("mochila: " + capacidadeMochila + "\n");
             
+=======
+    private void salvarConfiguracoes(String tamanho, String pedras, String laranjas) {
+        try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
+            writer.write("Tamanho: " + tamanho + "\n");
+            writer.write("Quantidade de Pedras: " + pedras + "\n");
+            writer.write("Quantidade de Laranjas: " + laranjas + "\n");
+>>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e
         } catch (IOException e) {
             e.printStackTrace();
         }    
     }
 }
-//teste
