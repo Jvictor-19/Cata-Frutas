@@ -59,6 +59,10 @@ public class Configuração extends JPanel {
         add(lblQuantidadeDeMaracujas);
         
         maracujas = new JTextField();
+        maracujas.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
         maracujas.setBounds(250, 87, 93, 15);
         add(maracujas);
         
@@ -158,8 +162,6 @@ public class Configuração extends JPanel {
         capacidadeDaMochila.setBounds(250, 353, 93, 15);
         add(capacidadeDaMochila);
         
-        
-
         // Adiciona o ouvinte de ação ao botão
         iniciarButton.addActionListener(new ActionListener() {
             @Override
@@ -171,35 +173,35 @@ public class Configuração extends JPanel {
 
     private void iniciarJogo() {
         String tamanhoFloresta = tamanhoCampo.getText();
-        String qtdPedras = pedras.getText();
-        String qtdMaracujas = maracujas.getText();
-        String qtdMaracujaNoChao = maracujaNoChao.getText();
-        String qtdLaranjeira = laranjeira.getText();
-        String qtdLaranjaNoChao = laranjaNoChao.getText();
-        String qtdAbacateiro = abacateiro.getText();
-        String qtdAbacateNoChao = abacateNoChao.getText();
-        String qtdCoqueiro = Coqueiro.getText();
-        String qtdCocoNoChao = cocoNoChao.getText();
-        String qtdAceroleira = aceroleira.getText();
-        String qtdAcerolaNoChao = acerolaNoChao.getText();
-        String qtdAmoreira = amoreira.getText();
-        String qtdAmoraNoChao = amoraNoChao.getText();
-        String qtdGaiabeira = gaiabeira.getText();
-        String qtdGoiabaNoChao = goiabaNoChao.getText();
-        String porcentagem = porcentagemBichadas.getText();
-        String capacidadeMochila = capacidadeDaMochila.getText();
-
+        
         try {
-            // Valida se os campos foram preenchidos corretamente
+            // Converte o tamanho da floresta e quantidade de pedras para int
             int n = Integer.parseInt(tamanhoFloresta);
-            int pedras = Integer.parseInt(qtdPedras);
+            int qtdPedras = Integer.parseInt(pedras.getText());
+            int qtdMaracujas = Integer.parseInt(maracujas.getText());
+            int qtdMaracujaNoChao = Integer.parseInt(maracujaNoChao.getText());
+            int qtdLaranjeira = Integer.parseInt(laranjeira.getText());
+            int qtdLaranjaNoChao = Integer.parseInt(laranjaNoChao.getText());
+            int qtdAbacateiro = Integer.parseInt(abacateiro.getText());
+            int qtdAbacateNoChao = Integer.parseInt(abacateNoChao.getText());
+            int qtdCoqueiro = Integer.parseInt(Coqueiro.getText());
+            int qtdCocoNoChao = Integer.parseInt(cocoNoChao.getText());
+            int qtdAceroleira = Integer.parseInt(aceroleira.getText());
+            int qtdAcerolaNoChao = Integer.parseInt(acerolaNoChao.getText());
+            int qtdAmoreira = Integer.parseInt(amoreira.getText());
+            int qtdAmoraNoChao = Integer.parseInt(amoraNoChao.getText());
+            int qtdGaiabeira = Integer.parseInt(gaiabeira.getText());
+            int qtdGoiabaNoChao = Integer.parseInt(goiabaNoChao.getText());
+            int porcentagem = Integer.parseInt(porcentagemBichadas.getText());
+            int capacidadeMochila = Integer.parseInt(capacidadeDaMochila.getText());
 
-            if (n <= 5 || pedras < 0) {
+            // Valida se os campos foram preenchidos corretamente
+            if (n <= 5 || qtdPedras < 0) {
                 throw new NumberFormatException("Dimensão deve ser maior que 5 e pedras não pode ser negativa.");
             }
 
             // Salvar as configurações em um arquivo de texto
-            salvarConfiguracoes(tamanhoFloresta, qtdPedras, qtdMaracujas, qtdMaracujaNoChao, 
+            salvarConfiguracoes(n, qtdPedras, qtdMaracujas, qtdMaracujaNoChao, 
                 qtdLaranjeira, qtdLaranjaNoChao, qtdAbacateiro, qtdAbacateNoChao,
                 qtdCoqueiro, qtdCocoNoChao, qtdAceroleira, qtdAcerolaNoChao, 
                 qtdAmoreira, qtdAmoraNoChao, qtdGaiabeira, qtdGoiabaNoChao,
@@ -222,11 +224,11 @@ public class Configuração extends JPanel {
         }
     }
 
-    private void salvarConfiguracoes(String tamanho, String pedras, String maracujas, String maracujaNoChao, 
-                                      String laranjeira, String laranjaNoChao, String abacateiro, String abacateNoChao,
-                                      String coqueiro, String cocoNoChao, String aceroleira, String acerolaNoChao, 
-                                      String amoreira, String amoraNoChao, String gaiabeira, String goiabaNoChao,
-                                      String porcentagem, String capacidadeMochila) {
+    private void salvarConfiguracoes(int tamanho, int pedras, int maracujas, int maracujaNoChao, 
+                                      int laranjeira, int laranjaNoChao, int abacateiro, int abacateNoChao,
+                                      int coqueiro, int cocoNoChao, int aceroleira, int acerolaNoChao, 
+                                      int amoreira, int amoraNoChao, int gaiabeira, int goiabaNoChao,
+                                      int porcentagem, int capacidadeMochila) {
         try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
             writer.write("dimensao: " + tamanho + "\n");
             writer.write("pedras: " + pedras + "\n");
@@ -242,8 +244,7 @@ public class Configuração extends JPanel {
             
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }    
     }
-
 }
 //teste
