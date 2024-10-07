@@ -1,13 +1,11 @@
 package Main;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TelaInicial extends JFrame {
 
-    private static final long serialVersionUID = 1L; // Adicionando serialVersionUID
     private boolean soundOn = true;
 
     public TelaInicial() {
@@ -16,20 +14,12 @@ public class TelaInicial extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
+        setLayout(null);
 
-        // Criar um painel para o fundo
-        JPanel background = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                // Desenhar a imagem de fundo
-                ImageIcon img = new ImageIcon("src/imagens/backgraund.jpeg"); // Ajuste o caminho da imagem
-                g.drawImage(img.getImage(), 0, 0, getWidth(), getHeight(), this);
-            }
-        };
-        background.setLayout(null); // Definindo layout nulo para adicionar os botões
-        add(background, BorderLayout.CENTER);
+        // Configurar o fundo da tela
+        JLabel background = new JLabel(new ImageIcon("src.jpg"));
+        background.setBounds(0, 0, 800, 600);
+        add(background);
 
         // Botão de som no canto superior esquerdo
         JButton soundButton = new JButton("Som: Ligado");

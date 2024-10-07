@@ -1,3 +1,3 @@
-Tamanho: 12
-Quantidade de Pedras: 6
-Quantidade de Laranjas: 7
+Tamanho: 1000
+Quantidade de Pedras: 4000
+Quantidade de Laranjas: 666666
