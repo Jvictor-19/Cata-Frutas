@@ -1,11 +1,11 @@
-dimensao: 123333
-pedras: 3
-maracujas: 3 3
-laranja: 3 33
-abacate: 3 33
-coco: 3 4
-acerola: 33 22222
-amora: 3 3
-goiaba: 3 3
-bichadas: 3
-mochila: 3
+dimensao: 7
+pedras: 6
+maracujas: 4 9
+laranja: 8 9
+abacate: 8 9
+coco: 8 9
+acerola: 8 9
+amora: 89 0
+goiaba: 9 9
+bichadas: 9
+mochila: 9
