@@ -1,11 +1,11 @@
 dimensao: 10
-pedras: 10
-maracujas: 1 7
-laranja: 6 7
-abacate: 6 7
-coco: 6 7
-acerola: 6 7
-amora: 6 7
-goiaba: 6 7
-bichadas: 6
-mochila: 7
+pedras: 3
+maracujas:  
+laranja:  
+abacate:  
+coco:  
+acerola:  
+amora:  
+goiaba:  
+bichadas: 
+mochila: 
