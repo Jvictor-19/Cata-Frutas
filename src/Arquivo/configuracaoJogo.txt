@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 dimensao: 7
 pedras: 6
 maracujas: 4 9
@@ -9,3 +10,16 @@ amora: 89 0
 goiaba: 9 9
 bichadas: 9
 mochila: 9
+=======
+dimensao: 8
+pedras: 5
+maracujas:  
+laranja:  
+abacate:  
+coco:  
+acerola:  
+amora:  
+goiaba:  
+bichadas: 
+mochila: 
+>>>>>>> 28c6ea660570ecdb9b092c57799f385f5a5d1f65
