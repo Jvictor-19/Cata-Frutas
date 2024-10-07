@@ -1,95 +1,158 @@
 package Main;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
+import Frutas.Laranja;
+import Elementos.ElementosEstáticos.Pedra;
 
 public class TelaJogo extends JPanel implements Runnable {
 
     private static final long serialVersionUID = 1L;
 
-    final int originalTilesize = 16; 
-    final int scale = 3; 
-    final int tilesize = originalTilesize * scale;
+    // Tamanho original dos tiles
+    final int tamanhoTileOriginal = 22;
+    final int escalaMin = 2;
+    final int escalaMax = 5;
+    int tamanhoTile;
+    int maxColunasTela;
+    int maxLinhasTela;
 
-    int maxScreenCol;
-    int maxScreenRow;
-    int screenWidth;
-    int screenHeight;
+    // Elementos do jogo
+    private ImageIcon imagemGrama;
+    private Laranja laranja;
+    private ArrayList<Pedra> pedras;
+    private ArrayList<Laranja> laranjasNoChao;
+    private int quantidadePedras;
+    private int quantidadeLaranjasNoChao;
 
-    Thread gameThread;
+    Thread threadJogo;
 
-    // Caminho para a imagem do tile
-    private ImageIcon tileImage;
+    public TelaJogo(int n, int quantidadePedras, int quantidadeLaranjasNoChao) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int larguraDisponivel = (int) screenSize.getWidth();
+        int alturaDisponivel = (int) screenSize.getHeight();
 
-    // Construtor que recebe a dimensão da floresta
-    public TelaJogo(int n) {
-        this.maxScreenCol = n;
-        this.maxScreenRow = n;
-        this.screenWidth = tilesize * maxScreenCol;
-        this.screenHeight = tilesize * maxScreenRow;
+        ajustarTamanhoTile(n, larguraDisponivel, alturaDisponivel);
 
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.lightGray); 
-        this.setDoubleBuffered(true); 
+        this.maxColunasTela = n;
+        this.maxLinhasTela = n;
+        this.quantidadePedras = quantidadePedras;
+        this.quantidadeLaranjasNoChao = quantidadeLaranjasNoChao;
 
-        // Carrega a imagem do tile
-        tileImage = new ImageIcon("src/imagens/grama.png"); // Atualize com o caminho da sua imagem
+        this.pedras = new ArrayList<>();
+        this.laranjasNoChao = new ArrayList<>();
 
-        // Tenta carregar as configurações de arquivo
-        carregarConfiguracoes();
+        this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela));
+        this.setBackground(Color.lightGray);
+        this.setDoubleBuffered(true);
 
-        startGameThread();
+        imagemGrama = new ImageIcon("src/imagens/grama.png");
+
+        Random random = new Random();
+        int x = random.nextInt(maxColunasTela);
+        int y = random.nextInt(maxLinhasTela);
+        laranja = new Laranja(x, y);
+
+        gerarPedras();
+        gerarLaranjasNoChao();
+
+        iniciarThreadJogo();
     }
 
-    private void carregarConfiguracoes() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/Arquivo/configuracaoJogo.txt"))) {
-            String linha;
-            while ((linha = reader.readLine()) != null) {
-                System.out.println(linha); // Aqui você pode adicionar lógica para configurar o terreno com base no arquivo
+    private void ajustarTamanhoTile(int n, int larguraDisponivel, int alturaDisponivel) {
+        int tamanhoTileHorizontal = (larguraDisponivel - 50) / n;
+        int tamanhoTileVertical = (alturaDisponivel - 150) / n;
+        tamanhoTile = Math.min(tamanhoTileHorizontal, tamanhoTileVertical);
+        tamanhoTile = Math.max(tamanhoTileOriginal * escalaMin, Math.min(tamanhoTile, tamanhoTileOriginal * escalaMax));
+    }
+
+    private void gerarPedras() {
+        Random random = new Random();
+        int contagem = 0;
+
+        while (contagem < quantidadePedras) {
+            int x = random.nextInt(maxColunasTela);
+            int y = random.nextInt(maxLinhasTela);
+
+            if (!posicaoOcupada(x, y)) {
+                pedras.add(new Pedra(x, y));
+                contagem++;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    public void startGameThread() {
-        gameThread = new Thread(this);
-        gameThread.start(); 
+    private void gerarLaranjasNoChao() {
+        Random random = new Random();
+        int contagem = 0;
+
+        while (contagem < quantidadeLaranjasNoChao) {
+            int x = random.nextInt(maxColunasTela);
+            int y = random.nextInt(maxLinhasTela);
+
+            if (!posicaoOcupada(x, y)) {
+                laranjasNoChao.add(new Laranja(x, y));
+                contagem++;
+            }
+        }
+    }
+
+    private boolean posicaoOcupada(int x, int y) {
+        for (Pedra pedra : pedras) {
+            if (pedra.getX() == x && pedra.getY() == y) {
+                return true;
+            }
+        }
+
+        for (Laranja laranjaChao : laranjasNoChao) {
+            if (laranjaChao.getX() == x && laranjaChao.getY() == y) {
+                return true;
+            }
+        }
+
+        return laranja.getX() == x && laranja.getY() == y;
+    }
+
+    public void iniciarThreadJogo() {
+        threadJogo = new Thread(this);
+        threadJogo.start();
     }
 
     @Override
     public void run() {
-        while (gameThread != null) {
-            updateGame();
-            repaint(); 
+        while (threadJogo != null) {
+            atualizarJogo();
+            repaint();
             try {
-                Thread.sleep(1000 / 60); 
+                Thread.sleep(1000 / 60);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    // Método responsável por atualizar o estado do jogo
-    private void updateGame() {
-        // Lógica para atualizar o estado do jogo
+    private void atualizarJogo() {
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Lógica para desenhar o terreno, as pedras, etc.
-        for (int linha = 0; linha < maxScreenRow; linha++) {
-            for (int coluna = 0; coluna < maxScreenCol; coluna++) {
-                // Desenha a imagem do tile
-                g.drawImage(tileImage.getImage(), coluna * tilesize, linha * tilesize, tilesize, tilesize, null);
+
+        for (int linha = 0; linha < maxLinhasTela; linha++) {
+            for (int coluna = 0; coluna < maxColunasTela; coluna++) {
+                g.drawImage(imagemGrama.getImage(), coluna * tamanhoTile, linha * tamanhoTile, tamanhoTile, tamanhoTile, null);
             }
         }
+
+        for (Pedra pedra : pedras) {
+            pedra.desenhar(g, tamanhoTile);
+        }
+
+        for (Laranja laranjaChao : laranjasNoChao) {
+            laranjaChao.desenhar(g, tamanhoTile);
+        }
+
+        laranja.desenhar(g, tamanhoTile);
     }
 }

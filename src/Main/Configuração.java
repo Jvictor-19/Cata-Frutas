@@ -1,7 +1,6 @@
 package Main;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
@@ -13,22 +12,7 @@ public class Configuração extends JPanel {
     private JTextField tamanhoCampo;
     private JButton iniciarButton;
     private JTextField pedras;
-    private JTextField maracujas;
-    private JTextField laranjeira;
-    private JTextField maracujaNoChao;
-    private JTextField laranjaNoChao;
-    private JTextField Coqueiro;
-    private JTextField cocoNoChao;
-    private JTextField abacateiro;
-    private JTextField abacateNoChao;
-    private JTextField aceroleira;
-    private JTextField acerolaNoChao;
-    private JTextField amoreira;
-    private JTextField amoraNoChao;
-    private JTextField gaiabeira;
-    private JTextField goiabaNoChao;
-    private JTextField porcentagemBichadas;
-    private JTextField capacidadeDaMochila;
+    private JTextField laranjas; // Corrigido para referência a laranjas
 
     public Configuração() {
         setLayout(null); 
@@ -45,6 +29,11 @@ public class Configuração extends JPanel {
         pedras = new JTextField();
         pedras.setBounds(250, 60, 100, 15);
         
+        JLabel lblQuantidadeDeLaranjas = new JLabel("Quantidade de Laranjas:");
+        lblQuantidadeDeLaranjas.setBounds(17, 87, 170, 15);
+        laranjas = new JTextField(); // Adicionada corretamente
+        laranjas.setBounds(250, 87, 100, 15);
+
         iniciarButton = new JButton("Iniciar Jogo");
         iniciarButton.setBounds(341, 431, 150, 40); 
 
@@ -53,114 +42,10 @@ public class Configuração extends JPanel {
         add(tamanhoCampo);
         add(lblQuantidadeDePedras);
         add(pedras);
+        add(lblQuantidadeDeLaranjas);
+        add(laranjas);
         add(iniciarButton);
         
-        JLabel lblQuantidadeDeMaracujas = new JLabel("Quantidade de maracujujás:");
-        lblQuantidadeDeMaracujas.setBounds(17, 87, 204, 15);
-        add(lblQuantidadeDeMaracujas);
-        
-        maracujas = new JTextField();
-        maracujas.setBounds(250, 87, 93, 15);
-        add(maracujas);
-        
-        maracujaNoChao = new JTextField();
-        maracujaNoChao.setBounds(376, 85, 93, 15);
-        add(maracujaNoChao);
-        
-        JLabel lblQuantidadeDeLaranjas = new JLabel("Quantidade de laranjas");
-        lblQuantidadeDeLaranjas.setBounds(17, 114, 204, 15);
-        add(lblQuantidadeDeLaranjas);
-        
-        laranjeira = new JTextField();
-        laranjeira.setBounds(250, 112, 93, 15);
-        add(laranjeira);
-        
-        laranjaNoChao = new JTextField();
-        laranjaNoChao.setBounds(376, 112, 93, 15);
-        add(laranjaNoChao);
-        
-        JLabel lblQuantidadeDeAbacate = new JLabel("Quantidade de abacate");
-        lblQuantidadeDeAbacate.setBounds(17, 145, 204, 15);
-        add(lblQuantidadeDeAbacate);
-        
-        JLabel lblElementosEstticos = new JLabel("Elementos Estáticos");
-        lblElementosEstticos.setBounds(108, 12, 150, 15);
-        add(lblElementosEstticos);
-        
-        JLabel lblQuantidadeDeCoco = new JLabel("Quantidade de coco");
-        lblQuantidadeDeCoco.setBounds(17, 172, 204, 15);
-        add(lblQuantidadeDeCoco);
-        
-        Coqueiro = new JTextField();
-        Coqueiro.setBounds(250, 172, 93, 15);
-        add(Coqueiro);
-        
-        cocoNoChao = new JTextField();
-        cocoNoChao.setBounds(376, 172, 93, 15);
-        add(cocoNoChao);
-        
-        abacateiro = new JTextField();
-        abacateiro.setBounds(250, 143, 93, 15);
-        add(abacateiro);
-        
-        abacateNoChao = new JTextField();
-        abacateNoChao.setBounds(376, 143, 93, 15);
-        add(abacateNoChao);
-        
-        JLabel lblQuantidadeAcerola = new JLabel("Quantidade de acerola");
-        lblQuantidadeAcerola.setBounds(17, 200, 204, 15);
-        add(lblQuantidadeAcerola);
-        
-        aceroleira = new JTextField();
-        aceroleira.setBounds(250, 198, 93, 15);
-        add(aceroleira);
-        
-        acerolaNoChao = new JTextField();
-        acerolaNoChao.setBounds(376, 199, 93, 15);
-        add(acerolaNoChao);
-        
-        JLabel lblQuantidadeDeAmora = new JLabel("Quantidade de amora");
-        lblQuantidadeDeAmora.setBounds(17, 233, 204, 15);
-        add(lblQuantidadeDeAmora);
-        
-        amoreira = new JTextField();
-        amoreira.setBounds(250, 231, 93, 15);
-        add(amoreira);
-        
-        amoraNoChao = new JTextField();
-        amoraNoChao.setBounds(376, 231, 93, 15);
-        add(amoraNoChao);
-        
-        JLabel lblQuantidadeDeGoiaba = new JLabel("Quantidade de goiaba");
-        lblQuantidadeDeGoiaba.setBounds(17, 260, 204, 15);
-        add(lblQuantidadeDeGoiaba);
-        
-        gaiabeira = new JTextField();
-        gaiabeira.setBounds(250, 258, 93, 15);
-        add(gaiabeira);
-        
-        goiabaNoChao = new JTextField();
-        goiabaNoChao.setBounds(376, 260, 93, 15);
-        add(goiabaNoChao);
-        
-        JLabel lblBichadas = new JLabel("Bichadas");
-        lblBichadas.setBounds(17, 303, 204, 15);
-        add(lblBichadas);
-        
-        porcentagemBichadas = new JTextField();
-        porcentagemBichadas.setBounds(250, 301, 93, 15);
-        add(porcentagemBichadas);
-        
-        JLabel lblMochila = new JLabel("Mochila");
-        lblMochila.setBounds(17, 355, 204, 15);
-        add(lblMochila);
-        
-        capacidadeDaMochila = new JTextField();
-        capacidadeDaMochila.setBounds(250, 353, 93, 15);
-        add(capacidadeDaMochila);
-        
-        
-
         // Adiciona o ouvinte de ação ao botão
         iniciarButton.addActionListener(new ActionListener() {
             @Override
@@ -173,24 +58,26 @@ public class Configuração extends JPanel {
     private void iniciarJogo() {
         String tamanhoFloresta = tamanhoCampo.getText();
         String qtdPedras = pedras.getText();
+        String qtdLaranjas = laranjas.getText();
 
         try {
             // Valida se os campos foram preenchidos corretamente
             int n = Integer.parseInt(tamanhoFloresta);
-            int pedras = Integer.parseInt(qtdPedras);
+            int quantidadePedras = Integer.parseInt(qtdPedras);
+            int quantidadeLaranjas = Integer.parseInt(qtdLaranjas);
 
-            if (n <= 5 || pedras < 0) {
-                throw new NumberFormatException("Dimensão deve ser maior que 5 e pedras não pode ser negativa.");
+            if (n <= 5 || quantidadePedras < 0 || quantidadeLaranjas < 0) {
+                throw new NumberFormatException("Dimensão deve ser maior que 5 e quantidades não podem ser negativas.");
             }
 
             // Salvar as configurações em um arquivo de texto
-            salvarConfiguracoes(tamanhoFloresta, qtdPedras);
+            salvarConfiguracoes(tamanhoFloresta, qtdPedras, qtdLaranjas);
 
             // Criar uma nova janela do jogo
             JFrame gameWindow = new JFrame("Cata Frutas");
             gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameWindow.setResizable(false);
-            TelaJogo gamePainel = new TelaJogo(n); // Passa a dimensão da floresta
+            TelaJogo gamePainel = new TelaJogo(n, quantidadePedras, quantidadeLaranjas); // Passa as dimensões e quantidades
             gameWindow.getContentPane().add(gamePainel);
             gameWindow.pack();
             gameWindow.setLocationRelativeTo(null);
@@ -203,13 +90,13 @@ public class Configuração extends JPanel {
         }
     }
 
-    private void salvarConfiguracoes(String tamanho, String pedras) {
+    private void salvarConfiguracoes(String tamanho, String pedras, String laranjas) {
         try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
-            writer.write("Dimensão: " + tamanho + "\n");
-            writer.write("Pedras: " + pedras + "\n");
+            writer.write("Tamanho: " + tamanho + "\n");
+            writer.write("Quantidade de Pedras: " + pedras + "\n");
+            writer.write("Quantidade de Laranjas: " + laranjas + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
-//teste
