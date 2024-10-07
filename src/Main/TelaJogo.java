@@ -28,8 +28,17 @@ public class TelaJogo extends JPanel implements Runnable {
     private boolean jogoPausado = false;  // Controle de pausa
     private Thread threadJogo;
 
+    // Limite máximo para as dimensões da matriz
+    private static final int LIMITE_MATRIZ = 30;
+
     // Adicionar os layouts
     public TelaJogo(int n, int quantidadePedras, int quantidadeLaranjasNoChao) {
+        // Verificar se n ultrapassa o limite e exibir mensagem
+        if (n > LIMITE_MATRIZ) {
+            JOptionPane.showMessageDialog(null, "Para melhor experiência, delimitamos a dimensão do jogo a uma matriz 30x30.", "Limite de Dimensão", JOptionPane.INFORMATION_MESSAGE);
+            n = LIMITE_MATRIZ;  // Ajustar n para o limite
+        }
+
         this.maxColunasTela = n;
         this.maxLinhasTela = n;
         this.quantidadePedras = quantidadePedras;
@@ -43,7 +52,7 @@ public class TelaJogo extends JPanel implements Runnable {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         ajustarTamanhoTile(screenSize.width, screenSize.height);
 
-        this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela+35)); // Aumentar altura para os botões
+        this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela + 35)); // Aumentar altura para os botões
         this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
 
@@ -92,7 +101,7 @@ public class TelaJogo extends JPanel implements Runnable {
     }
 
     private void ajustarTamanhoTile(int larguraDisponivel, int alturaDisponivel) {
-        // Calcular o tamanho do tile para que a matriz se ajuste à tela, mas sem ultrapassar limites
+        // Calcular o tamanho do tile para que a matriz se ajuste à tela
         int alturaAreaJogo = alturaDisponivel - 100; // Deixar espaço para os botões
         int larguraAreaJogo = larguraDisponivel;
 
@@ -103,6 +112,14 @@ public class TelaJogo extends JPanel implements Runnable {
         // Escolher o menor tamanho para garantir que a matriz fique dentro da tela
         tamanhoTile = Math.min(tamanhoTileHorizontal, tamanhoTileVertical);
         tamanhoTile = Math.max(tamanhoTileOriginal, tamanhoTile); // Remover limite inferior para o tamanho do tile
+
+        // Verificar se as dimensões da matriz se encaixam na tela
+        if (tamanhoTile * maxColunasTela > larguraDisponivel) {
+            maxColunasTela = larguraDisponivel / tamanhoTile; // Ajustar colunas
+        }
+        if (tamanhoTile * maxLinhasTela > alturaAreaJogo) {
+            maxLinhasTela = alturaAreaJogo / tamanhoTile; // Ajustar linhas
+        }
     }
 
     private void gerarPedras() {
@@ -200,7 +217,14 @@ public class TelaJogo extends JPanel implements Runnable {
     }
 
     public static void main(String[] args) {
-     
-        };
-    
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Cata-Frutas");
+            TelaJogo telaJogo = new TelaJogo(10, 5, 5); // Exemplo de inicialização
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.getContentPane().add(telaJogo);
+            frame.pack();
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null); // Centraliza a janela na tela
+        });
+    }
 }
