@@ -1,0 +1,6 @@
+<<<<<<< HEAD
+=======
+Tamanho: 35
+Quantidade de Pedras: 6
+Quantidade de Laranjas: 7
+>>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e

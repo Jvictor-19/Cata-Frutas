@@ -1,4 +1,4 @@
-package Main;
+package imagens;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,17 +28,8 @@ public class TelaJogo extends JPanel implements Runnable {
     private boolean jogoPausado = false;  // Controle de pausa
     private Thread threadJogo;
 
-    // Limite máximo para as dimensões da matriz
-    private static final int LIMITE_MATRIZ = 30;
-
     // Adicionar os layouts
     public TelaJogo(int n, int quantidadePedras, int quantidadeLaranjasNoChao) {
-        // Verificar se n ultrapassa o limite e exibir mensagem
-        if (n > LIMITE_MATRIZ) {
-            JOptionPane.showMessageDialog(null, "Para melhor experiência, delimitamos a dimensão do jogo a uma matriz 30x30.", "Limite de Dimensão", JOptionPane.INFORMATION_MESSAGE);
-            n = LIMITE_MATRIZ;  // Ajustar n para o limite
-        }
-
         this.maxColunasTela = n;
         this.maxLinhasTela = n;
         this.quantidadePedras = quantidadePedras;
@@ -219,7 +210,7 @@ public class TelaJogo extends JPanel implements Runnable {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Cata-Frutas");
-            TelaJogo telaJogo = new TelaJogo(10, 5, 5); // Exemplo de inicialização
+            TelaJogo telaJogo = new TelaJogo(10, 5, 5);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.getContentPane().add(telaJogo);
             frame.pack();
