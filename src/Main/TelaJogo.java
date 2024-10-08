@@ -216,7 +216,7 @@ public class TelaJogo extends JPanel implements Runnable {
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Cata-Frutas");
             TelaJogo telaJogo = new TelaJogo(10, 5, 5); // Exemplo de inicialização
@@ -226,5 +226,5 @@ public class TelaJogo extends JPanel implements Runnable {
             frame.setVisible(true);
             frame.setLocationRelativeTo(null); // Centraliza a janela na tela
         });
-    }
+    }*/
 }
