@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 Tamanho: 23
-Quantidade de Pedras: 10
-Quantidade de Laranjas: 10
-=======
-<<<<<<< HEAD
-=======
-Tamanho: 35
-Quantidade de Pedras: 6
-Quantidade de Laranjas: 7
->>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e
->>>>>>> b1d4e9cb90de51eba42040121b81470ef58f1504
-=======
-Tamanho: 12
-Quantidade de Pedras: 10
-Quantidade de Laranjas: 10
->>>>>>> irandi_branch
+Quantidade de Pedras: 1
+Quantidade de Laranjas: 1
