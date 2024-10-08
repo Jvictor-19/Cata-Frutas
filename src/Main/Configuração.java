@@ -159,7 +159,7 @@ public class Configuração extends JPanel {
             JFrame gameWindow = new JFrame("Cata Frutas");
             gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameWindow.setResizable(false);
-            TelaJogo gamePainel = new TelaJogo(n, quantidadePedras, quantidadeLaranjas); // Passa as dimensões e quantidades
+            TelaJogo gamePainel = new TelaJogo("src/Arquivo/configuracaoJogo.txt"); // Passa as dimensões e quantidades
             gameWindow.getContentPane().add(gamePainel);
             gameWindow.pack();
             gameWindow.setLocationRelativeTo(null);

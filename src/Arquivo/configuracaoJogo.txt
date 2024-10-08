@@ -1,3 +1,3 @@
-Tamanho: 6
+Tamanho: 20
 Quantidade de Pedras: 1
 Quantidade de Laranjas: 1

@@ -2,6 +2,9 @@ package Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import Frutas.Laranja;
@@ -32,17 +35,9 @@ public class TelaJogo extends JPanel implements Runnable {
     private static final int LIMITE_MATRIZ = 30;
 
     // Adicionar os layouts
-    public TelaJogo(int n, int quantidadePedras, int quantidadeLaranjasNoChao) {
-        // Verificar se n ultrapassa o limite e exibir mensagem
-        if (n > LIMITE_MATRIZ) {
-            JOptionPane.showMessageDialog(null, "Para melhor experiência, delimitamos a dimensão do jogo a uma matriz 30x30.", "Limite de Dimensão", JOptionPane.INFORMATION_MESSAGE);
-            n = LIMITE_MATRIZ;  // Ajustar n para o limite
-        }
-
-        this.maxColunasTela = n;
-        this.maxLinhasTela = n;
-        this.quantidadePedras = quantidadePedras;
-        this.quantidadeLaranjasNoChao = quantidadeLaranjasNoChao;
+    public TelaJogo(String configFilePath) {
+        // Lê os parâmetros do arquivo de configuração
+        lerConfiguracao(configFilePath);
 
         this.pedras = new ArrayList<>();
         this.laranjasNoChao = new ArrayList<>();
@@ -98,6 +93,27 @@ public class TelaJogo extends JPanel implements Runnable {
         this.add(painelBotoes, BorderLayout.SOUTH);
 
         iniciarThreadJogo();
+    }
+
+    private void lerConfiguracao(String configFilePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                if (linha.startsWith("Tamanho:")) {
+                    maxColunasTela = maxLinhasTela = Integer.parseInt(linha.split(":")[1].trim());
+                } else if (linha.startsWith("Quantidade de Pedras:")) {
+                    quantidadePedras = Integer.parseInt(linha.split(":")[1].trim());
+                } else if (linha.startsWith("Quantidade de Laranjas:")) {
+                    quantidadeLaranjasNoChao = Integer.parseInt(linha.split(":")[1].trim());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Você pode definir valores padrão aqui em caso de falha ao ler o arquivo
+            maxColunasTela = maxLinhasTela = 10; // Valor padrão
+            quantidadePedras = 5; // Valor padrão
+            quantidadeLaranjasNoChao = 5; // Valor padrão
+        }
     }
 
     private void ajustarTamanhoTile(int larguraDisponivel, int alturaDisponivel) {
@@ -218,13 +234,13 @@ public class TelaJogo extends JPanel implements Runnable {
 
     /*public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Cata-Frutas");
-            TelaJogo telaJogo = new TelaJogo(10, 5, 5); // Exemplo de inicialização
+            JFrame frame = new JFrame("Jogo de Laranjas");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(telaJogo);
+            frame.setResizable(false);
+            frame.setContentPane(new TelaJogo("config.txt")); // Passando o caminho do arquivo de configuração
             frame.pack();
+            frame.setLocationRelativeTo(null);
             frame.setVisible(true);
-            frame.setLocationRelativeTo(null); // Centraliza a janela na tela
         });
     }*/
 }
