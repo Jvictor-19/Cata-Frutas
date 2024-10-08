@@ -19,8 +19,8 @@ public class Configuração extends JPanel {
     private int valor = 0; // Variável que será incrementada ou decrementada
 
     public Configuração() {
-        setLayout(null);
-        setSize(800, 600);
+    	setLayout(null);
+        setPreferredSize(new Dimension(800, 600));
 
         // Criação dos componentes
         JLabel tamanhoLabel = new JLabel("Dimensão da floresta (n x n):");
@@ -181,4 +181,16 @@ public class Configuração extends JPanel {
             e.printStackTrace();
         }
     }
+    
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Tela de Configuração");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        Configuração telaInicial = new Configuração();
+        frame.getContentPane().add(telaInicial);
+        frame.pack(); // Ajusta o tamanho do JFrame com base nos componentes
+        frame.setLocationRelativeTo(null); // Centraliza na tela
+        frame.setVisible(true); // Torna a janela visível
+    }
+
 }
