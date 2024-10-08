@@ -174,9 +174,17 @@ public class Configuração extends JPanel {
 
     private void salvarConfiguracoes(String tamanho, String pedras, String laranjas) {
         try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
-            writer.write("Tamanho: " + tamanho + "\n");
-            writer.write("Quantidade de Pedras: " + pedras + "\n");
-            writer.write("Quantidade de Laranjas: " + laranjas + "\n");
+        	writer.write("dimensão: " + tamanho + "\n");
+            writer.write("pedras: " + pedras + "\n");
+            writer.write("maracuja: " + laranjas + " " + laranjas + "\n");
+            writer.write("laranja: " + laranjas +  " " + laranjas + "\n");
+            writer.write("abacate: " + laranjas +  " " + laranjas + "\n");
+            writer.write("coco: " + laranjas +  " " + laranjas + "\n");
+            writer.write("acerola: " + laranjas + " " + laranjas + "\n");
+            writer.write("amora: " + laranjas + " " + laranjas + "\n");
+            writer.write("goiaba: " + laranjas + " " + laranjas + "\n");
+            writer.write("bichadas: " + laranjas + "\n");
+            writer.write("mochila: " + laranjas + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,3 +1,11 @@
-Tamanho: 15
-Quantidade de Pedras: 10
-Quantidade de Laranjas: 1
+dimensão: 10
+pedras: 4
+maracuja: 4 4
+laranja: 4 4
+abacate: 4 4
+coco: 4 4
+acerola: 4 4
+amora: 4 4
+goiaba: 4 4
+bichadas: 4
+mochila: 4
