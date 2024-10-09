@@ -41,7 +41,9 @@ public class TelaInicial extends JFrame {
         // Botão Jogar
         JButton playButton = new JButton("Jogar");
         playButton.setFont(FontePixel.carregarFontePixel(10));
-        playButton.setBounds(340, 380, 120, 50);
+
+        playButton.setBounds(340, 400, 120, 50);
+
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

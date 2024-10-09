@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 dimensão: 10
 pedras: 1
 maracuja: 20 1
+=======
+dimensão: 3
+pedras: 1
+maracuja: 1 1
+>>>>>>> e175d50efa092854c827663e0d886173c5beae12
 laranja: 1 1
 abacate: 1 1
 coco: 1 1
