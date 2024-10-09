@@ -12,15 +12,25 @@ import java.io.IOException;
 public class Configuração extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    
     private JButton iniciarButton;
-    private JTextField pedras;
-    private JTextField laranjas;
+    
     private JLabel labelNumero;
     private JLabel labelNumeroPedras;
     private JLabel labelNumeroLaranjas;
+    private JLabel labelNumeroAbacates;
+    private JLabel labelNumeroOuroNoChao;
+    private JLabel labelNumeroOuro;
+    
     private int valor = 3; // Variável que será incrementada ou decrementada
     private int qtdPedras = 0;
+    private int qtdFrutasOuroNoChao = 0;
+    private int qtdFrutasOuro = 0;
     private int qtdLaranjas = 0;
+    private int qtdAbacates = 0;
+  
+    private int verificador = qtdPedras + qtdLaranjas;
+    
     
     public Configuração() {
     	setLayout(null);
@@ -52,11 +62,15 @@ public class Configuração extends JPanel {
         });
 
         btnDecrementarDimensao.addActionListener(e -> {
-            valor--;
-            atualizarNumero(labelNumero, valor);
+        	if(valor == 3) {
+        		JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+        	}else {
+        		valor--;
+                atualizarNumero(labelNumero, valor);
+        	}
         });
 
-        // Componentes para "Quantidade de Pedras"
+        // COMPONENTENTES PARA A QUANTIDADE DE PEDRAS
         JLabel lblQuantidadeDePedras = new JLabel("Quantidade de Pedras:");
         lblQuantidadeDePedras.setBounds(17, 60, 170, 15);
         add(lblQuantidadeDePedras);
@@ -71,39 +85,68 @@ public class Configuração extends JPanel {
         add(btnIncrementarPedras);
         add(btnDecrementarPedras);
 
+        int[] qtdPedrasAtual = {qtdPedras};
         btnIncrementarPedras.addActionListener(e -> {
-            qtdPedras++;
-            atualizarNumero(labelNumeroPedras, qtdPedras);
+        	alterarValor(true, labelNumeroPedras, qtdPedrasAtual);
+        	qtdPedras = qtdPedrasAtual[0];
+            
         });
 
         btnDecrementarPedras.addActionListener(e -> {
-            qtdPedras--;
-            atualizarNumero(labelNumeroPedras, qtdPedras);
+        	alterarValor(false, labelNumeroPedras, qtdPedrasAtual);
+        	qtdPedras = qtdPedrasAtual[0];
         });
 
-        // Componentes para "Quantidade de Laranjas"
+        // COMPONENTES PARA A QUANTIDADE DE LARANJAS
         JLabel lblQuantidadeDeLaranjas = new JLabel("Quantidade de Laranjas:");
-        lblQuantidadeDeLaranjas.setBounds(17, 87, 170, 15);
+        lblQuantidadeDeLaranjas.setBounds(17, 87, 205, 15);
         add(lblQuantidadeDeLaranjas);
 
-        laranjas = new JTextField(String.valueOf(qtdLaranjas));
-        laranjas.setBounds(250, 87, 50, 25);
-        laranjas.setEditable(false); // Torna o campo de texto não editável
-        add(laranjas);
+        labelNumeroLaranjas = new JLabel(String.valueOf(qtdLaranjas));
+        labelNumeroLaranjas.setBounds(250, 87, 50, 25);
+        labelNumeroLaranjas.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelNumeroLaranjas);
 
         JButton btnIncrementarLaranjas = criarBotao("+", 305, 87);
         JButton btnDecrementarLaranjas = criarBotao("-", 229, 87);
         add(btnIncrementarLaranjas);
         add(btnDecrementarLaranjas);
 
+        int[] qtdLaranjasAtual = {qtdPedras};
         btnIncrementarLaranjas.addActionListener(e -> {
-            qtdLaranjas++;
-            atualizarNumero(laranjas, qtdLaranjas);
+        	alterarValor(true, labelNumeroLaranjas, qtdLaranjasAtual);
+        	qtdLaranjas = qtdLaranjasAtual[0];
         });
 
         btnDecrementarLaranjas.addActionListener(e -> {
-            qtdLaranjas--;
-            atualizarNumero(laranjas, qtdLaranjas);
+        	alterarValor(false, labelNumeroLaranjas, qtdLaranjasAtual);
+        	qtdLaranjas = qtdLaranjasAtual[0];
+        });
+        
+        // COMPONENTES PARA A QUANTIDADE DE ABACATE
+        JLabel lblQuantidadeDeAbacates = new JLabel("Quantidade de Abacates:");
+        lblQuantidadeDeAbacates.setBounds(17, 114, 240, 15);
+        add(lblQuantidadeDeAbacates);
+        
+        labelNumeroAbacates = new JLabel(String.valueOf(qtdLaranjas));
+        labelNumeroAbacates.setBounds(250, 114, 50, 25);
+        labelNumeroAbacates.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelNumeroAbacates);
+        
+        JButton btnIncrementarAbacates = criarBotao("+", 305, 114);
+        JButton btnDecrementarAbacates = criarBotao("-", 229, 114);
+        add(btnIncrementarAbacates);
+        add(btnDecrementarAbacates);
+        
+        int[] qtdAbacatesAtual = {qtdAbacates};
+        btnIncrementarAbacates.addActionListener(e -> {
+        	alterarValor(true, labelNumeroAbacates, qtdAbacatesAtual);
+        	qtdAbacates = qtdAbacatesAtual[0];
+        });
+
+        btnDecrementarAbacates.addActionListener(e -> {
+        	alterarValor(false, labelNumeroAbacates, qtdAbacatesAtual);
+        	qtdAbacates = qtdAbacatesAtual[0];
         });
 
         // Botão "Iniciar Jogo"
@@ -113,6 +156,21 @@ public class Configuração extends JPanel {
 
         iniciarButton.addActionListener(e -> iniciarJogo());
     }
+    
+    private void alterarValor(boolean incrementar, JLabel label, int[] valorAtual) {
+        if (incrementar) {
+            valorAtual[0]++; // Incrementa o valor
+        } else {
+            if (valorAtual[0] > 0) { // Certifica-se de que não se torne negativo
+                valorAtual[0]--;
+            } else {
+                JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        atualizarNumero(label, valorAtual[0]); // Atualiza o JLabel com o novo valor
+    }
+
+
 
     // Cria os botões de incremento e decremento com estilização
     private JButton criarBotao(String texto, int x, int y) {
@@ -144,27 +202,25 @@ public class Configuração extends JPanel {
         label.setText(String.valueOf(valor));
     }
 
-    private void atualizarNumero(JTextField textField, int valor) {
-        textField.setText(String.valueOf(valor));
-    }
-
     // Método que será chamado ao iniciar o jogo
     private void iniciarJogo() {
         String tamanhoFloresta = labelNumero.getText();
         String qtdPedrasText = labelNumeroPedras.getText();
-        String qtdLaranjasText = laranjas.getText();
+        String qtdLaranjasText = labelNumeroLaranjas.getText();
+        String qtdAbacatesText = labelNumeroAbacates.getText();
 
         try {
             int n = Integer.parseInt(tamanhoFloresta);
             int quantidadePedras = Integer.parseInt(qtdPedrasText);
             int quantidadeLaranjas = Integer.parseInt(qtdLaranjasText);
+            int quantidadeAbacates = Integer.parseInt(qtdAbacatesText);
 
-            if (n <= 2 || quantidadePedras < 0 || quantidadeLaranjas < 0) {
+            if (n <= 2) {
                 throw new NumberFormatException("Dimensão deve ser maior que 2 e quantidades não podem ser negativas.");
             }
 
             // Salvar as configurações e iniciar o jogo
-            salvarConfiguracoes(tamanhoFloresta, qtdPedrasText, qtdLaranjasText);
+            salvarConfiguracoes(tamanhoFloresta, qtdPedrasText, qtdLaranjasText, qtdAbacatesText);
 
             // Criar a tela do jogo
             JFrame gameWindow = new JFrame("Cata Frutas");
@@ -184,13 +240,13 @@ public class Configuração extends JPanel {
     }
 
     // Salva as configurações em um arquivo de texto
-    private void salvarConfiguracoes(String tamanho, String pedras, String laranjas) {
+    private void salvarConfiguracoes(String tamanho, String pedras, String laranjas, String abacate) {
         try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
         	writer.write("dimensão: " + tamanho + "\n");
             writer.write("pedras: " + pedras + "\n");
             writer.write("maracuja: " + laranjas + " " + laranjas + "\n");
             writer.write("laranja: " + laranjas +  " " + laranjas + "\n");
-            writer.write("abacate: " + laranjas +  " " + laranjas + "\n");
+            writer.write("abacate: " + abacate +  " " + abacate + "\n");
             writer.write("coco: " + laranjas +  " " + laranjas + "\n");
             writer.write("acerola: " + laranjas + " " + laranjas + "\n");
             writer.write("amora: " + laranjas + " " + laranjas + "\n");
