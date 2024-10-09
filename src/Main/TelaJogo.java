@@ -1,6 +1,7 @@
 package Main;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -8,7 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Frutas.Frutas;
 import Frutas.Abacate;
+import Frutas.GerenciadorDeFrutas;
 import Frutas.Laranja;
 import Frutas.Maracuja;
 import Elementos.ElementosEstáticos.Pedra;
@@ -217,6 +220,7 @@ public class TelaJogo extends JPanel implements Runnable {
         tamanhoTile = Math.min(tamanhoTileHorizontal, tamanhoTileVertical);
     }
 
+
     private void gerarPedras() {
         Random random = new Random();
         int contagem = 0;
@@ -233,7 +237,7 @@ public class TelaJogo extends JPanel implements Runnable {
     }
 
     private void gerarLaranjasNoChao() {
-        Random random = new Random();
+    	Random random = new Random();
         int contagem = 0;
 
         while (contagem < quantidadeLaranjasNoChao) {
@@ -245,6 +249,7 @@ public class TelaJogo extends JPanel implements Runnable {
                 contagem++;
             }
         }
+
     }
 
     private void gerarAbacatesNoChao() {
