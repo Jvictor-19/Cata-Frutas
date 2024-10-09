@@ -1,36 +1,24 @@
 package Elementos.ElementosEstáticos;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import java.awt.Graphics;
 
-public class Abacateiro {
-
-    private int x;
-    private int y;
-    private ImageIcon imagemAbacateiro;
+public class Abacateiro extends Arvore {
 
     public Abacateiro(int x, int y) {
-        this.x = x;
-        this.y = y;
-        // Carregue a imagem do abacateiro (substitua o caminho pela localização correta da imagem)
-        imagemAbacateiro = new ImageIcon("src/imagens/Abacateiro.png");
+        super(x, y);
     }
 
-    public int getX() {
-        return x;
+    @Override
+    protected void carregarImagem() {
+        ImageIcon icone = new ImageIcon("src/imagens/Abacateiro.png");
+        imagemArvore = icone.getImage(); // Mantenha a imagem original
     }
 
-    public int getY() {
-        return y;
-    }
+    @Override
     public void desenhar(Graphics g, int tamanhoTile) {
-        // Centraliza a imagem do abacateiro na célula
-        int largura = imagemAbacateiro.getIconWidth(); // Obtém a largura original da imagem
-        int altura = imagemAbacateiro.getIconHeight(); // Obtém a altura original da imagem
-        int posX = x * tamanhoTile + (tamanhoTile - largura) / 2;
-        int posY = y * tamanhoTile + (tamanhoTile - altura) / 2;
-
-        g.drawImage(imagemAbacateiro.getImage(), posX, posY, largura, altura, null); // Desenha a imagem no tamanho original
+        int largura = 170;  // Defina a largura desejada
+        int altura = 170;   // Defina a altura desejada
+        g.drawImage(imagemArvore, x * tamanhoTile, y * tamanhoTile, largura, altura, null); // Desenhe com dimensões definidas
     }
-
 }

@@ -122,7 +122,7 @@ public class Configuração extends JPanel {
         });
 
         // COMPONENTES PARA A QUANTIDADE DE LARANJAS
-        JLabel lblQuantidadeDeLaranjas = new JLabel("Quantidade de Laranjas:");
+        JLabel lblQuantidadeDeLaranjas = new JLabel("Quantidade de Laranjeiras:");
         lblQuantidadeDeLaranjas.setBounds(17, 114, 205, 15);
         add(lblQuantidadeDeLaranjas);
 
@@ -148,7 +148,7 @@ public class Configuração extends JPanel {
         });
         
         // COMPONENTES PARA A QUANTIDADE DE LARANJEIRAS
-        JLabel lblQuantidadeDeLaranjeiras = new JLabel("Quantidade de Laranjeiras:");
+        JLabel lblQuantidadeDeLaranjeiras = new JLabel("Quantidade de Laranjas:");
         lblQuantidadeDeLaranjeiras.setBounds(370, 114, 205, 15); // Ao lado da quantidade de laranjas
         add(lblQuantidadeDeLaranjeiras);
 
@@ -174,7 +174,7 @@ public class Configuração extends JPanel {
         });
 
         // COMPONENTES PARA A QUANTIDADE DE ABACATE
-        JLabel lblQuantidadeDeAbacates = new JLabel("Quantidade de Abacates:");
+        JLabel lblQuantidadeDeAbacates = new JLabel("Quantidade de Abacateiros:");
         lblQuantidadeDeAbacates.setBounds(17, 141, 240, 15);
         add(lblQuantidadeDeAbacates);
 
@@ -200,7 +200,7 @@ public class Configuração extends JPanel {
         });
         
      // COMPONENTES PARA A QUANTIDADE DE ABACATEIROS
-        JLabel lblQuantidadeDeAbacateiros = new JLabel("Quantidade de Abacateiros:");
+        JLabel lblQuantidadeDeAbacateiros = new JLabel("Quantidade de Abacates:");
         lblQuantidadeDeAbacateiros.setBounds(370, 141, 240, 15); 
         add(lblQuantidadeDeAbacateiros);
 
