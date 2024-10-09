@@ -1,8 +1,8 @@
 dimensão: 3
 pedras: 0
-maracuja: 0 0
+maracuja: 1 2
 laranja: 0 0
-abacate: 0 7
+abacate: 0 0
 coco: 0 0
 acerola: 0 0
 amora: 0 0
