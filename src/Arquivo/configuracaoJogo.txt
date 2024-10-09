@@ -2,7 +2,7 @@ dimensão: 3
 pedras: 1
 maracuja: 1 1
 laranja: 1 1
-abacate: 2 2
+abacate: 1 1
 coco: 1 1
 acerola: 1 1
 amora: 1 1

@@ -202,15 +202,15 @@ public class Configuração extends JPanel {
      // COMPONENTES PARA A QUANTIDADE DE ABACATEIROS
         JLabel lblQuantidadeDeAbacateiros = new JLabel("Quantidade de Abacateiros:");
         lblQuantidadeDeAbacateiros.setBounds(370, 141, 240, 15); 
-        add(lblQuantidadeDeLaranjeiras);
+        add(lblQuantidadeDeAbacateiros);
 
-        labelNumeroAbacateiros = new JLabel(String.valueOf(qtdAbacateiros)); // Quantidade de laranjeiras
-        labelNumeroAbacateiros.setBounds(600, 114, 50, 25); // Ao lado da label de laranjeiras
+        labelNumeroAbacateiros = new JLabel(String.valueOf(qtdAbacateiros)); // Quantidade de abacateiros
+        labelNumeroAbacateiros.setBounds(600, 141, 50, 25); // Posição corrigida para estar ao lado da label de abacateiros
         labelNumeroAbacateiros.setHorizontalAlignment(SwingConstants.CENTER);
         add(labelNumeroAbacateiros);
 
-        JButton btnIncrementarAbacateiros = criarBotao("+", 655, 114); // Botão ao lado da quantidade de laranjeiras
-        JButton btnDecrementarAbacateiros = criarBotao("-", 579, 114);
+        JButton btnIncrementarAbacateiros = criarBotao("+", 655, 141); // Botão ao lado da quantidade de abacateiros
+        JButton btnDecrementarAbacateiros = criarBotao("-", 579, 141);
         add(btnIncrementarAbacateiros);
         add(btnDecrementarAbacateiros);
 
