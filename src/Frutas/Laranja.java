@@ -10,7 +10,7 @@ public class Laranja {
     public Laranja(int x, int y) {
         this.x = x;
         this.y = y;
-        this.imagem = new ImageIcon("src/imagens/Laranja.png"); // Caminho para a imagem da laranja
+        this.imagem = new ImageIcon("src/imagens/laranja.png"); // Caminho para a imagem da laranja
     }
 
     public int getX() {

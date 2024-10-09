@@ -66,27 +66,15 @@ public class Configuração extends JPanel {
         labelNumeroPedras.setHorizontalAlignment(SwingConstants.CENTER);
         add(labelNumeroPedras);
 
-        /*pedras = new JTextField(String.valueOf(qtdPedras));
-        pedras.setBounds(250, 60, 50, 25);
-        pedras.setEditable(false); // Torna o campo de texto não editável*/
-        
-        //add(pedras);
-
         JButton btnIncrementarPedras = criarBotao("+", 305, 60);
         JButton btnDecrementarPedras = criarBotao("-", 229, 60);
         add(btnIncrementarPedras);
         add(btnDecrementarPedras);
 
         btnIncrementarPedras.addActionListener(e -> {
-            if (qtdPedras >= (valor*valor)-2) {
-                // Exibe um aviso ao usuário
-                JOptionPane.showMessageDialog(null, "Você atingiu o valor máximo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
-            } else {
-                qtdPedras++; // Incrementa a quantidade de pedras se o valor não foi atingido
-            }
-            atualizarNumero(labelNumeroPedras, qtdPedras); // Atualiza o número de pedras exibido
+            qtdPedras++;
+            atualizarNumero(labelNumeroPedras, qtdPedras);
         });
-
 
         btnDecrementarPedras.addActionListener(e -> {
             qtdPedras--;
