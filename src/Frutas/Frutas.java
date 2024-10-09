@@ -1,16 +1,16 @@
-package Elementos.ElementosEstáticos;
+package Frutas;
 
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
-public class Pedra {
-    private int x, y;
-    private ImageIcon imagem;
+public abstract class Frutas {
+    protected int x, y;
+    protected ImageIcon imagem;
 
-    public Pedra(int x, int y) {
+    public Frutas(int x, int y, String caminhoImagem) {
         this.x = x;
         this.y = y;
-        this.imagem = new ImageIcon("src/imagens/pedra.png"); // Caminho para a imagem da pedra
+        this.imagem = new ImageIcon(caminhoImagem); // Caminho para a imagem da fruta
     }
 
     public int getX() {
@@ -24,4 +24,5 @@ public class Pedra {
     public void desenhar(Graphics g, int tamanhoTile) {
         g.drawImage(imagem.getImage(), x * tamanhoTile, y * tamanhoTile, tamanhoTile, tamanhoTile, null);
     }
+
 }
