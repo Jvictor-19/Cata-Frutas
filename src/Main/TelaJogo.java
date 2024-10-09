@@ -40,7 +40,11 @@ public class TelaJogo extends JPanel implements Runnable {
     private Abacate abacate;
     private ArrayList<Abacate> abacatesNoChao;
     private int quantidadeAbacatesNoChao;
-
+    
+    private Abacateiros abacateiros;
+    private ArrayList<Laranjeira> laranjeiraNoChao;
+    private int quantidadeLaranjeirasNoChao;
+    
     private Maracuja maracuja;
     private ArrayList<Maracuja> maracujasNoChao;
     private int quantidadeMaracujaNoChao;
