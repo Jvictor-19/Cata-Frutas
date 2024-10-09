@@ -44,6 +44,67 @@ public class Configuração extends JPanel {
         pedras = new JTextField();
         pedras.setBounds(250, 60, 100, 15);
         
+<<<<<<< Updated upstream
+=======
+        labelNumeroPedras = new JLabel(String.valueOf(qtdPedras));
+        labelNumeroPedras.setBounds(250, 60, 50, 25);
+        labelNumeroPedras.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelNumeroPedras);
+
+        /*pedras = new JTextField(String.valueOf(qtdPedras));
+        pedras.setBounds(250, 60, 50, 25);
+        pedras.setEditable(false); // Torna o campo de texto não editável*/
+        
+        //add(pedras);
+
+        JButton btnIncrementarPedras = criarBotao("+", 305, 60);
+        JButton btnDecrementarPedras = criarBotao("-", 229, 60);
+        add(btnIncrementarPedras);
+        add(btnDecrementarPedras);
+
+        btnIncrementarPedras.addActionListener(e -> {
+            if (qtdPedras >= (valor*valor)-2) {
+                // Exibe um aviso ao usuário
+                JOptionPane.showMessageDialog(null, "Você atingiu o valor máximo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            } else {
+                qtdPedras++; // Incrementa a quantidade de pedras se o valor não foi atingido
+            }
+            atualizarNumero(labelNumeroPedras, qtdPedras); // Atualiza o número de pedras exibido
+        });
+
+
+        btnDecrementarPedras.addActionListener(e -> {
+            qtdPedras--;
+            atualizarNumero(labelNumeroPedras, qtdPedras);
+        });
+
+        // Componentes para "Quantidade de Laranjas"
+        JLabel lblQuantidadeDeLaranjas = new JLabel("Quantidade de Laranjas:");
+        lblQuantidadeDeLaranjas.setBounds(17, 87, 170, 15);
+        add(lblQuantidadeDeLaranjas);
+
+        laranjas = new JTextField(String.valueOf(qtdLaranjas));
+        laranjas.setBounds(250, 87, 50, 25);
+        laranjas.setEditable(false); // Torna o campo de texto não editável
+        add(laranjas);
+
+        JButton btnIncrementarLaranjas = criarBotao("+", 305, 87);
+        JButton btnDecrementarLaranjas = criarBotao("-", 229, 87);
+        add(btnIncrementarLaranjas);
+        add(btnDecrementarLaranjas);
+
+        btnIncrementarLaranjas.addActionListener(e -> {
+            qtdLaranjas++;
+            atualizarNumero(laranjas, qtdLaranjas);
+        });
+
+        btnDecrementarLaranjas.addActionListener(e -> {
+            qtdLaranjas--;
+            atualizarNumero(laranjas, qtdLaranjas);
+        });
+
+        // Botão "Iniciar Jogo"
+>>>>>>> Stashed changes
         iniciarButton = new JButton("Iniciar Jogo");
         iniciarButton.setBounds(341, 431, 150, 40); 
 
