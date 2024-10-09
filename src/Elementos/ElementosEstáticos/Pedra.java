@@ -10,7 +10,7 @@ public class Pedra {
     public Pedra(int x, int y) {
         this.x = x;
         this.y = y;
-        this.imagem = new ImageIcon("src/imagens/coco.png"); // Caminho para a imagem da pedra
+        this.imagem = new ImageIcon("src/imagens/pedra.png"); // Caminho para a imagem da pedra
     }
 
     public int getX() {
