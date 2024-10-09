@@ -1,6 +1,9 @@
 package Main;
 
 import javax.swing.*;
+
+import Fonte.FontePixel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,7 +20,7 @@ public class TelaInicial extends JFrame {
         setLayout(null);
 
         // Configurar o fundo da tela
-        JLabel background = new JLabel(new ImageIcon("path/to/your/background/image.jpg"));
+        JLabel background = new JLabel(new ImageIcon("src.jpg"));
         background.setBounds(0, 0, 800, 600);
         add(background);
 
@@ -52,6 +55,7 @@ public class TelaInicial extends JFrame {
 
         // Botão Créditos
         JButton creditsButton = new JButton("Créditos");
+        creditsButton.setFont(FontePixel.carregarFontePixel(10));
         creditsButton.setBounds(340, 460, 120, 50);
         background.add(creditsButton);
 
