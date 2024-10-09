@@ -1,0 +1,5 @@
+Dimensao: 3
+Quantidade de Pedras: 1
+Quantidade de Maracujás: 2
+Quantidade de Laranjas: 3
+Quantidade de Abacates: 3
