@@ -1,5 +1,5 @@
 dimensão: 3
-pedras: 7
+pedras: 0
 maracuja: 0 0
 laranja: 0 0
 abacate: 0 0
