@@ -22,14 +22,34 @@ public class Configuração extends JPanel {
     private JLabel labelNumeroLaranjeiras;
     private JLabel labelNumeroAbacates;
     private JLabel labelNumeroAbacateiros;
-
+    private JLabel labelNumeroCocos;
+    private JLabel labelNumeroCoqueiros;
+    private JLabel labelNumeroAcerola;
+    private JLabel labelNumeroAceroleiras;
+    private JLabel labelNumeroAmoras;
+    private JLabel labelNumeroAmoreiras;
+    private JLabel labelNumeroGoiaba;
+    private JLabel labelNumeroGoiabeira;
+    private JLabel labelNumeroBichadas;
+    private JLabel labelNumeroMochila;
+    
     private int valor = 3; // Variável que será incrementada ou decrementada
     private int qtdPedras = 0;
     private int qtdMaracujas = 0; // Inicialização da quantidade de maracujás
     private int qtdLaranjas = 0;
+    private int qtdLaranjeiras = 0;
     private int qtdAbacates = 0;
-    private int qtdLaranjeiras =0;
     private int qtdAbacateiros = 0;
+    private int qtdCoco = 0;
+    private int qtdCoqueiros = 0;
+    private int qtdAcerola =0;
+    private int qtdAceroleiras = 0;
+    private int qtdAmoras =0;
+    private int qtdAmoreiras = 0;
+    private int qtdGoiaba =0;
+    private int qtdGoiabeira = 0;
+    private int porBichadas =0;
+    private int capMochila =0;
 
     public Configuração() {
         setLayout(null);
@@ -148,7 +168,7 @@ public class Configuração extends JPanel {
         });
         
         // COMPONENTES PARA A QUANTIDADE DE LARANJEIRAS
-        JLabel lblQuantidadeDeLaranjeiras = new JLabel("Quantidade de Laranjeiras:");
+        /*JLabel lblQuantidadeDeLaranjeiras = new JLabel("Quantidade de Laranjeiras:");
         lblQuantidadeDeLaranjeiras.setBounds(370, 114, 205, 15); // Ao lado da quantidade de laranjas
         add(lblQuantidadeDeLaranjeiras);
 
@@ -199,7 +219,7 @@ public class Configuração extends JPanel {
             qtdAbacates = qtdAbacatesAtual[0];
         });
         
-     // COMPONENTES PARA A QUANTIDADE DE ABACATEIROS
+      //COMPONENTES PARA A QUANTIDADE DE ABACATEIROS
         JLabel lblQuantidadeDeAbacateiros = new JLabel("Quantidade de Abacateiros:");
         lblQuantidadeDeAbacateiros.setBounds(370, 141, 240, 15); 
         add(lblQuantidadeDeAbacateiros);
@@ -224,6 +244,111 @@ public class Configuração extends JPanel {
             alterarValor(false, labelNumeroAbacateiros, qtdAbacateirosAtual);
             qtdAbacateiros = qtdAbacateirosAtual[0];
         });
+        
+      //COMPONENTES PARA A QUANTIDADE DE COCOQUEIROS
+        JLabel lblQuantidadeDeCoqueiros = new JLabel("Quantidade de Coqueiros:");
+        lblQuantidadeDeCoqueiros.setBounds(17, 168, 232, 15); 
+        add(lblQuantidadeDeCoqueiros);
+
+        labelNumeroCoqueiros = new JLabel(String.valueOf(qtdCoqueiros)); // Quantidade de abacateiros
+        labelNumeroCoqueiros.setBounds(250, 168, 50, 25); // Posição corrigida para estar ao lado da label de abacateiros
+        labelNumeroCoqueiros.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelNumeroCoqueiros);
+
+        JButton btnIncrementarCoqueiros = criarBotao("+", 305, 168); // Botão ao lado da quantidade de abacateiros
+        JButton btnDecrementarCoqueiros = criarBotao("-", 229, 168);
+        add(btnIncrementarCoqueiros);
+        add(btnDecrementarCoqueiros);
+
+        int[] qtdCoqueirosAtual = {qtdCoqueiros};
+        btnIncrementarCoqueiros.addActionListener(e -> {
+            alterarValor(true, labelNumeroCoqueiros, qtdCoqueirosAtual);
+            qtdCoqueiros = qtdCoqueirosAtual[0];
+        });
+
+        btnDecrementarAbacateiros.addActionListener(e -> {
+            alterarValor(false, labelNumeroAbacateiros, qtdAbacateirosAtual);
+            qtdAbacateiros = qtdAbacateirosAtual[0];
+        });
+        
+        
+      //COMPONENTES PARA A QUANTIDADE DE COCO
+        JLabel lblQuantidadeDeCoco = new JLabel("Quantidade de Cocos:");
+        lblQuantidadeDeCoco.setBounds(370, 168, 240, 15); 
+        add(lblQuantidadeDeCoco);
+
+        labelNumeroCocos = new JLabel(String.valueOf(qtdCoco)); // Quantidade de abacateiros
+        labelNumeroCocos.setBounds(600, 168, 50, 25); // Posição corrigida para estar ao lado da label de abacateiros
+        labelNumeroCocos.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelNumeroCocos);
+
+        JButton btnIncrementarCoco = criarBotao("+", 655, 168); // Botão ao lado da quantidade de abacateiros
+        JButton btnDecrementarCoco = criarBotao("-", 579, 168);
+        add(btnIncrementarCoco);
+        add(btnDecrementarCoco);
+
+        int[] qtdCocoAtual = {qtdCoco};
+        btnIncrementarCoco.addActionListener(e -> {
+            alterarValor(true, labelNumeroCocos, qtdCocoAtual);
+            qtdCoco = qtdCocoAtual[0];
+        });
+
+        btnDecrementarCoco.addActionListener(e -> {
+            alterarValor(false, labelNumeroCocos, qtdCocoAtual);
+            qtdCoco = qtdCocoAtual[0];
+        });*/
+        int[] qtdLaranjeirasAtual = {qtdLaranjeiras};
+        labelNumeroLaranjeiras = new JLabel();
+        criarComponentesQuantidade("Quantidade de Laranjeiras:", qtdLaranjeirasAtual, labelNumeroLaranjeiras, 370, 114, 655, 114, 579, 114);
+        
+        int[] qtdAbacatesAtual = {qtdAbacates};
+        labelNumeroAbacates = new JLabel();
+        criarComponentesQuantidade("Quantidade de Abacates:", qtdAbacatesAtual, labelNumeroAbacates, 17, 141, 305, 141, 229, 141);
+
+        int[] qtdAbacateirosAtual = {qtdAbacateiros};
+        labelNumeroAbacateiros = new JLabel();
+        criarComponentesQuantidade("Quantidade de Abacateiros:", qtdAbacateirosAtual, labelNumeroAbacateiros, 370, 141, 655, 141, 579, 141);
+
+        
+        int[] qtdCoqueirosAtual = {qtdCoqueiros};
+        labelNumeroCoqueiros = new JLabel();
+        criarComponentesQuantidade("Quantidade de Coqueiros:", qtdCoqueirosAtual, labelNumeroCoqueiros, 17, 168, 305, 168, 229, 168);
+        
+        int[] qtdCocoAtual = {qtdCoco};
+        labelNumeroCocos = new JLabel();
+        criarComponentesQuantidade("Quantidade de Cocos:", qtdCocoAtual, labelNumeroCocos, 370, 168, 655, 168, 579, 168);
+        
+        int[] qtdAceroleirasAtual = {qtdAceroleiras};
+        labelNumeroAceroleiras = new JLabel();
+        criarComponentesQuantidade("Quantidade de Aceroleiras:", qtdAceroleirasAtual, labelNumeroAceroleiras, 17, 195, 305, 195, 229, 195);
+        
+        int[] qtdAcerolaAtual = {qtdAcerola};
+        labelNumeroAcerola = new JLabel();
+        criarComponentesQuantidade("Quantidade de Acerolas:", qtdAcerolaAtual, labelNumeroAcerola, 370, 195, 655, 195, 579, 195);
+        
+        int[] qtdAmoreirasAtual = {qtdAmoreiras};
+        labelNumeroAmoreiras = new JLabel();
+        criarComponentesQuantidade("Quantidade de Amoreiras:", qtdAmoreirasAtual, labelNumeroAmoreiras, 17, 222, 305, 222, 229, 222);
+
+        int[] qtdAmorasAtual = {qtdAmoras};
+        labelNumeroAmoras = new JLabel();
+        criarComponentesQuantidade("Quantidade de Amoras:", qtdAmorasAtual, labelNumeroAmoras, 370, 222, 655, 222, 579, 222);
+        
+        int[] qtdGoiabeirasAtual = {qtdGoiabeira};
+        labelNumeroGoiabeira = new JLabel();
+        criarComponentesQuantidade("Quantidade de Goiabeiras:", qtdGoiabeirasAtual, labelNumeroGoiabeira, 17, 249, 305, 249, 229, 249);
+
+        int[] qtdGoiabasAtual = {qtdGoiaba};
+        labelNumeroGoiaba = new JLabel();
+        criarComponentesQuantidade("Quantidade de Goiabas:", qtdGoiabasAtual, labelNumeroGoiaba, 370, 249, 655, 249, 579, 249);
+        
+        int[] qtdBichadasAtual = {porBichadas};
+        labelNumeroBichadas= new JLabel();
+        criarComponentesQuantidade("Porcentagem de Bichadas:", qtdBichadasAtual, labelNumeroBichadas, 17, 276, 305, 276, 229, 276);
+
+        int[] qtdMochilaAtual = {capMochila};
+        labelNumeroMochila = new JLabel();
+        criarComponentesQuantidade("Capacidade da Mochila:", qtdMochilaAtual, labelNumeroMochila, 17, 303, 305, 303, 229, 303);
 
         // Botão "Iniciar Jogo"
         iniciarButton = new JButton("Iniciar Jogo");
@@ -231,6 +356,30 @@ public class Configuração extends JPanel {
         add(iniciarButton);
 
         iniciarButton.addActionListener(e -> iniciarJogo());
+    }
+    
+    private void criarComponentesQuantidade(String labelTexto, int[] quantidadeAtual, JLabel labelQuantidade, int xLabel, int yLabel, int xBotaoMais, int yBotaoMais, int xBotaoMenos, int yBotaoMenos) {
+        JLabel label = new JLabel(labelTexto);
+        label.setBounds(xLabel, yLabel, 205, 15); // Configurações de posição e tamanho
+        add(label);
+
+        labelQuantidade.setText(String.valueOf(quantidadeAtual[0]));
+        labelQuantidade.setBounds(xLabel + 230, yLabel, 50, 25);
+        labelQuantidade.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelQuantidade);
+
+        JButton btnIncrementar = criarBotao("+", xBotaoMais, yBotaoMais);
+        JButton btnDecrementar = criarBotao("-", xBotaoMenos, yBotaoMenos);
+        add(btnIncrementar);
+        add(btnDecrementar);
+
+        btnIncrementar.addActionListener(e -> {
+            alterarValor(true, labelQuantidade, quantidadeAtual);
+        });
+
+        btnDecrementar.addActionListener(e -> {
+            alterarValor(false, labelQuantidade, quantidadeAtual);
+        });
     }
 
     private void alterarValor(boolean incrementar, JLabel label, int[] valorAtual) {
@@ -325,8 +474,8 @@ public class Configuração extends JPanel {
         	writer.write("dimensão: " + tamanho + "\n");
             writer.write("pedras: " + pedras + "\n");
             writer.write("maracuja: " + maracujas + " " + maracujas+ "\n");
-            writer.write("laranja: " + laranjas +  " " + laranjeiras + "\n");
-            writer.write("abacate: " + abacate +  " " + abacateiros + "\n");
+            writer.write("laranja: " + laranjeiras +  " " + laranjas + "\n");
+            writer.write("abacate: " + abacateiros +  " " + abacate + "\n");
             writer.write("coco: " + laranjas +  " " + laranjas + "\n");
             writer.write("acerola: " + laranjas + " " + laranjas + "\n");
             writer.write("amora: " + laranjas + " " + laranjas + "\n");

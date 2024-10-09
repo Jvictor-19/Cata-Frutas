@@ -1,8 +1,8 @@
-dimensão: 30
-pedras: 30
-maracuja: 2 20
-laranja: 1 10
-abacate: 1 10
+dimensão: 10
+pedras: 3
+maracuja: 2 2
+laranja: 5 1
+abacate: 2 1
 coco: 3 3
 acerola: 3 3
 amora: 3 3
