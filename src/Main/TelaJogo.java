@@ -2,9 +2,15 @@ package Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import Frutas.Abacate;
 import Frutas.Laranja;
+import Frutas.Maracuja;
 import Elementos.ElementosEstáticos.Pedra;
 
 public class TelaJogo extends JPanel implements Runnable {
@@ -19,11 +25,23 @@ public class TelaJogo extends JPanel implements Runnable {
 
     // Elementos do jogo
     private ImageIcon imagemGrama;
-    private Laranja laranja;
     private ArrayList<Pedra> pedras;
-    private ArrayList<Laranja> laranjasNoChao;
     private int quantidadePedras;
+
+    private Laranja laranja;
+    private ArrayList<Laranja> laranjasNoChao;
     private int quantidadeLaranjasNoChao;
+
+    private Abacate abacate;
+    private ArrayList<Abacate> abacatesNoChao;
+    private int quantidadeAbacatesNoChao;
+
+    private Maracuja maracuja;
+    private ArrayList<Maracuja> maracujasNoChao;
+    private int quantidadeMaracujaNoChao;
+
+    private int quantidadeBichadas;
+    private int tamanhoMochila;
 
     private boolean jogoPausado = false;  // Controle de pausa
     private Thread threadJogo;
@@ -32,20 +50,14 @@ public class TelaJogo extends JPanel implements Runnable {
     private static final int LIMITE_MATRIZ = 30;
 
     // Adicionar os layouts
-    public TelaJogo(int n, int quantidadePedras, int quantidadeLaranjasNoChao) {
-        // Verificar se n ultrapassa o limite e exibir mensagem
-        if (n > LIMITE_MATRIZ) {
-            JOptionPane.showMessageDialog(null, "Para melhor experiência, delimitamos a dimensão do jogo a uma matriz 30x30.", "Limite de Dimensão", JOptionPane.INFORMATION_MESSAGE);
-            n = LIMITE_MATRIZ;  // Ajustar n para o limite
-        }
-
-        this.maxColunasTela = n;
-        this.maxLinhasTela = n;
-        this.quantidadePedras = quantidadePedras;
-        this.quantidadeLaranjasNoChao = quantidadeLaranjasNoChao;
+    public TelaJogo(String configFilePath) {
+        // Lê os parâmetros do arquivo de configuração
+        lerConfiguracao(configFilePath);
 
         this.pedras = new ArrayList<>();
         this.laranjasNoChao = new ArrayList<>();
+        this.abacatesNoChao = new ArrayList<>();
+        this.maracujasNoChao = new ArrayList<>(); // Inicializa a lista de maracujás
 
         // Configurar o painel principal
         this.setLayout(new BorderLayout());
@@ -65,6 +77,8 @@ public class TelaJogo extends JPanel implements Runnable {
 
         gerarPedras();
         gerarLaranjasNoChao();
+        gerarAbacatesNoChao();
+        gerarMaracujaNoChao(); // Chame o método para gerar maracujás
 
         // Adicionar painel com botões "Pausar" e "Sair"
         JPanel painelBotoes = new JPanel();
@@ -100,6 +114,96 @@ public class TelaJogo extends JPanel implements Runnable {
         iniciarThreadJogo();
     }
 
+    // Variáveis para armazenar a quantidade de árvores de cada fruta
+    private int quantidadeArvoresMaracuja;
+    private int quantidadeArvoresLaranja;
+    private int quantidadeArvoresAbacate;
+    private int quantidadeArvoresCoco;
+    private int quantidadeArvoresAcerola;
+    private int quantidadeArvoresAmora;
+    private int quantidadeArvoresGoiaba;
+
+    // Variáveis para armazenar a quantidade de frutas no chão, se necessário
+    private int frutasNoChaoMaracuja;
+    private int frutasNoChaoAbacate;
+    private int frutasNoChaoCoco;
+    private int frutasNoChaoAcerola;
+    private int frutasNoChaoAmora;
+    private int frutasNoChaoGoiaba;
+
+    private void lerConfiguracao(String configFilePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] partes = linha.split(":");
+                String chave = partes[0].trim();
+                String valor = partes[1].trim();
+
+                switch (chave) {
+                    case "dimensão":
+                        maxColunasTela = maxLinhasTela = Integer.parseInt(valor);
+                        break;
+                    case "pedras":
+                        quantidadePedras = Integer.parseInt(valor);
+                        break;
+                    case "maracuja":
+                        String[] valoresMaracuja = valor.split(" ");
+                        quantidadeArvoresMaracuja = Integer.parseInt(valoresMaracuja[0].trim());
+                        frutasNoChaoMaracuja = Integer.parseInt(valoresMaracuja[1].trim());
+                        break;
+                    case "laranja":
+                        String[] valoresLaranja = valor.split(" ");
+                        quantidadeArvoresLaranja = Integer.parseInt(valoresLaranja[0].trim());
+                        quantidadeLaranjasNoChao = Integer.parseInt(valoresLaranja[1].trim());
+                        break;
+                    case "abacate":
+                        String[] valoresAbacate = valor.split(" ");
+                        quantidadeArvoresAbacate = Integer.parseInt(valoresAbacate[0].trim());
+                        quantidadeAbacatesNoChao = Integer.parseInt(valoresAbacate[1].trim());
+                        break;
+                    case "coco":
+                        String[] valoresCoco = valor.split(" ");
+                        quantidadeArvoresCoco = Integer.parseInt(valoresCoco[0].trim());
+                        frutasNoChaoCoco = Integer.parseInt(valoresCoco[1].trim());
+                        break;
+                    case "acerola":
+                        String[] valoresAcerola = valor.split(" ");
+                        quantidadeArvoresAcerola = Integer.parseInt(valoresAcerola[0].trim());
+                        frutasNoChaoAcerola = Integer.parseInt(valoresAcerola[1].trim());
+                        break;
+                    case "amora":
+                        String[] valoresAmora = valor.split(" ");
+                        quantidadeArvoresAmora = Integer.parseInt(valoresAmora[0].trim());
+                        frutasNoChaoAmora = Integer.parseInt(valoresAmora[1].trim());
+                        break;
+                    case "goiaba":
+                        String[] valoresGoiaba = valor.split(" ");
+                        quantidadeArvoresGoiaba = Integer.parseInt(valoresGoiaba[0].trim());
+                        frutasNoChaoGoiaba = Integer.parseInt(valoresGoiaba[1].trim());
+                        break;
+                    case "bichadas":
+                        quantidadeBichadas = Integer.parseInt(valor);
+                        break;
+                    case "mochila":
+                        tamanhoMochila = Integer.parseInt(valor);
+                        break;
+                    default:
+                        // Se houver outras chaves desconhecidas, pode-se ignorar ou tratar de outro modo
+                        System.out.println("Parâmetro desconhecido: " + chave);
+                        break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Valores padrão em caso de erro na leitura
+            maxColunasTela = maxLinhasTela = 10; // Valor padrão
+            quantidadePedras = 5; // Valor padrão
+            quantidadeArvoresLaranja = 2; // Valor padrão
+            quantidadeBichadas = 0; // Valor padrão
+            tamanhoMochila = 5; // Valor padrão
+        }
+    }
+
     private void ajustarTamanhoTile(int larguraDisponivel, int alturaDisponivel) {
         // Calcular o tamanho do tile para que a matriz se ajuste à tela
         int alturaAreaJogo = alturaDisponivel - 100; // Deixar espaço para os botões
@@ -109,17 +213,8 @@ public class TelaJogo extends JPanel implements Runnable {
         int tamanhoTileHorizontal = larguraAreaJogo / maxColunasTela;
         int tamanhoTileVertical = alturaAreaJogo / maxLinhasTela;
 
-        // Escolher o menor tamanho para garantir que a matriz fique dentro da tela
+        // Escolher o menor tamanho para garantir que a matriz caiba na tela
         tamanhoTile = Math.min(tamanhoTileHorizontal, tamanhoTileVertical);
-        tamanhoTile = Math.max(tamanhoTileOriginal, tamanhoTile); // Remover limite inferior para o tamanho do tile
-
-        // Verificar se as dimensões da matriz se encaixam na tela
-        if (tamanhoTile * maxColunasTela > larguraDisponivel) {
-            maxColunasTela = larguraDisponivel / tamanhoTile; // Ajustar colunas
-        }
-        if (tamanhoTile * maxLinhasTela > alturaAreaJogo) {
-            maxLinhasTela = alturaAreaJogo / tamanhoTile; // Ajustar linhas
-        }
     }
 
     private void gerarPedras() {
@@ -152,6 +247,36 @@ public class TelaJogo extends JPanel implements Runnable {
         }
     }
 
+    private void gerarAbacatesNoChao() {
+        Random random = new Random();
+        int contagem = 0;
+
+        while (contagem < quantidadeAbacatesNoChao) {
+            int x = random.nextInt(maxColunasTela);
+            int y = random.nextInt(maxLinhasTela);
+
+            if (!posicaoOcupada(x, y)) {
+                abacatesNoChao.add(new Abacate(x, y));
+                contagem++;
+            }
+        }
+    }
+
+    private void gerarMaracujaNoChao() {
+        Random random = new Random();
+        int contagem = 0;
+
+        while (contagem < frutasNoChaoMaracuja) {
+            int x = random.nextInt(maxColunasTela);
+            int y = random.nextInt(maxLinhasTela);
+
+            if (!posicaoOcupada(x, y)) {
+                maracujasNoChao.add(new Maracuja(x, y));
+                contagem++;
+            }
+        }
+    }
+
     private boolean posicaoOcupada(int x, int y) {
         for (Pedra pedra : pedras) {
             if (pedra.getX() == x && pedra.getY() == y) {
@@ -165,8 +290,21 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         }
 
-        return laranja.getX() == x && laranja.getY() == y;
+        for (Abacate abacateChao : abacatesNoChao) {
+            if (abacateChao.getX() == x && abacateChao.getY() == y) {
+                return true;
+            }
+        }
+
+        for (Maracuja maracujaChao : maracujasNoChao) {
+            if (maracujaChao.getX() == x && maracujaChao.getY() == y) {
+                return true;
+            }
+        }
+
+        return false; // A posição está livre
     }
+
 
     public void iniciarThreadJogo() {
         if (!jogoPausado) {
@@ -214,17 +352,25 @@ public class TelaJogo extends JPanel implements Runnable {
         for (Laranja laranjaChao : laranjasNoChao) {
             laranjaChao.desenhar(g, tamanhoTile);
         }
+        
+        for (Abacate abacateChao : abacatesNoChao) {
+            abacateChao.desenhar(g, tamanhoTile); // Desenhe o abacate
+        }
+        
+        for (Maracuja maracujaChao : maracujasNoChao) {
+        	maracujaChao.desenhar(g, tamanhoTile);
+        }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Cata-Frutas");
-            TelaJogo telaJogo = new TelaJogo(10, 5, 5); // Exemplo de inicialização
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(telaJogo);
-            frame.pack();
-            frame.setVisible(true);
-            frame.setLocationRelativeTo(null); // Centraliza a janela na tela
-        });
-    }
-}
+	    /*public static void main(String[] args) {
+	        SwingUtilities.invokeLater(() -> {
+	            JFrame frame = new JFrame("Jogo de Laranjas");
+	            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	            frame.setResizable(false);
+	            frame.setContentPane(new TelaJogo("config.txt")); // Passando o caminho do arquivo de configuração
+	            frame.pack();
+	            frame.setLocationRelativeTo(null);
+	            frame.setVisible(true);
+	        });
+	    }*/
+	}
