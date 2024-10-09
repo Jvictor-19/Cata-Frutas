@@ -101,18 +101,6 @@ public class TelaJogo extends JPanel implements Runnable {
         JPanel painelBotoes = new JPanel();
         painelBotoes.setLayout(new FlowLayout());
 
-        JButton botaoPausar = new JButton("Pausar");
-        botaoPausar.addActionListener(e -> {
-            if (jogoPausado) {
-                botaoPausar.setText("Pausar");
-                iniciarThreadJogo();  // Retoma o jogo
-            } else {
-                botaoPausar.setText("Continuar");
-                pararJogo();  // Pausa o jogo
-            }
-            jogoPausado = !jogoPausado;
-        });
-
         // Modificação para exibir confirmação antes de sair
         JButton botaoSair = new JButton("Sair");
         botaoSair.addActionListener(e -> {
@@ -122,7 +110,7 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         });
 
-        painelBotoes.add(botaoPausar);
+        
         painelBotoes.add(botaoSair);
 
         // Adicionar painel de botões ao painel principal

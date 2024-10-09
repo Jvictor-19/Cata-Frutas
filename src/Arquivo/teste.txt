@@ -1,0 +1,11 @@
+dimensão: 10
+pedras: 3
+maracuja: 2 2
+laranja: 5 1
+abacate: 2 1
+coco: 3 3
+acerola: 3 3
+amora: 3 3
+goiaba: 3 3
+bichadas: 3
+mochila: 3

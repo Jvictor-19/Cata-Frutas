@@ -19,7 +19,7 @@ public class Laranjeira {
 
     // Método para carregar a imagem da laranjeira
     private void carregarImagem() {
-        ImageIcon icone = new ImageIcon("src/imagens/laranjeira.png"); // Caminho para a imagem da laranjeira
+        ImageIcon icone = new ImageIcon("src/imagens/Laranjeira.png"); // Caminho para a imagem da laranjeira
         imagemLaranjeira = icone.getImage();
     }
 
