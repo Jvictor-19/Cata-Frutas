@@ -22,6 +22,9 @@ public class Laranja {
     }
 
     public void desenhar(Graphics g, int tamanhoTile) {
-        g.drawImage(imagem.getImage(), x * tamanhoTile, y * tamanhoTile, tamanhoTile, tamanhoTile, null);
+        int novaLargura = (int) (tamanhoTile * 0.7); // 70% do tamanhoTile
+        int novaAltura = (int) (tamanhoTile * 0.7); // 70% do tamanhoTile
+        g.drawImage(imagem.getImage(), x * tamanhoTile, y * tamanhoTile, novaLargura, novaAltura, null);
     }
+
 }

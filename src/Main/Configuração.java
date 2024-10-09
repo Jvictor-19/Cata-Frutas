@@ -19,6 +19,7 @@ public class Configuração extends JPanel {
     private JLabel labelNumeroPedras;
     private JLabel labelNumeroMaracujas; // Adicionado para maracujás
     private JLabel labelNumeroLaranjas;
+    private JLabel labelNumeroLaranjeiras;
     private JLabel labelNumeroAbacates;
 
     private int valor = 3; // Variável que será incrementada ou decrementada
@@ -26,6 +27,7 @@ public class Configuração extends JPanel {
     private int qtdMaracujas = 0; // Inicialização da quantidade de maracujás
     private int qtdLaranjas = 0;
     private int qtdAbacates = 0;
+    private int qtdLaranjeiras =0;
 
     public Configuração() {
         setLayout(null);
@@ -138,9 +140,35 @@ public class Configuração extends JPanel {
             qtdLaranjas = qtdLaranjasAtual[0];
         });
 
-        btnDecrementarLaranjas.addActionListener(e -> {
+        btnDecrementarLaranjas.addActionListener(e -> {	
             alterarValor(false, labelNumeroLaranjas, qtdLaranjasAtual);
             qtdLaranjas = qtdLaranjasAtual[0];
+        });
+        
+        // COMPONENTES PARA A QUANTIDADE DE LARANJEIRAS
+        JLabel lblQuantidadeDeLaranjeiras = new JLabel("Quantidade de Laranjeiras:");
+        lblQuantidadeDeLaranjeiras.setBounds(370, 114, 205, 15); // Ao lado da quantidade de laranjas
+        add(lblQuantidadeDeLaranjeiras);
+
+        labelNumeroLaranjeiras = new JLabel(String.valueOf(qtdLaranjeiras)); // Quantidade de laranjeiras
+        labelNumeroLaranjeiras.setBounds(600, 114, 50, 25); // Ao lado da label de laranjeiras
+        labelNumeroLaranjeiras.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelNumeroLaranjeiras);
+
+        JButton btnIncrementarLaranjeiras = criarBotao("+", 655, 114); // Botão ao lado da quantidade de laranjeiras
+        JButton btnDecrementarLaranjeiras = criarBotao("-", 579, 114);
+        add(btnIncrementarLaranjeiras);
+        add(btnDecrementarLaranjeiras);
+
+        int[] qtdLaranjeirasAtual = {qtdLaranjeiras};
+        btnIncrementarLaranjeiras.addActionListener(e -> {
+            alterarValor(true, labelNumeroLaranjeiras, qtdLaranjeirasAtual);
+            qtdLaranjeiras = qtdLaranjeirasAtual[0];
+        });
+
+        btnDecrementarLaranjeiras.addActionListener(e -> {
+            alterarValor(false, labelNumeroLaranjeiras, qtdLaranjeirasAtual);
+            qtdLaranjeiras = qtdLaranjeirasAtual[0];
         });
 
         // COMPONENTES PARA A QUANTIDADE DE ABACATE
@@ -227,11 +255,13 @@ public class Configuração extends JPanel {
         String qtdPedrasText = labelNumeroPedras.getText();
         String qtdLaranjasText = labelNumeroLaranjas.getText();
         String qtdAbacatesText = labelNumeroAbacates.getText();
+        String qtdLaranjeirasText = labelNumeroLaranjeiras.getText();
 
         try {
             int n = Integer.parseInt(tamanhoFloresta);
             int quantidadePedras = Integer.parseInt(qtdPedrasText);
             int quantidadeLaranjas = Integer.parseInt(qtdLaranjasText);
+            int quantidadeLaranjeiras = Integer.parseInt(qtdLaranjeirasText);
             int quantidadeAbacates = Integer.parseInt(qtdAbacatesText);
             int quantidadeMaracujas = Integer.parseInt(qtdMaracujasText);
 
@@ -240,7 +270,7 @@ public class Configuração extends JPanel {
             }
 
             // Salvar as configurações e iniciar o jogo
-            salvarConfiguracoes(tamanhoFloresta, qtdPedrasText, qtdMaracujasText, qtdLaranjasText, qtdAbacatesText);
+            salvarConfiguracoes(tamanhoFloresta, qtdPedrasText, qtdMaracujasText, qtdLaranjasText, qtdLaranjeirasText, qtdAbacatesText);
 
             // Criar a tela do jogo
             JFrame gameWindow = new JFrame("Cata Frutas");
@@ -260,12 +290,12 @@ public class Configuração extends JPanel {
     }
 
     // Salva as configurações em um arquivo de texto
-    private void salvarConfiguracoes(String tamanho, String pedras,String maracujas, String laranjas, String abacate) {
+    private void salvarConfiguracoes(String tamanho, String pedras,String maracujas, String laranjas, String laranjeiras, String abacate) {
         try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
         	writer.write("dimensão: " + tamanho + "\n");
             writer.write("pedras: " + pedras + "\n");
             writer.write("maracuja: " + maracujas + " " + maracujas+ "\n");
-            writer.write("laranja: " + laranjas +  " " + laranjas + "\n");
+            writer.write("laranja: " + laranjas +  " " + laranjeiras + "\n");
             writer.write("abacate: " + abacate +  " " + abacate + "\n");
             writer.write("coco: " + laranjas +  " " + laranjas + "\n");
             writer.write("acerola: " + laranjas + " " + laranjas + "\n");

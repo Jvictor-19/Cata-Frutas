@@ -22,6 +22,21 @@ public class Maracuja {
     }
 
     public void desenhar(Graphics g, int tamanhoTile) {
-        g.drawImage(imagem.getImage(), x * tamanhoTile, y * tamanhoTile, tamanhoTile, tamanhoTile, null);
+        // Obter as dimensões da imagem
+        int larguraImagem = imagem.getImage().getWidth(null);
+        int alturaImagem = imagem.getImage().getHeight(null);
+
+        // Calcular a nova largura e altura para redimensionar a fruta
+        int novaLargura = (int) (tamanhoTile * 0.5); // 50% do tamanhoTile
+        int novaAltura = (int) (tamanhoTile * 0.5); // 50% do tamanhoTile
+
+        // Calcular a posição para centralizar a fruta na célula
+        int posX = x * tamanhoTile + (tamanhoTile - novaLargura) / 2;
+        int posY = y * tamanhoTile + (tamanhoTile - novaAltura) / 2;
+
+        // Desenhar a imagem da fruta redimensionada
+        g.drawImage(imagem.getImage(), posX, posY, novaLargura, novaAltura, null);
     }
+
+
 }

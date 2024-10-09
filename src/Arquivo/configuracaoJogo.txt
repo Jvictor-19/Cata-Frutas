@@ -1,20 +1,11 @@
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-=======
-Tamanho: 35
-Quantidade de Pedras: 6
-Quantidade de Laranjas: 7
->>>>>>> 70b15392eb9338da3d89f9a1252ed0aead85665e
-=======
-dimensão: 4
-pedras: 2
-maracuja: 2 2
-laranja: 2 2
+dimensão: 3
+pedras: 1
+maracuja: 1 1
+laranja: 1 1
 abacate: 2 2
-coco: 2 2
-acerola: 2 2
-amora: 2 2
-goiaba: 2 2
-bichadas: 2
-mochila: 2
->>>>>>> Stashed changes
+coco: 1 1
+acerola: 1 1
+amora: 1 1
+goiaba: 1 1
+bichadas: 1
+mochila: 1
