@@ -1,13 +1,9 @@
-package Main;
-
 import javax.swing.*;
-
-import Fonte.FontePixel;
-
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.awt.Window;
+import javax.swing.*;
 
 public class TelaInicial extends JFrame {
 
@@ -22,7 +18,9 @@ public class TelaInicial extends JFrame {
         setLayout(null);
 
         // Configurar o fundo da tela
-        JLabel background = new JLabel(new ImageIcon("src.jpg"));
+        ImageIcon backgroundImage = new ImageIcon("src.jpg");
+        Image scaledImage = backgroundImage.getImage().getScaledInstance(800, 600, Image.SCALE_SMOOTH);
+        JLabel background = new JLabel(new ImageIcon(scaledImage));
         background.setBounds(0, 0, 800, 600);
         add(background);
 
@@ -41,9 +39,7 @@ public class TelaInicial extends JFrame {
         // Botão Jogar
         JButton playButton = new JButton("Jogar");
         playButton.setFont(FontePixel.carregarFontePixel(10));
-
         playButton.setBounds(340, 400, 120, 50);
-
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,53 +54,52 @@ public class TelaInicial extends JFrame {
         });
         background.add(playButton);
 
-// Botão Importar Arquivo
-JButton importButton = new JButton("Importar\nArquivo");
-importButton.setFont(FontePixel.carregarFontePixel(10));
-importButton.setBounds(360, 400, 120, 80);
-importButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // Caminho da pasta "cata frutas/arquivo" em relação ao diretório do projeto
-        String pathToGameFolder = System.getProperty("user.dir") + "/scr/cata frutas/arquivo";
-        File gameFolder = new File(pathToGameFolder);
+        // Botão Importar Arquivo
+        JButton importButton = new JButton("Importar\nArquivo");
+        importButton.setFont(FontePixel.carregarFontePixel(10));
+        importButton.setBounds(360, 400, 120, 80);
+        importButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Caminho da pasta "cata frutas/arquivo" em relação ao diretório do projeto
+                String pathToGameFolder = System.getProperty("user.dir") + "/src/cata frutas/arquivo";
+                File gameFolder = new File(pathToGameFolder);
 
-        // Configura o JFileChooser para abrir na pasta especificada
-        JFileChooser fileChooser = new JFileChooser(gameFolder);
-        int result = fileChooser.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selectedFile.getAbsolutePath());
+                // Configura o JFileChooser para abrir na pasta especificada
+                JFileChooser fileChooser = new JFileChooser(gameFolder);
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selectedFile.getAbsolutePath());
 
-            // Criar a tela do jogo usando o arquivo selecionado
-            try {
-                JFrame gameWindow = new JFrame("Cata Frutas");
-                gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                gameWindow.setResizable(false);
+                    // Criar a tela do jogo usando o arquivo selecionado
+                    try {
+                        JFrame gameWindow = new JFrame("Cata Frutas");
+                        gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        gameWindow.setResizable(false);
 
-                // Passa o caminho do arquivo selecionado para a TelaJogo
-                TelaJogo gamePainel = new TelaJogo(selectedFile.getAbsolutePath());
-                gameWindow.getContentPane().add(gamePainel);
-                gameWindow.pack();
-                gameWindow.setLocationRelativeTo(null);
-                gameWindow.setVisible(true);
+                        // Passa o caminho do arquivo selecionado para a TelaJogo
+                        TelaJogo gamePainel = new TelaJogo(selectedFile.getAbsolutePath());
+                        gameWindow.getContentPane().add(gamePainel);
+                        gameWindow.pack();
+                        gameWindow.setLocationRelativeTo(null);
+                        gameWindow.setVisible(true);
 
-                // Fechar a tela de configuração (usando o botão para obter a janela pai)
-                Window parentWindow = SwingUtilities.getWindowAncestor(importButton);
-                if (parentWindow != null) {
-                    parentWindow.dispose();
+                        // Fechar a tela de configuração (usando o botão para obter a janela pai)
+                        Window parentWindow = SwingUtilities.getWindowAncestor(importButton);
+                        if (parentWindow != null) {
+                            parentWindow.dispose();
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nenhum arquivo foi selecionado.");
                 }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Nenhum arquivo foi selecionado.");
-        }
-    }
-});
-background.add(importButton);
-
+        });
+        background.add(importButton);
 
         // Botão Créditos
         JButton creditsButton = new JButton("Créditos");
