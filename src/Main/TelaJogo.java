@@ -14,6 +14,8 @@ import Frutas.Abacate;
 import Frutas.GerenciadorDeFrutas;
 import Frutas.Laranja;
 import Frutas.Maracuja;
+import Elementos.ElementosEstáticos.Abacateiro;
+import Elementos.ElementosEstáticos.Laranjeira;
 import Elementos.ElementosEstáticos.Pedra;
 
 public class TelaJogo extends JPanel implements Runnable {
@@ -34,11 +36,19 @@ public class TelaJogo extends JPanel implements Runnable {
     private Laranja laranja;
     private ArrayList<Laranja> laranjasNoChao;
     private int quantidadeLaranjasNoChao;
+    
+    private Laranjeira laranjeira;
+    private ArrayList<Laranjeira> laranjeiraNoChao;
+    private int quantidadeLaranjeirasNoChao;
 
     private Abacate abacate;
     private ArrayList<Abacate> abacatesNoChao;
     private int quantidadeAbacatesNoChao;
-
+    
+    private Abacateiro abacateiros;
+    private ArrayList<Abacateiro> abacateiroNoChao;
+    private int quantidadeAbacateiroNoChao;
+    
     private Maracuja maracuja;
     private ArrayList<Maracuja> maracujasNoChao;
     private int quantidadeMaracujaNoChao;
@@ -61,6 +71,8 @@ public class TelaJogo extends JPanel implements Runnable {
         this.laranjasNoChao = new ArrayList<>();
         this.abacatesNoChao = new ArrayList<>();
         this.maracujasNoChao = new ArrayList<>(); // Inicializa a lista de maracujás
+        this.laranjeiraNoChao = new ArrayList<>();
+        this.abacateiroNoChao = new ArrayList<>();
 
         // Configurar o painel principal
         this.setLayout(new BorderLayout());
@@ -81,7 +93,9 @@ public class TelaJogo extends JPanel implements Runnable {
         gerarPedras();
         gerarLaranjasNoChao();
         gerarAbacatesNoChao();
-        gerarMaracujaNoChao(); // Chame o método para gerar maracujás
+        gerarMaracujaNoChao(); 
+        gerarLaranjeiraNoChao();
+        gerarAbacateiroNoChao();
 
         // Adicionar painel com botões "Pausar" e "Sair"
         JPanel painelBotoes = new JPanel();
@@ -107,8 +121,6 @@ public class TelaJogo extends JPanel implements Runnable {
 
     // Variáveis para armazenar a quantidade de árvores de cada fruta
     private int quantidadeArvoresMaracuja;
-    private int quantidadeArvoresLaranja;
-    private int quantidadeArvoresAbacate;
     private int quantidadeArvoresCoco;
     private int quantidadeArvoresAcerola;
     private int quantidadeArvoresAmora;
@@ -144,12 +156,12 @@ public class TelaJogo extends JPanel implements Runnable {
                         break;
                     case "laranja":
                         String[] valoresLaranja = valor.split(" ");
-                        quantidadeArvoresLaranja = Integer.parseInt(valoresLaranja[0].trim());
+                        quantidadeLaranjeirasNoChao= Integer.parseInt(valoresLaranja[0].trim());
                         quantidadeLaranjasNoChao = Integer.parseInt(valoresLaranja[1].trim());
                         break;
                     case "abacate":
                         String[] valoresAbacate = valor.split(" ");
-                        quantidadeArvoresAbacate = Integer.parseInt(valoresAbacate[0].trim());
+                        quantidadeAbacateiroNoChao = Integer.parseInt(valoresAbacate[0].trim());
                         quantidadeAbacatesNoChao = Integer.parseInt(valoresAbacate[1].trim());
                         break;
                     case "coco":
@@ -189,7 +201,7 @@ public class TelaJogo extends JPanel implements Runnable {
             // Valores padrão em caso de erro na leitura
             maxColunasTela = maxLinhasTela = 10; // Valor padrão
             quantidadePedras = 5; // Valor padrão
-            quantidadeArvoresLaranja = 2; // Valor padrão
+            quantidadeLaranjeirasNoChao = 2; // Valor padrão
             quantidadeBichadas = 0; // Valor padrão
             tamanhoMochila = 5; // Valor padrão
         }
@@ -239,7 +251,21 @@ public class TelaJogo extends JPanel implements Runnable {
         }
 
     }
+    private void gerarLaranjeiraNoChao() {
+        Random random = new Random();
+        int contagem = 0;
 
+        while (contagem < quantidadeLaranjeirasNoChao) {
+            int x = random.nextInt(maxColunasTela);
+            int y = random.nextInt(maxLinhasTela);
+
+            if (!posicaoOcupada(x, y)) {
+                laranjeiraNoChao.add(new Laranjeira(x, y));
+                contagem++;
+                }
+            }
+        }
+        
     private void gerarAbacatesNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -254,7 +280,20 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         }
     }
+        private void gerarAbacateiroNoChao() {
+            Random random = new Random();
+            int contagem = 0;
 
+            while (contagem < quantidadeAbacateiroNoChao) {
+                int x = random.nextInt(maxColunasTela);
+                int y = random.nextInt(maxLinhasTela);
+
+                if (!posicaoOcupada(x, y)) {
+                    abacateiroNoChao.add(new Abacateiro(x, y));
+                    contagem++;
+                }
+            }
+        }
     private void gerarMaracujaNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -293,7 +332,17 @@ public class TelaJogo extends JPanel implements Runnable {
             if (maracujaChao.getX() == x && maracujaChao.getY() == y) {
                 return true;
             }
+          }
+       for (Laranjeira laranjeiraChao : laranjeiraNoChao) {
+            if (laranjeiraChao.getX() == x && laranjeiraChao.getY() == y) {
+                return true;
+                }
         }
+       for (Abacateiro abacateiroChao : abacateiroNoChao) {
+           if (abacateiroChao.getX() == x && abacateiroChao.getY() == y) {
+               return true;
+               }
+       }
 
         return false; // A posição está livre
     }
@@ -343,16 +392,21 @@ public class TelaJogo extends JPanel implements Runnable {
         }
 
         for (Laranja laranjaChao : laranjasNoChao) {
-            laranjaChao.desenhar(g, tamanhoTile);
+            laranjaChao.desenhar(g, tamanhoTile); // Chame com o novo tamanho
         }
-        
+        for (Laranjeira laranjeiraChao : laranjeiraNoChao) {
+            laranjeiraChao.desenhar(g,tamanhoTile ); // Chame com o novo tamanho
+        }
         for (Abacate abacateChao : abacatesNoChao) {
-            abacateChao.desenhar(g, tamanhoTile); // Desenhe o abacate
+            abacateChao.desenhar(g, tamanhoTile ); // Chame com o novo tamanho
         }
-        
+        for (Abacateiro abacateiroChao : abacateiroNoChao) {
+            abacateiroChao.desenhar(g, tamanhoTile ); // Chame com o novo tamanho
+        }
         for (Maracuja maracujaChao : maracujasNoChao) {
-        	maracujaChao.desenhar(g, tamanhoTile);
+            maracujaChao.desenhar(g,tamanhoTile); // Chame com o novo tamanho
         }
+
     }
 
 	    /*public static void main(String[] args) {

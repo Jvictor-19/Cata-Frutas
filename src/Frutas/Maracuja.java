@@ -6,3 +6,4 @@ public class Maracuja extends Frutas {
         super(x, y, "src/imagens/maracuja.png"); // Caminho específico para a imagem da laranja
     }
 }
+
