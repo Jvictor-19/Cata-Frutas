@@ -307,9 +307,6 @@ public class Configuração extends JPanel {
             int quantidadeBichadas = Integer.parseInt(qtdBichadasText);
             int quantidadeMochila = Integer.parseInt(qtdMochilaText);
 
-            if (n <= 2) {
-                throw new NumberFormatException("Dimensão deve ser maior que 2 e quantidades não podem ser negativas.");
-            }
 
             // Salvar as configurações e iniciar o jogo
             salvarConfiguracoes(tamanhoFloresta, qtdPedrasText, qtdMaracujasText, qtdLaranjasText, qtdLaranjeirasText, qtdAbacatesText,qtdAbacateirosText,
