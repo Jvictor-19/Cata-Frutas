@@ -51,7 +51,12 @@ public class Configuração extends JPanel {
     private int qtdGoiaba =0;
     private int qtdGoiabeira = 0;
     private int porBichadas =0;
-    private int capMochila =0;
+    private int capMochila = 0;
+    
+    private int verificador = qtdPedras + qtdMaracujasTotal + qtdMaracujas + qtdLaranjas + qtdLaranjeiras + 
+            qtdAbacates + qtdAbacateiros + qtdCoco + qtdCoqueiros + qtdAcerola + 
+            qtdAceroleiras + qtdAmoras + qtdAmoreiras + qtdGoiaba + qtdGoiabeira;
+
 
     public Configuração() {
         setLayout(null);
@@ -90,6 +95,7 @@ public class Configuração extends JPanel {
                 atualizarNumero(labelNumero, valor);
             }
         });
+      
 
         int[] qtdPedrasAtual = {qtdPedras};
         labelNumeroPedras = new JLabel();
@@ -193,18 +199,39 @@ public class Configuração extends JPanel {
     }
 
     private void alterarValor(boolean incrementar, JLabel label, int[] valorAtual) {
+        // Atualiza o verificador com a soma atual de todas as variáveis
+        
         if (incrementar) {
-            valorAtual[0]++; // Incrementa o valor
+            // Verifica se o verificador é menor ou igual ao limite definido (valor - 2) para permitir o incremento
+            if (verificador <= (valor*valor)-3) {
+                valorAtual[0]++; // Incrementa o valor
+                atualizarVerificador(1);
+            } else {
+                JOptionPane.showMessageDialog(null, "Você atingiu o valor máximo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
         } else {
-            if (valorAtual[0] > 0) { // Certifica-se de que não se torne negativo
-                valorAtual[0]--;
+            // Permite decremento apenas se o valor atual for maior que 0
+            if (valorAtual[0] > 0) {
+                valorAtual[0]--; // Decrementa o valor
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
         }
-        atualizarNumero(label, valorAtual[0]); // Atualiza o JLabel com o novo valor
+
+        
+     // Atualiza o JLabel com o novo valor
+        atualizarNumero(label, valorAtual[0]);
+        
+        
+        //atualizarVerificador(valorAtual[0]);
     }
 
+    // Método para atualizar o verificador com a soma de todas as variáveis relevantes
+    private void atualizarVerificador(int valorr) {
+        verificador += valorr;
+    }
+    
     // Cria os botões de incremento e decremento com estilização
     private JButton criarBotao(String texto, int x, int y) {
         JButton botao = new JButton(texto);

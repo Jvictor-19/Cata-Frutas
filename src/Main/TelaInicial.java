@@ -57,7 +57,7 @@ public class TelaInicial extends JFrame {
             }
         });
         background.add(playButton);
-
+        
 // Botão Importar Arquivo
 JButton importButton = new JButton("Importar\nArquivo");
 importButton.setFont(FontePixel.carregarFontePixel(10));

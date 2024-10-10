@@ -1,6 +1,6 @@
-dimensão: 3
-pedras: 0
-maracuja: 1 2
+dimensão: 5
+pedras: 23
+maracuja: 0 0
 laranja: 0 0
 abacate: 0 0
 coco: 0 0
