@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import musica.Music; // Importando a classe Music
+import Botões.Voltar;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,9 +25,10 @@ public class TelaInicial extends JFrame {
 
     private boolean soundOn = true;
     private Music music; // Instância da classe Music
-    
+    private JLabel creditsImageLabel; // Declare a JLabel para a imagem de créditos
+    private JPanel backGround; // Declare a JPanel para o fundo
     private ImageIcon backgroundIcon;
-    private JLabel background;
+    private JLabel background; // Declare a JPanel para o fundo
 
     /**
      * Construtor que inicializa a tela inicial do jogo.
@@ -34,7 +36,7 @@ public class TelaInicial extends JFrame {
      */
     public TelaInicial() {
         // Configurações da janela
-        setTitle("Home Screen");
+        setTitle("Cata Frutas");
         setSize(1472, 832);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -111,7 +113,7 @@ public class TelaInicial extends JFrame {
         // Botão Créditos
         JButton creditsButton = new JButton("Créditos");
         creditsButton.setFont(FontePixel.carregarFontePixel(10));
-        creditsButton.setBounds(650, 550, 120, 50); 
+        creditsButton.setBounds(680, 480, 120, 50); 
         background.add(creditsButton);
 
         // Carrega a imagem original de créditos
@@ -129,28 +131,15 @@ public class TelaInicial extends JFrame {
         creditsImageLabel.setVisible(false); // Inicialmente invisível
         add(creditsImageLabel);
 
-        // Botão "X" para fechar os créditos
-        JButton closeCreditsButton = new JButton("X");
-        closeCreditsButton.setFont(FontePixel.carregarFontePixel(15));
-        closeCreditsButton.setBounds(1400, 20, 50, 50);
-        closeCreditsButton.setFocusable(false);
-        closeCreditsButton.setVisible(false); // Inicialmente invisível
-        closeCreditsButton.setBackground(Color.BLACK); // Cor de fundo
-        closeCreditsButton.setForeground(Color.RED); // Cor do texto
-        closeCreditsButton.setBorderPainted(false); // Remover a borda pintada
-        closeCreditsButton.setFocusPainted(false); // Remover a borda de foco ao clicar
-        add(closeCreditsButton);
-        
-        closeCreditsButton.addActionListener(e -> {
-            creditsImageLabel.setVisible(false); // Esconde a imagem de créditos
-            background.setVisible(true); // Mostra o fundo principal
-            closeCreditsButton.setVisible(false);
-        });
+         // Instancia o botão "Voltar"
+         Voltar voltarButton = new Voltar(background, creditsImageLabel);
+         voltarButton.setVisible(false); // Inicialmente invisível
+         add(voltarButton);
 
         creditsButton.addActionListener(e -> {
-            background.setVisible(false); // Esconde o fundo principal
-            creditsImageLabel.setVisible(true); // Mostra a imagem de créditos
-            closeCreditsButton.setVisible(true); // Mostra o botão "X"
+        background.setVisible(false); // Esconde o fundo principal
+        creditsImageLabel.setVisible(true); // Mostra a imagem de créditos
+        voltarButton.setVisible(true); 
         });
     }
     
