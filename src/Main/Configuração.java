@@ -16,6 +16,8 @@ public class Configuração extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private JButton iniciarButton;
+    private JButton visualizarButton;
+    private JButton salvarButton;
 
     private JLabel labelNumero;
     private JLabel labelNumeroPedras;
@@ -38,7 +40,7 @@ public class Configuração extends JPanel {
     
     private int valor = 3; // Variável que será incrementada ou decrementada
     private int qtdPedras = 0;
-    private int qtdMaracujasTotal = 0; // Inicialização da quantidade de maracujás
+    private int qtdMaracujasTotal = 1; // Inicialização da quantidade de maracujás
     private int qtdMaracujas = 0;
     private int qtdLaranjas = 0;
     private int qtdLaranjeiras = 0;
@@ -54,8 +56,10 @@ public class Configuração extends JPanel {
     private int qtdGoiabeira = 0;
     private int porBichadas =0;
     private int capMochila = 0;
+    int[] qtdMaracujasTotalAtual = {qtdMaracujasTotal};
+    int[] qtdMaracujasAtual = {qtdMaracujas};
     
-    private int verificador = qtdPedras + qtdMaracujasTotal + qtdMaracujas + qtdLaranjas + qtdLaranjeiras + 
+    private int verificador = qtdPedras + qtdMaracujas + qtdLaranjas + qtdLaranjeiras + 
             qtdAbacates + qtdAbacateiros + qtdCoco + qtdCoqueiros + qtdAcerola + 
             qtdAceroleiras + qtdAmoras + qtdAmoreiras + qtdGoiaba + qtdGoiabeira;
 
@@ -63,7 +67,7 @@ public class Configuração extends JPanel {
     public Configuração() {
         setLayout(null);
         setPreferredSize(new Dimension(800, 600));
-        setBackground(Color.decode("#e08475"));
+        //setBackground(Color.decode("#e08475"));
 
         // Criação dos componentes
         JLabel tamanhoLabel = new JLabel("Dimensão da floresta (n x n):");
@@ -105,11 +109,11 @@ public class Configuração extends JPanel {
         labelNumeroPedras = new JLabel();
         criarComponentesQuantidade("Quantidade de pedras:", qtdPedrasAtual, labelNumeroPedras, 22, 60, 305, 60, 229, 60);
             
-        int[] qtdMaracujasTotalAtual = {qtdMaracujasTotal};
+        //int[] qtdMaracujasTotalAtual = {qtdMaracujasTotal};
         labelNumeroMaracujasTotal = new JLabel();
         criarComponentesQuantidade("Quantidade Total de maracujas:", qtdMaracujasTotalAtual, labelNumeroMaracujasTotal, 22, 87, 305, 87, 229, 87);
         
-        int[] qtdMaracujasAtual = {qtdMaracujas};
+        //int[] qtdMaracujasAtual = {qtdMaracujas};
         labelNumeroMaracujas = new JLabel();
         criarComponentesQuantidade("Quantidade de maracujas:", qtdMaracujasAtual, labelNumeroMaracujas, 370, 87, 655, 87, 579, 87);
         
@@ -175,6 +179,13 @@ public class Configuração extends JPanel {
         add(iniciarButton);
 
         iniciarButton.addActionListener(e -> iniciarJogo());
+        
+        visualizarButton = new JButton("Ver terreno");
+        visualizarButton.setBounds(480, 431, 180, 40);
+        add(visualizarButton);
+        
+        //visualizarButton.addActionListener(e -> visualizarTerreno());
+              
     }
     
     private void criarComponentesQuantidade(String labelTexto, int[] quantidadeAtual, JLabel labelQuantidade, int xLabel, int yLabel, int xBotaoMais, int yBotaoMais, int xBotaoMenos, int yBotaoMenos) {
@@ -206,18 +217,39 @@ public class Configuração extends JPanel {
         
         if (incrementar) {
             // Verifica se o verificador é menor ou igual ao limite definido (valor - 2) para permitir o incremento
-            if (verificador <= (valor*valor)-3) {
-                valorAtual[0]++; // Incrementa o valor
-                atualizarVerificador(1);
+            if (verificador <= (valor*valor)-3 || label == labelNumeroMaracujasTotal) {
+            	if(label == labelNumeroMaracujas && valorAtual[0]+1 > qtdMaracujasTotalAtual[0]) {
+            		JOptionPane.showMessageDialog(null, "Você atingiu o valor máximo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            	}else {         		
+            		if(label == labelNumeroMaracujasTotal) {
+        				valorAtual[0]++;
+        			}else {
+        				valorAtual[0]++; // Decrementa o valor
+	                    atualizarVerificador(1);
+        			}         		           		
+            	}              
             } else {
                 JOptionPane.showMessageDialog(null, "Você atingiu o valor máximo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             // Permite decremento apenas se o valor atual for maior que 0
-            if (valorAtual[0] > 0) {
-                valorAtual[0]--; // Decrementa o valor
-                atualizarVerificadorDec(1);
-                
+            if (valorAtual[0] > 0 || label == labelNumeroMaracujasTotal) {
+            	if(label == labelNumeroMaracujasTotal && valorAtual[0] == 1) {
+            		JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            	}else {
+            		if(label == labelNumeroMaracujasTotal && valorAtual[0]-1 < qtdMaracujasAtual[0]){
+            			JOptionPane.showMessageDialog(null, "Você atingiu o valor mínio permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            		}else {
+            			if(label == labelNumeroMaracujasTotal) {
+            				valorAtual[0]--;
+            			}else {
+            				valorAtual[0]--; // Decrementa o valor
+    	                    atualizarVerificadorDec(1);
+            			}
+	            		
+            		}
+            	}
+                                
             } else {
                 JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
@@ -353,40 +385,41 @@ public class Configuração extends JPanel {
             e.printStackTrace();
         }
    
-// Botão Importar Arquivo
-JButton importButton = new JButton("Importar Arquivo");
-importButton.setBounds(300, 460, 120, 50);
-importButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selectedFile.getAbsolutePath());
-
-            // Tentativa de leitura do arquivo
-            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
-                String linha;
-                StringBuilder conteudo = new StringBuilder(); // Armazenar o conteúdo do arquivo
-                while ((linha = br.readLine()) != null) {
-                    conteudo.append(linha).append("\n");
-                }
-                
-                // Exibir o conteúdo do arquivo em um JOptionPane
-                JOptionPane.showMessageDialog(null, "Conteúdo do arquivo:\n" + conteudo.toString());
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Erro ao ler o arquivo.");
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Nenhum arquivo foi selecionado.");
-        }
-    }
-});
-add(importButton);
-setVisible(true);}
+	// Botão Importar Arquivo
+	/*JButton importButton = new JButton("Importar Arquivo");
+	importButton.setBounds(300, 460, 120, 50);
+	importButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        JFileChooser fileChooser = new JFileChooser();
+	        int result = fileChooser.showOpenDialog(null);
+	        if (result == JFileChooser.APPROVE_OPTION) {
+	            File selectedFile = fileChooser.getSelectedFile();
+	            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selectedFile.getAbsolutePath());
+	
+	            // Tentativa de leitura do arquivo
+	            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+	                String linha;
+	                StringBuilder conteudo = new StringBuilder(); // Armazenar o conteúdo do arquivo
+	                while ((linha = br.readLine()) != null) {
+	                    conteudo.append(linha).append("\n");
+	                }
+	                
+	                // Exibir o conteúdo do arquivo em um JOptionPane
+	                JOptionPane.showMessageDialog(null, "Conteúdo do arquivo:\n" + conteudo.toString());
+	
+	            } catch (IOException ex) {
+	                ex.printStackTrace();
+	                JOptionPane.showMessageDialog(null, "Erro ao ler o arquivo.");
+	            }
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Nenhum arquivo foi selecionado.");
+	        }
+	    }
+	});
+	add(importButton);
+	setVisible(true);*/
+}
 
     // Método principal para iniciar a interface
     public static void main(String[] args) {

@@ -87,7 +87,7 @@ public class TelaInicial extends JFrame {
         // Botão Jogar
         JButton playButton = new JButton("Jogar");
         playButton.setFont(FontePixel.carregarFontePixel(10));
-        playButton.setBounds(680, 400, 120, 50); 
+        playButton.setBounds(650, 400, 120, 50); 
         background.add(playButton);
 
         playButton.addActionListener(e -> {
@@ -151,7 +151,7 @@ public class TelaInicial extends JFrame {
         // Botão Créditos
         JButton creditsButton = new JButton("Créditos");
         creditsButton.setFont(FontePixel.carregarFontePixel(10));
-        creditsButton.setBounds(680, 550, 120, 50); 
+        creditsButton.setBounds(650, 550, 120, 50); 
         background.add(creditsButton);
 
         // Carrega a imagem original de créditos
