@@ -6,13 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Configuração extends JPanel {
 
     private static final long serialVersionUID = 1L;
-
     private JButton iniciarButton;
 
     private JLabel labelNumero;
@@ -319,7 +321,41 @@ public class Configuração extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+   
+// Botão Importar Arquivo
+JButton importButton = new JButton("Importar Arquivo");
+importButton.setBounds(300, 460, 120, 50);
+importButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selectedFile.getAbsolutePath());
+
+            // Tentativa de leitura do arquivo
+            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+                String linha;
+                StringBuilder conteudo = new StringBuilder(); // Armazenar o conteúdo do arquivo
+                while ((linha = br.readLine()) != null) {
+                    conteudo.append(linha).append("\n");
+                }
+                
+                // Exibir o conteúdo do arquivo em um JOptionPane
+                JOptionPane.showMessageDialog(null, "Conteúdo do arquivo:\n" + conteudo.toString());
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Erro ao ler o arquivo.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Nenhum arquivo foi selecionado.");
+        }
     }
+});
+add(importButton);
+setVisible(true);}
 
     // Método principal para iniciar a interface
     public static void main(String[] args) {
@@ -332,5 +368,5 @@ public class Configuração extends JPanel {
         frame.setLocationRelativeTo(null); // Centraliza na tela
         frame.setVisible(true); // Torna a janela visível
     }
-
+    
 }

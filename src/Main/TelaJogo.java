@@ -18,6 +18,7 @@ import Elementos.ElementosEstáticos.Abacateiro;
 import Elementos.ElementosEstáticos.Laranjeira;
 import Elementos.ElementosEstáticos.Pedra;
 
+
 public class TelaJogo extends JPanel implements Runnable {
 
     private static final long serialVersionUID = 1L;
