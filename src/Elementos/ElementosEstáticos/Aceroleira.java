@@ -10,7 +10,7 @@ public class Aceroleira extends Arvore {
 
     @Override
     protected void carregarImagem() {
-        ImageIcon icone = new ImageIcon("src/imagens/Aceroleira.png");
+        ImageIcon icone = new ImageIcon("src/imagens/Aceloleira.png");
         imagemArvore = icone.getImage(); // Tamanho ajustado
     }
 }

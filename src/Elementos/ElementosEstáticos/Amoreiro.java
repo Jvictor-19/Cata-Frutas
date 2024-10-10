@@ -10,7 +10,7 @@ public class Amoreiro extends Arvore {
 
     @Override
     protected void carregarImagem() {
-        ImageIcon icone = new ImageIcon("src/imagens/Amoreira.png");
+        ImageIcon icone = new ImageIcon("src/imagens/Amoreiro.png");
         imagemArvore = icone.getImage(); // Tamanho ajustado
     }
 }
