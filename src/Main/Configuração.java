@@ -88,7 +88,8 @@ public class Configuração extends JPanel {
         });
 
         btnDecrementarDimensao.addActionListener(e -> {
-            if (valor == 3) {
+        	int limite = (valor-1)*(valor-1);
+            if (valor == 3 || verificador >= limite-1) {
                 JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
             } else {
                 valor--;
@@ -212,6 +213,7 @@ public class Configuração extends JPanel {
             // Permite decremento apenas se o valor atual for maior que 0
             if (valorAtual[0] > 0) {
                 valorAtual[0]--; // Decrementa o valor
+                atualizarVerificadorDec(1);
                 
             } else {
                 JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -229,6 +231,10 @@ public class Configuração extends JPanel {
     // Método para atualizar o verificador com a soma de todas as variáveis relevantes
     private void atualizarVerificador(int valorr) {
         verificador += valorr;
+    }
+    
+    private void atualizarVerificadorDec(int valorr) {
+        verificador -= valorr;
     }
     
     // Cria os botões de incremento e decremento com estilização
