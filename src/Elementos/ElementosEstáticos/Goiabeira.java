@@ -2,15 +2,15 @@ package Elementos.ElementosEstáticos;
 
 import javax.swing.ImageIcon;
 
-public class Laranjeira extends Arvore {
+public class Goiabeira extends Arvore {
 
-    public Laranjeira(int x, int y) {
+    public Goiabeira(int x, int y) {
         super(x, y);
     }
 
     @Override
     protected void carregarImagem() {
-        ImageIcon icone = new ImageIcon("src/imagens/Laranjeira.png");
+        ImageIcon icone = new ImageIcon("src/imagens/Goiabeira.png");
         imagemArvore = icone.getImage(); // Tamanho ajustado
     }
 }

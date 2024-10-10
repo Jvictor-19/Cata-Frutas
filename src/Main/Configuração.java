@@ -125,7 +125,6 @@ public class Configuração extends JPanel {
         labelNumeroAbacates = new JLabel();
         criarComponentesQuantidade("Quantidade de Abacates:", qtdAbacatesAtual, labelNumeroAbacates, 370, 141, 655, 141, 579, 141);
 
-        
         int[] qtdCoqueirosAtual = {qtdCoqueiros};
         labelNumeroCoqueiros = new JLabel();
         criarComponentesQuantidade("Quantidade de Coqueiros:", qtdCoqueirosAtual, labelNumeroCoqueiros, 17, 168, 305, 168, 229, 168);

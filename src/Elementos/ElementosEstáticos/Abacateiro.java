@@ -1,36 +1,41 @@
 package Elementos.ElementosEstáticos;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import java.awt.Graphics;
+import java.awt.Image;
 
-public class Abacateiro {
+public class Abacateiro extends Arvore {
 
-    private int x;
-    private int y;
-    private ImageIcon imagemAbacateiro;
+    private int larguraOriginal;  // Largura original da imagem
+    private int alturaOriginal;   // Altura original da imagem
 
     public Abacateiro(int x, int y) {
-        this.x = x;
-        this.y = y;
-        // Carregue a imagem do abacateiro (substitua o caminho pela localização correta da imagem)
-        imagemAbacateiro = new ImageIcon("src/imagens/Abacateiro.png");
+        super(x, y);
     }
 
-    public int getX() {
-        return x;
+    @Override
+    protected void carregarImagem() {
+        ImageIcon icone = new ImageIcon("src/imagens/Abacateiro.png");
+        imagemArvore = icone.getImage(); // Mantenha a imagem original
+
+        // Captura as dimensões originais da imagem
+        larguraOriginal = imagemArvore.getWidth(null);
+        alturaOriginal = imagemArvore.getHeight(null);
     }
 
-    public int getY() {
-        return y;
-    }
+    @Override
     public void desenhar(Graphics g, int tamanhoTile) {
-        // Centraliza a imagem do abacateiro na célula
-        int largura = imagemAbacateiro.getIconWidth(); // Obtém a largura original da imagem
-        int altura = imagemAbacateiro.getIconHeight(); // Obtém a altura original da imagem
+        // Calcula a proporção de escala
+        double escala = Math.min((double)tamanhoTile / larguraOriginal, (double)tamanhoTile / alturaOriginal);
+        
+        int largura = (int) (larguraOriginal * escala);
+        int altura = (int) (alturaOriginal * escala);
+
+        // Calcula as coordenadas para centralizar a imagem
         int posX = x * tamanhoTile + (tamanhoTile - largura) / 2;
         int posY = y * tamanhoTile + (tamanhoTile - altura) / 2;
 
-        g.drawImage(imagemAbacateiro.getImage(), posX, posY, largura, altura, null); // Desenha a imagem no tamanho original
+        // Desenha a imagem escalada e centralizada
+        g.drawImage(imagemArvore, posX, posY, largura-20, altura-20, null);
     }
-
 }
