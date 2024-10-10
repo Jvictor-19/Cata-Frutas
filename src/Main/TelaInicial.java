@@ -2,9 +2,11 @@ package Main;
 
 import javax.swing.*;
 import Fonte.FontePixel;
-import java.awt.event.ActionEvent;
+import musica.Music; // Importando a classe Music
+
 import java.io.File;
-import java.awt.Window;
+import java.io.IOException;
+import javax.sound.sampled.*;
 
 /**
  * Classe que representa a tela inicial do jogo "Cata Frutas".
@@ -14,6 +16,7 @@ import java.awt.Window;
 public class TelaInicial extends JFrame {
 
     private boolean soundOn = true;
+    private Music music; // Instância da classe Music
 
     /**
      * Construtor que inicializa a tela inicial do jogo.
@@ -27,6 +30,10 @@ public class TelaInicial extends JFrame {
         setLocationRelativeTo(null);
         setLayout(null);
 
+        // Instanciar a classe Music
+        music = new Music();
+        tocarMusica("musica/homescreen.wav"); // Tocar música de fundo
+
         // Configurar o fundo da tela
         JLabel background = new JLabel(new ImageIcon("src.jpg"));
         background.setBounds(0, 0, 800, 600);
@@ -37,7 +44,13 @@ public class TelaInicial extends JFrame {
         soundButton.setBounds(10, 10, 120, 30);
         soundButton.addActionListener(e -> {
             soundOn = !soundOn;
-            soundButton.setText("Som: " + (soundOn ? "Ligado" : "Desligado"));
+            if (soundOn) {
+                tocarMusica("musica/homescreen.wav");
+                soundButton.setText("Som: Ligado");
+            } else {
+                pararMusica();
+                soundButton.setText("Som: Desligado");
+            }
         });
         background.add(soundButton);
 
@@ -114,5 +127,24 @@ public class TelaInicial extends JFrame {
 
         // Tornar visível
         setVisible(true);
+    }
+
+    /**
+     * Método para tocar música de fundo usando a classe Music.
+     * @param arquivo Caminho para o arquivo de som
+     */
+    private void tocarMusica(String arquivo) {
+        try {
+            music.play(arquivo);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Método para parar a música.
+     */
+    private void pararMusica() {
+        music.stop();
     }
 }
