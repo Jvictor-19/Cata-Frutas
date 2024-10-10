@@ -179,7 +179,7 @@ public class TelaInicial extends JFrame {
         creditsButton.addActionListener(e -> {
         background.setVisible(false); // Esconde o fundo principal
         creditsImageLabel.setVisible(true); // Mostra a imagem de créditos
-        voltarButton.setVisible(true); // Mostra o botão "X"
+        voltarButton.setVisible(true); 
         });
     }
     
