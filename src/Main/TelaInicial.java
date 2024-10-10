@@ -2,7 +2,6 @@ package Main;
 
 import javax.swing.*;
 import Fonte.FontePixel;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +13,8 @@ import musica.Music; // Importando a classe Music
 import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.*;
+import Fonte.FontePixel;
+
 
 /**
  * Classe que representa a tela inicial do jogo "Cata Frutas".
@@ -44,6 +45,10 @@ public class TelaInicial extends JFrame {
         // Configurar o fundo da tela
         JLabel background = new JLabel(new ImageIcon("src/imagens/backgraund1.jpg"));
         background.setBounds(0, 0, 1472, 832);
+        ImageIcon backgroundImage = new ImageIcon("src/imagens/floresta.jpg"); // caminho da imagem de fundo
+        Image scaledImage = backgroundImage.getImage().getScaledInstance(800, 600, Image.SCALE_SMOOTH);
+        JLabel background = new JLabel(new ImageIcon(scaledImage));
+        background.setBounds(0, 0, 800, 600);
         add(background);
 
         // Botão de som no canto superior esquerdo
@@ -82,7 +87,7 @@ public class TelaInicial extends JFrame {
         playButton.setFont(FontePixel.carregarFontePixel(10));
         playButton.setBounds(680, 400, 120, 50); 
         background.add(playButton);
-
+        playButton.setBounds(340, 400, 120, 50);
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -148,7 +153,7 @@ public class TelaInicial extends JFrame {
                 gameFrame.setVisible(true);
             }
         });
-
+              
 /*<<<<<<< irandi_branch
         // Botão Importar Arquivo
         JButton importButton = new JButton("Importar");
@@ -192,11 +197,10 @@ public class TelaInicial extends JFrame {
         background.add(playButton);
 
         // Botão Créditos
-        JButton creditsButton = new JButton("Créditos");
+    /*   JButton creditsButton = new JButton("Créditos");
         creditsButton.setFont(FontePixel.carregarFontePixel(10));
         creditsButton.setBounds(680, 550, 120, 50); 
         background.add(creditsButton);
-
      // Carrega a imagem original de créditos
         ImageIcon originalIcon = new ImageIcon("src/imagens/FundoCreditos.png");
 
@@ -251,6 +255,8 @@ public class TelaInicial extends JFrame {
                 closeCreditsButton.setVisible(true); // Mostra o botão "X"
             }
         });
+        // Tornar visível
+      setVisible(true);  */
     }
 
 /*<<<<<<< irandi_branch
