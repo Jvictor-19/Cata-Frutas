@@ -63,6 +63,7 @@ public class Configuração extends JPanel {
     public Configuração() {
         setLayout(null);
         setPreferredSize(new Dimension(800, 600));
+        setBackground(Color.decode("#e08475"));
 
         // Criação dos componentes
         JLabel tamanhoLabel = new JLabel("Dimensão da floresta (n x n):");
