@@ -86,68 +86,28 @@ public class TelaInicial extends JFrame {
             }
         });
 
-        // Botão Jogar
+        //Botão Jogar
         JButton playButton = new JButton("Jogar");
         playButton.setFont(FontePixel.carregarFontePixel(10));
-        playButton.setBounds(680, 400, 120, 50); 
+        playButton.setBounds(650, 400, 120, 50);
         background.add(playButton);
 
         playButton.addActionListener(e -> {
-            // Opções a serem apresentadas ao usuário
-            String[] options = {"Importar Arquivo", "Definir Configurações"};
+            // Cria um novo JFrame para as configurações do jogo
+            JFrame gameFrame = new JFrame("Configuração do Jogo");
+            gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            gameFrame.setSize(800, 600);
+            gameFrame.setLocationRelativeTo(null);
+            gameFrame.setVisible(false);
+            
+            // Cria uma nova instância da classe Personagens
+            Personagens personagens = new Personagens(gameFrame);
 
-            // Exibe o JOptionPane com as opções
-            int escolha = JOptionPane.showOptionDialog(
-                    null,
-                    "Escolha uma opção:",
-                    "Configurações do Jogo",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE,
-                    null,
-                    options,
-                    options[0]
-            );
-
-            // Verifica a escolha do usuário
-            if (escolha == 0) {
-                // Se o usuário escolher "Importar Arquivo"
-                JFileChooser fileChooser = new JFileChooser();
-                int retorno = fileChooser.showOpenDialog(null);
-                if (retorno == JFileChooser.APPROVE_OPTION) {
-                    File arquivo = fileChooser.getSelectedFile();
-                    JOptionPane.showMessageDialog(null, "Arquivo importado: " + arquivo.getName());
-
-                    // Iniciar o jogo com base no arquivo importado
-                    try {
-                        JFrame gameWindow = new JFrame("Cata Frutas");
-                        gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                        gameWindow.setResizable(false);
-
-                        // Passa o caminho do arquivo selecionado para a TelaJogo
-                        TelaJogo gamePainel = new TelaJogo(arquivo.getAbsolutePath());
-                        gameWindow.getContentPane().add(gamePainel);
-                        gameWindow.pack();
-                        gameWindow.setLocationRelativeTo(null);
-                        gameWindow.setVisible(true);
-
-                        // Fechar a tela inicial
-                        setVisible(false);
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Nenhum arquivo foi selecionado.");
-                }
-            } else if (escolha == 1) {
-                // Se o usuário escolher "Definir Configurações"
-                setVisible(false); // Esconde a tela inicial
-                JFrame gameFrame = new JFrame("Configuração do Jogo");
-                gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                gameFrame.setSize(800, 600);
-                gameFrame.setLocationRelativeTo(null);
-                gameFrame.add(new Configuração()); 
-                gameFrame.setVisible(true);
-            }
+            // Adiciona a instância da classe Personagens ao JFrame
+            gameFrame.add(personagens);
+            
+            //setVisible(false);  // Esconde a tela inicial
+            //gameFrame.setVisible(true);
         });
 
         // Botão Créditos
