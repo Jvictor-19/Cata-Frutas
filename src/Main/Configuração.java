@@ -89,7 +89,7 @@ public class Configuração extends JPanel {
 
         btnDecrementarDimensao.addActionListener(e -> {
         	int limite = (valor-1)*(valor-1);
-            if (valor == 3 || verificador >= limite-1) {
+            if (valor == 3 || verificador >= limite) {
                 JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
             } else {
                 valor--;
@@ -100,11 +100,11 @@ public class Configuração extends JPanel {
 
         int[] qtdPedrasAtual = {qtdPedras};
         labelNumeroPedras = new JLabel();
-        criarComponentesQuantidade("Quantidade de pedras:", qtdPedrasAtual, labelNumeroPedras, 17, 60, 305, 60, 229, 60);
+        criarComponentesQuantidade("Quantidade de pedras:", qtdPedrasAtual, labelNumeroPedras, 22, 60, 305, 60, 229, 60);
             
         int[] qtdMaracujasTotalAtual = {qtdMaracujasTotal};
         labelNumeroMaracujasTotal = new JLabel();
-        criarComponentesQuantidade("Quantidade Total de maracujas:", qtdMaracujasTotalAtual, labelNumeroMaracujasTotal, 17, 87, 305, 87, 229, 87);
+        criarComponentesQuantidade("Quantidade Total de maracujas:", qtdMaracujasTotalAtual, labelNumeroMaracujasTotal, 22, 87, 305, 87, 229, 87);
         
         int[] qtdMaracujasAtual = {qtdMaracujas};
         labelNumeroMaracujas = new JLabel();
@@ -112,7 +112,7 @@ public class Configuração extends JPanel {
         
         int[] qtdLaranjeirasAtual = {qtdLaranjeiras};
         labelNumeroLaranjeiras = new JLabel();
-        criarComponentesQuantidade("Quantidade de Laranjeiras:", qtdLaranjeirasAtual, labelNumeroLaranjeiras, 17, 114, 305, 114, 229, 114);
+        criarComponentesQuantidade("Quantidade de Laranjeiras:", qtdLaranjeirasAtual, labelNumeroLaranjeiras, 22, 114, 305, 114, 229, 114);
         
         int[] qtdLaranjasAtual = {qtdLaranjas};
         labelNumeroLaranjas = new JLabel();
@@ -120,7 +120,7 @@ public class Configuração extends JPanel {
 
         int[] qtdAbacateirosAtual = {qtdAbacateiros};
         labelNumeroAbacateiros = new JLabel();
-        criarComponentesQuantidade("Quantidade de Abacateiros:", qtdAbacateirosAtual, labelNumeroAbacateiros, 17, 141, 305, 141, 229, 141);
+        criarComponentesQuantidade("Quantidade de Abacateiros:", qtdAbacateirosAtual, labelNumeroAbacateiros, 22, 141, 305, 141, 229, 141);
 
         int[] qtdAbacatesAtual = {qtdAbacates};
         labelNumeroAbacates = new JLabel();
@@ -128,7 +128,7 @@ public class Configuração extends JPanel {
 
         int[] qtdCoqueirosAtual = {qtdCoqueiros};
         labelNumeroCoqueiros = new JLabel();
-        criarComponentesQuantidade("Quantidade de Coqueiros:", qtdCoqueirosAtual, labelNumeroCoqueiros, 17, 168, 305, 168, 229, 168);
+        criarComponentesQuantidade("Quantidade de Coqueiros:", qtdCoqueirosAtual, labelNumeroCoqueiros, 22, 168, 305, 168, 229, 168);
         
         int[] qtdCocoAtual = {qtdCoco};
         labelNumeroCocos = new JLabel();
@@ -136,7 +136,7 @@ public class Configuração extends JPanel {
         
         int[] qtdAceroleirasAtual = {qtdAceroleiras};
         labelNumeroAceroleiras = new JLabel();
-        criarComponentesQuantidade("Quantidade de Aceroleiras:", qtdAceroleirasAtual, labelNumeroAceroleiras, 17, 195, 305, 195, 229, 195);
+        criarComponentesQuantidade("Quantidade de Aceroleiras:", qtdAceroleirasAtual, labelNumeroAceroleiras, 22, 195, 305, 195, 229, 195);
         
         int[] qtdAcerolaAtual = {qtdAcerola};
         labelNumeroAcerola = new JLabel();
@@ -144,7 +144,7 @@ public class Configuração extends JPanel {
         
         int[] qtdAmoreirasAtual = {qtdAmoreiras};
         labelNumeroAmoreiras = new JLabel();
-        criarComponentesQuantidade("Quantidade de Amoreiras:", qtdAmoreirasAtual, labelNumeroAmoreiras, 17, 222, 305, 222, 229, 222);
+        criarComponentesQuantidade("Quantidade de Amoreiras:", qtdAmoreirasAtual, labelNumeroAmoreiras, 22, 222, 305, 222, 229, 222);
 
         int[] qtdAmorasAtual = {qtdAmoras};
         labelNumeroAmoras = new JLabel();
@@ -152,7 +152,7 @@ public class Configuração extends JPanel {
         
         int[] qtdGoiabeirasAtual = {qtdGoiabeira};
         labelNumeroGoiabeira = new JLabel();
-        criarComponentesQuantidade("Quantidade de Goiabeiras:", qtdGoiabeirasAtual, labelNumeroGoiabeira, 17, 249, 305, 249, 229, 249);
+        criarComponentesQuantidade("Quantidade de Goiabeiras:", qtdGoiabeirasAtual, labelNumeroGoiabeira, 22, 249, 305, 249, 229, 249);
 
         int[] qtdGoiabasAtual = {qtdGoiaba};
         labelNumeroGoiaba = new JLabel();
@@ -160,11 +160,11 @@ public class Configuração extends JPanel {
         
         int[] qtdBichadasAtual = {porBichadas};
         labelNumeroBichadas= new JLabel();
-        criarComponentesQuantidade("Porcentagem de Bichadas:", qtdBichadasAtual, labelNumeroBichadas, 17, 276, 305, 276, 229, 276);
+        criarComponentesQuantidade("Porcentagem de Bichadas:", qtdBichadasAtual, labelNumeroBichadas, 22, 276, 305, 276, 229, 276);
 
         int[] qtdMochilaAtual = {capMochila};
         labelNumeroMochila = new JLabel();
-        criarComponentesQuantidade("Capacidade da Mochila:", qtdMochilaAtual, labelNumeroMochila, 17, 303, 305, 303, 229, 303);
+        criarComponentesQuantidade("Capacidade da Mochila:", qtdMochilaAtual, labelNumeroMochila, 22, 303, 305, 303, 229, 303);
 
         // Botão "Iniciar Jogo"
         iniciarButton = new JButton("Iniciar Jogo");
