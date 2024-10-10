@@ -27,6 +27,7 @@ import Elementos.ElementosEstáticos.Goiabeira;
 import Elementos.ElementosEstáticos.Laranjeira;
 import Elementos.ElementosEstáticos.Pedra;
 
+
 public class TelaJogo extends JPanel implements Runnable {
 
     private static final long serialVersionUID = 1L;
@@ -96,7 +97,6 @@ public class TelaJogo extends JPanel implements Runnable {
     private Thread threadJogo;
    
     
-
     // Adicionar os layouts
     public TelaJogo(String configFilePath) {
         // Lê os parâmetros do arquivo de configuração
@@ -121,7 +121,6 @@ public class TelaJogo extends JPanel implements Runnable {
         
         imagemJogador1 = Toolkit.getDefaultToolkit().getImage("Cata-Frutas/src/imagens/jogador1.png");
         imagemJogador2 = Toolkit.getDefaultToolkit().getImage("Cata-Frutas/src/imagens/jogador2.png");
-
 
 
         // Configurar o painel principal
@@ -467,21 +466,23 @@ public class TelaJogo extends JPanel implements Runnable {
     private void gerarJogadoresNoChao() {
         Random random = new Random();
         int contagem = 0;
+        int ver = 0;
 
         // Caminhos das imagens para os dois jogadores
         String caminhoImagemJogador1 = "src/imagens/Joagdor1.png"; // Imagem do jogador 1
-        String caminhoImagemJogador2 = "src/imagens/jogador2.png"; // Imagem do jogador 2
+        String caminhoImagemJogador2 = "src/imagens/Jogador2.png"; // Imagem do jogador 2
 
-        while (contagem < quantidadeJogadores) {
+        while (ver < 2) {
             int x = random.nextInt(maxColunasTela);
             int y = random.nextInt(maxLinhasTela);
 
             if (!posicaoOcupada(x, y)) {
                 // Define qual imagem usar com base na contagem
-                String caminhoImagem = (contagem % 2 == 0) ? caminhoImagemJogador1 : caminhoImagemJogador2;
+                String caminhoImagem = (ver == 0) ? caminhoImagemJogador1 : caminhoImagemJogador2;
                 
                 // Adiciona o jogador na lista com a imagem apropriada
                 jogadoresNoChao.add(new Jogador(x, y, caminhoImagem)); 
+                ver++;
                 contagem++;
             }
         }
@@ -644,6 +645,12 @@ public class TelaJogo extends JPanel implements Runnable {
         for (Aceroleira aceroleiraChao : aceroleiraNoChao) {
             aceroleiraChao.desenhar(g,tamanhoTile); // Chame com o novo tamanho
          }
+        for (Amora amoraChao : amoraNoChao) {
+            amoraChao.desenhar(g,tamanhoTile); // Chame com o novo tamanho
+         }
+         for (Amoreiro amoreiraraChao : amoreiraNoChao) {
+        	 amoreiraraChao.desenhar(g,tamanhoTile); // Chame com o novo tamanho
+          }
         for (Goiabeira goiabeiraChao : goiabeiraNoChao) {
             goiabeiraChao.desenhar(g,tamanhoTile); // Chame com o novo tamanho
          }
@@ -653,6 +660,7 @@ public class TelaJogo extends JPanel implements Runnable {
         for (Jogador jogador : jogadoresNoChao) {
             jogador.desenhar(g, tamanhoTile); // Chama o método de desenhar do jogador
         }
+        
 
     }
 
