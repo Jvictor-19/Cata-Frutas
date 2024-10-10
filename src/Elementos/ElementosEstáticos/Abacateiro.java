@@ -36,6 +36,6 @@ public class Abacateiro extends Arvore {
         int posY = y * tamanhoTile + (tamanhoTile - altura) / 2;
 
         // Desenha a imagem escalada e centralizada
-        g.drawImage(imagemArvore, posX, posY, largura-20, altura-20, null);
+        g.drawImage(imagemArvore, posX, posY, largura, altura, null);
     }
 }

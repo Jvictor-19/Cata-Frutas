@@ -21,8 +21,10 @@ public abstract class Frutas {
         return y;
     }
 
+    // Reduz o tamanho da fruta para 80% da célula e centraliza
     public void desenhar(Graphics g, int tamanhoTile) {
-        g.drawImage(imagem.getImage(), x * tamanhoTile, y * tamanhoTile, tamanhoTile, tamanhoTile, null);
+        int tamanhoFruta = (int) (tamanhoTile * 0.5); // Tamanho reduzido da fruta
+        int offset = (tamanhoTile - tamanhoFruta) / 2; // Para centralizar a fruta
+        g.drawImage(imagem.getImage(), x * tamanhoTile + offset, y * tamanhoTile + offset, tamanhoFruta, tamanhoFruta, null);
     }
-
 }

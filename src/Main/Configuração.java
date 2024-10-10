@@ -53,7 +53,12 @@ public class Configuração extends JPanel {
     private int qtdGoiaba =0;
     private int qtdGoiabeira = 0;
     private int porBichadas =0;
-    private int capMochila =0;
+    private int capMochila = 0;
+    
+    private int verificador = qtdPedras + qtdMaracujasTotal + qtdMaracujas + qtdLaranjas + qtdLaranjeiras + 
+            qtdAbacates + qtdAbacateiros + qtdCoco + qtdCoqueiros + qtdAcerola + 
+            qtdAceroleiras + qtdAmoras + qtdAmoreiras + qtdGoiaba + qtdGoiabeira;
+
 
     public Configuração() {
         setLayout(null);
@@ -85,21 +90,23 @@ public class Configuração extends JPanel {
         });
 
         btnDecrementarDimensao.addActionListener(e -> {
-            if (valor == 3) {
+        	int limite = (valor-1)*(valor-1);
+            if (valor == 3 || verificador >= limite) {
                 JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
             } else {
                 valor--;
                 atualizarNumero(labelNumero, valor);
             }
         });
+      
 
         int[] qtdPedrasAtual = {qtdPedras};
         labelNumeroPedras = new JLabel();
-        criarComponentesQuantidade("Quantidade de pedras:", qtdPedrasAtual, labelNumeroPedras, 17, 60, 305, 60, 229, 60);
+        criarComponentesQuantidade("Quantidade de pedras:", qtdPedrasAtual, labelNumeroPedras, 22, 60, 305, 60, 229, 60);
             
         int[] qtdMaracujasTotalAtual = {qtdMaracujasTotal};
         labelNumeroMaracujasTotal = new JLabel();
-        criarComponentesQuantidade("Quantidade Total de maracujas:", qtdMaracujasTotalAtual, labelNumeroMaracujasTotal, 17, 87, 305, 87, 229, 87);
+        criarComponentesQuantidade("Quantidade Total de maracujas:", qtdMaracujasTotalAtual, labelNumeroMaracujasTotal, 22, 87, 305, 87, 229, 87);
         
         int[] qtdMaracujasAtual = {qtdMaracujas};
         labelNumeroMaracujas = new JLabel();
@@ -107,7 +114,7 @@ public class Configuração extends JPanel {
         
         int[] qtdLaranjeirasAtual = {qtdLaranjeiras};
         labelNumeroLaranjeiras = new JLabel();
-        criarComponentesQuantidade("Quantidade de Laranjeiras:", qtdLaranjeirasAtual, labelNumeroLaranjeiras, 17, 114, 305, 114, 229, 114);
+        criarComponentesQuantidade("Quantidade de Laranjeiras:", qtdLaranjeirasAtual, labelNumeroLaranjeiras, 22, 114, 305, 114, 229, 114);
         
         int[] qtdLaranjasAtual = {qtdLaranjas};
         labelNumeroLaranjas = new JLabel();
@@ -115,7 +122,7 @@ public class Configuração extends JPanel {
 
         int[] qtdAbacateirosAtual = {qtdAbacateiros};
         labelNumeroAbacateiros = new JLabel();
-        criarComponentesQuantidade("Quantidade de Abacateiros:", qtdAbacateirosAtual, labelNumeroAbacateiros, 17, 141, 305, 141, 229, 141);
+        criarComponentesQuantidade("Quantidade de Abacateiros:", qtdAbacateirosAtual, labelNumeroAbacateiros, 22, 141, 305, 141, 229, 141);
 
         int[] qtdAbacatesAtual = {qtdAbacates};
         labelNumeroAbacates = new JLabel();
@@ -123,7 +130,7 @@ public class Configuração extends JPanel {
 
         int[] qtdCoqueirosAtual = {qtdCoqueiros};
         labelNumeroCoqueiros = new JLabel();
-        criarComponentesQuantidade("Quantidade de Coqueiros:", qtdCoqueirosAtual, labelNumeroCoqueiros, 17, 168, 305, 168, 229, 168);
+        criarComponentesQuantidade("Quantidade de Coqueiros:", qtdCoqueirosAtual, labelNumeroCoqueiros, 22, 168, 305, 168, 229, 168);
         
         int[] qtdCocoAtual = {qtdCoco};
         labelNumeroCocos = new JLabel();
@@ -131,7 +138,7 @@ public class Configuração extends JPanel {
         
         int[] qtdAceroleirasAtual = {qtdAceroleiras};
         labelNumeroAceroleiras = new JLabel();
-        criarComponentesQuantidade("Quantidade de Aceroleiras:", qtdAceroleirasAtual, labelNumeroAceroleiras, 17, 195, 305, 195, 229, 195);
+        criarComponentesQuantidade("Quantidade de Aceroleiras:", qtdAceroleirasAtual, labelNumeroAceroleiras, 22, 195, 305, 195, 229, 195);
         
         int[] qtdAcerolaAtual = {qtdAcerola};
         labelNumeroAcerola = new JLabel();
@@ -139,7 +146,7 @@ public class Configuração extends JPanel {
         
         int[] qtdAmoreirasAtual = {qtdAmoreiras};
         labelNumeroAmoreiras = new JLabel();
-        criarComponentesQuantidade("Quantidade de Amoreiras:", qtdAmoreirasAtual, labelNumeroAmoreiras, 17, 222, 305, 222, 229, 222);
+        criarComponentesQuantidade("Quantidade de Amoreiras:", qtdAmoreirasAtual, labelNumeroAmoreiras, 22, 222, 305, 222, 229, 222);
 
         int[] qtdAmorasAtual = {qtdAmoras};
         labelNumeroAmoras = new JLabel();
@@ -147,7 +154,7 @@ public class Configuração extends JPanel {
         
         int[] qtdGoiabeirasAtual = {qtdGoiabeira};
         labelNumeroGoiabeira = new JLabel();
-        criarComponentesQuantidade("Quantidade de Goiabeiras:", qtdGoiabeirasAtual, labelNumeroGoiabeira, 17, 249, 305, 249, 229, 249);
+        criarComponentesQuantidade("Quantidade de Goiabeiras:", qtdGoiabeirasAtual, labelNumeroGoiabeira, 22, 249, 305, 249, 229, 249);
 
         int[] qtdGoiabasAtual = {qtdGoiaba};
         labelNumeroGoiaba = new JLabel();
@@ -155,11 +162,11 @@ public class Configuração extends JPanel {
         
         int[] qtdBichadasAtual = {porBichadas};
         labelNumeroBichadas= new JLabel();
-        criarComponentesQuantidade("Porcentagem de Bichadas:", qtdBichadasAtual, labelNumeroBichadas, 17, 276, 305, 276, 229, 276);
+        criarComponentesQuantidade("Porcentagem de Bichadas:", qtdBichadasAtual, labelNumeroBichadas, 22, 276, 305, 276, 229, 276);
 
         int[] qtdMochilaAtual = {capMochila};
         labelNumeroMochila = new JLabel();
-        criarComponentesQuantidade("Capacidade da Mochila:", qtdMochilaAtual, labelNumeroMochila, 17, 303, 305, 303, 229, 303);
+        criarComponentesQuantidade("Capacidade da Mochila:", qtdMochilaAtual, labelNumeroMochila, 22, 303, 305, 303, 229, 303);
 
         // Botão "Iniciar Jogo"
         iniciarButton = new JButton("Iniciar Jogo");
@@ -194,18 +201,44 @@ public class Configuração extends JPanel {
     }
 
     private void alterarValor(boolean incrementar, JLabel label, int[] valorAtual) {
+        // Atualiza o verificador com a soma atual de todas as variáveis
+        
         if (incrementar) {
-            valorAtual[0]++; // Incrementa o valor
+            // Verifica se o verificador é menor ou igual ao limite definido (valor - 2) para permitir o incremento
+            if (verificador <= (valor*valor)-3) {
+                valorAtual[0]++; // Incrementa o valor
+                atualizarVerificador(1);
+            } else {
+                JOptionPane.showMessageDialog(null, "Você atingiu o valor máximo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
         } else {
-            if (valorAtual[0] > 0) { // Certifica-se de que não se torne negativo
-                valorAtual[0]--;
+            // Permite decremento apenas se o valor atual for maior que 0
+            if (valorAtual[0] > 0) {
+                valorAtual[0]--; // Decrementa o valor
+                atualizarVerificadorDec(1);
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
         }
-        atualizarNumero(label, valorAtual[0]); // Atualiza o JLabel com o novo valor
+
+        
+     // Atualiza o JLabel com o novo valor
+        atualizarNumero(label, valorAtual[0]);
+        
+        
+        //atualizarVerificador(valorAtual[0]);
     }
 
+    // Método para atualizar o verificador com a soma de todas as variáveis relevantes
+    private void atualizarVerificador(int valorr) {
+        verificador += valorr;
+    }
+    
+    private void atualizarVerificadorDec(int valorr) {
+        verificador -= valorr;
+    }
+    
     // Cria os botões de incremento e decremento com estilização
     private JButton criarBotao(String texto, int x, int y) {
         JButton botao = new JButton(texto);
@@ -276,9 +309,6 @@ public class Configuração extends JPanel {
             int quantidadeBichadas = Integer.parseInt(qtdBichadasText);
             int quantidadeMochila = Integer.parseInt(qtdMochilaText);
 
-            if (n <= 2) {
-                throw new NumberFormatException("Dimensão deve ser maior que 2 e quantidades não podem ser negativas.");
-            }
 
             // Salvar as configurações e iniciar o jogo
             salvarConfiguracoes(tamanhoFloresta, qtdPedrasText, qtdMaracujasText, qtdLaranjasText, qtdLaranjeirasText, qtdAbacatesText,qtdAbacateirosText,

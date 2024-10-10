@@ -10,7 +10,7 @@ public class Coqueiro extends Arvore {
 
     @Override
     protected void carregarImagem() {
-        ImageIcon icone = new ImageIcon("src/imagens/Coqueiro.png");
+        ImageIcon icone = new ImageIcon("src/imagens/coqueio.png");
         imagemArvore = icone.getImage(); // Tamanho ajustado
     }
 }

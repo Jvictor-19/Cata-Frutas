@@ -12,16 +12,24 @@ public class Music {
         URL musicUrl = getClass().getClassLoader().getResource(arquivo);
         if (musicUrl == null) {
             System.out.println("Música não encontrada: " + arquivo);
-            return; // Retorna se a música não for encontrada
+            return;
         }
 
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(musicUrl);
         clip = AudioSystem.getClip();
         clip.open(audioStream);
-        clip.start();
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-    }
 
+        // Adiciona um listener para quando a música terminar
+        clip.addLineListener(event -> {
+            if (event.getType() == LineEvent.Type.STOP) {
+                System.out.println("A música acabou");
+                clip.setFramePosition(0); // Reinicia a música
+                clip.start(); // Começa a tocar novamente
+            }
+        });
+
+        clip.start();
+    }
 
     // Metodo para parar a música
     public void stop() {
