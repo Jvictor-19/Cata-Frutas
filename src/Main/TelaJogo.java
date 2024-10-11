@@ -128,7 +128,7 @@ public class TelaJogo extends JPanel implements Runnable {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         ajustarTamanhoTile(screenSize.width, screenSize.height);
 
-        this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela + 35)); // Aumentar altura para os botões
+        this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela+35)); // Aumentar altura para os botões
         this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
 
@@ -151,9 +151,16 @@ public class TelaJogo extends JPanel implements Runnable {
         gerarGoiabeiraNoChao();
         gerarJogadoresNoChao();
         
+  
+
+  
         // Adicionar painel com botões "Pausar" e "Sair"
         JPanel painelBotoes = new JPanel();
         painelBotoes.setLayout(new FlowLayout());
+     // Painel para aumentar a altura da barra
+        JPanel painelEspaco = new JPanel();
+        painelEspaco.setPreferredSize(new Dimension(0, 220)); // Aumenta a altura da barra em 50 pixels
+        painelEspaco.setBackground(Color.LIGHT_GRAY); // Cor de fundo opcional
 
         // Modificação para exibir confirmação antes de sair
         JButton botaoSair = new JButton("Sair");
