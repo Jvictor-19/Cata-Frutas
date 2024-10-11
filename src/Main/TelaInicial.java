@@ -31,8 +31,11 @@ public class TelaInicial extends JFrame {
     private JLabel background;
     
     private JFrame parentFrame;
+    
+    private int largura = getContentPane().getWidth();
+    private int eixoX = (largura)/2;
 
-
+    
     /**
      * Construtor que inicializa a tela inicial do jogo.
      * Define os botões de controle e o layout da janela.
@@ -92,7 +95,7 @@ public class TelaInicial extends JFrame {
         //Botão Jogar
         JButton playButton = new JButton("Jogar");
         playButton.setFont(FontePixel.carregarFontePixel(10));
-        playButton.setBounds(650, 400, 120, 50);
+        playButton.setBounds(610, 400, 120, 50);
         background.add(playButton);
 
      // Variáveis para os nomes dos jogadores
@@ -163,7 +166,7 @@ public class TelaInicial extends JFrame {
         // Botão Créditos
         JButton creditsButton = new JButton("Créditos");
         creditsButton.setFont(FontePixel.carregarFontePixel(10));
-        creditsButton.setBounds(680, 480, 120, 50); 
+        creditsButton.setBounds(610, 480, 120, 50); 
         background.add(creditsButton);
 
         // Carrega a imagem original de créditos
@@ -192,6 +195,7 @@ public class TelaInicial extends JFrame {
         //voltarButton.setVisible(true); 
         });
     }
+    
     
     private void importarArquivo() {
         JFileChooser fileChooser = new JFileChooser();
@@ -229,7 +233,7 @@ public class TelaInicial extends JFrame {
     
     private void ajustarTamanhoFundo() {
         // Obter o tamanho atual da janela
-        int largura = getContentPane().getWidth();
+        largura = getContentPane().getWidth();
         int altura = getContentPane().getHeight();
 
         // Redimensionar a imagem de fundo

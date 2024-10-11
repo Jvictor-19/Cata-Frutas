@@ -16,7 +16,7 @@ public class Voltar extends JButton {
 
         // Adiciona o ActionListener para a ação de voltar
         addActionListener(e -> {
-            creditsImageLabel.setVisible(false); // Esconde a imagem de créditos
+            creditsImageLabel.setVisible(true); // Esconde a imagem de créditos
             backGround.setVisible(true); // Mostra o fundo principal
             setVisible(true); // Esconde o botão "Voltar"
         });
