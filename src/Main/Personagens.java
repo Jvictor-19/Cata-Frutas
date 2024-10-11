@@ -77,6 +77,7 @@ public class Personagens extends JPanel {
                     configFrame.setLocationRelativeTo(null);
                     configFrame.add(new Configuração());
                     configFrame.setVisible(true);
+   
                 }
                 break; // Sai do loop após processar os nomes com sucesso
             }
@@ -92,8 +93,9 @@ public class Personagens extends JPanel {
 
             // Iniciar o jogo com base no arquivo importado
             try {
+            	
                 JFrame gameWindow = new JFrame("Cata Frutas");
-                gameWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Apenas fechar a janela
+                gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Apenas fechar a janela
                 gameWindow.setResizable(false);
 
                 // Passa o caminho do arquivo selecionado para a TelaJogo

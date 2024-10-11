@@ -56,8 +56,24 @@ public class Configuração extends JPanel {
     private int qtdGoiabeira = 0;
     private int porBichadas =0;
     private int capMochila = 0;
+    
     int[] qtdMaracujasTotalAtual = {qtdMaracujasTotal};
     int[] qtdMaracujasAtual = {qtdMaracujas};
+    int[] qtdPedrasAtual = {qtdPedras};
+    int[] qtdLaranjeirasAtual = {qtdLaranjeiras};
+    int[] qtdLaranjasAtual = {qtdLaranjas};
+    int[] qtdAbacateirosAtual = {qtdAbacateiros};
+    int[] qtdAbacatesAtual = {qtdAbacates};
+    int[] qtdCoqueirosAtual = {qtdCoqueiros};
+    int[] qtdCocoAtual = {qtdCoco};
+    int[] qtdAceroleirasAtual = {qtdAceroleiras};
+    int[] qtdAcerolaAtual = {qtdAcerola};
+    int[] qtdAmoreirasAtual = {qtdAmoreiras};
+    int[] qtdAmorasAtual = {qtdAmoras};
+    int[] qtdGoiabeirasAtual = {qtdGoiabeira};
+    int[] qtdGoiabasAtual = {qtdGoiaba};
+    int[] qtdBichadasAtual = {porBichadas};
+    int[] qtdMochilaAtual = {capMochila};
     
     private int verificador = qtdPedras + qtdMaracujas + qtdLaranjas + qtdLaranjeiras + 
             qtdAbacates + qtdAbacateiros + qtdCoco + qtdCoqueiros + qtdAcerola + 
@@ -105,7 +121,7 @@ public class Configuração extends JPanel {
         });
       
 
-        int[] qtdPedrasAtual = {qtdPedras};
+        
         labelNumeroPedras = new JLabel();
         criarComponentesQuantidade("Quantidade de pedras:", qtdPedrasAtual, labelNumeroPedras, 22, 60, 305, 60, 229, 60);
             
@@ -117,71 +133,114 @@ public class Configuração extends JPanel {
         labelNumeroMaracujas = new JLabel();
         criarComponentesQuantidade("Quantidade de maracujas:", qtdMaracujasAtual, labelNumeroMaracujas, 370, 87, 655, 87, 579, 87);
         
-        int[] qtdLaranjeirasAtual = {qtdLaranjeiras};
+        //int[] qtdLaranjeirasAtual = {qtdLaranjeiras};
         labelNumeroLaranjeiras = new JLabel();
         criarComponentesQuantidade("Quantidade de Laranjeiras:", qtdLaranjeirasAtual, labelNumeroLaranjeiras, 22, 114, 305, 114, 229, 114);
         
-        int[] qtdLaranjasAtual = {qtdLaranjas};
+        //int[] qtdLaranjasAtual = {qtdLaranjas};
         labelNumeroLaranjas = new JLabel();
         criarComponentesQuantidade("Quantidade de Laranjas:", qtdLaranjasAtual, labelNumeroLaranjas, 370, 114, 655, 114, 579, 114);
 
-        int[] qtdAbacateirosAtual = {qtdAbacateiros};
+        //int[] qtdAbacateirosAtual = {qtdAbacateiros};
         labelNumeroAbacateiros = new JLabel();
         criarComponentesQuantidade("Quantidade de Abacateiros:", qtdAbacateirosAtual, labelNumeroAbacateiros, 22, 141, 305, 141, 229, 141);
 
-        int[] qtdAbacatesAtual = {qtdAbacates};
+        //int[] qtdAbacatesAtual = {qtdAbacates};
         labelNumeroAbacates = new JLabel();
         criarComponentesQuantidade("Quantidade de Abacates:", qtdAbacatesAtual, labelNumeroAbacates, 370, 141, 655, 141, 579, 141);
 
-        int[] qtdCoqueirosAtual = {qtdCoqueiros};
+        //int[] qtdCoqueirosAtual = {qtdCoqueiros};
         labelNumeroCoqueiros = new JLabel();
         criarComponentesQuantidade("Quantidade de Coqueiros:", qtdCoqueirosAtual, labelNumeroCoqueiros, 22, 168, 305, 168, 229, 168);
         
-        int[] qtdCocoAtual = {qtdCoco};
+        //int[] qtdCocoAtual = {qtdCoco};
         labelNumeroCocos = new JLabel();
         criarComponentesQuantidade("Quantidade de Cocos:", qtdCocoAtual, labelNumeroCocos, 370, 168, 655, 168, 579, 168);
         
-        int[] qtdAceroleirasAtual = {qtdAceroleiras};
+        //int[] qtdAceroleirasAtual = {qtdAceroleiras};
         labelNumeroAceroleiras = new JLabel();
         criarComponentesQuantidade("Quantidade de Aceroleiras:", qtdAceroleirasAtual, labelNumeroAceroleiras, 22, 195, 305, 195, 229, 195);
         
-        int[] qtdAcerolaAtual = {qtdAcerola};
+        //int[] qtdAcerolaAtual = {qtdAcerola};
         labelNumeroAcerola = new JLabel();
         criarComponentesQuantidade("Quantidade de Acerolas:", qtdAcerolaAtual, labelNumeroAcerola, 370, 195, 655, 195, 579, 195);
         
-        int[] qtdAmoreirasAtual = {qtdAmoreiras};
+        //int[] qtdAmoreirasAtual = {qtdAmoreiras};
         labelNumeroAmoreiras = new JLabel();
         criarComponentesQuantidade("Quantidade de Amoreiras:", qtdAmoreirasAtual, labelNumeroAmoreiras, 22, 222, 305, 222, 229, 222);
 
-        int[] qtdAmorasAtual = {qtdAmoras};
+        //int[] qtdAmorasAtual = {qtdAmoras};
         labelNumeroAmoras = new JLabel();
         criarComponentesQuantidade("Quantidade de Amoras:", qtdAmorasAtual, labelNumeroAmoras, 370, 222, 655, 222, 579, 222);
         
-        int[] qtdGoiabeirasAtual = {qtdGoiabeira};
+        //int[] qtdGoiabeirasAtual = {qtdGoiabeira};
         labelNumeroGoiabeira = new JLabel();
         criarComponentesQuantidade("Quantidade de Goiabeiras:", qtdGoiabeirasAtual, labelNumeroGoiabeira, 22, 249, 305, 249, 229, 249);
 
-        int[] qtdGoiabasAtual = {qtdGoiaba};
+        //int[] qtdGoiabasAtual = {qtdGoiaba};
         labelNumeroGoiaba = new JLabel();
         criarComponentesQuantidade("Quantidade de Goiabas:", qtdGoiabasAtual, labelNumeroGoiaba, 370, 249, 655, 249, 579, 249);
         
-        int[] qtdBichadasAtual = {porBichadas};
+        //int[] qtdBichadasAtual = {porBichadas};
         labelNumeroBichadas= new JLabel();
         criarComponentesQuantidade("Porcentagem de Bichadas:", qtdBichadasAtual, labelNumeroBichadas, 22, 276, 305, 276, 229, 276);
 
-        int[] qtdMochilaAtual = {capMochila};
+        //int[] qtdMochilaAtual = {capMochila};
         labelNumeroMochila = new JLabel();
         criarComponentesQuantidade("Capacidade da Mochila:", qtdMochilaAtual, labelNumeroMochila, 22, 303, 305, 303, 229, 303);
 
+        salvarButton = new JButton("Salvar terreno");
+        salvarButton.setBounds(159, 431, 150, 40);
+        add(salvarButton);
+        
+        salvarButton.addActionListener(e -> {
+            // Solicita ao jogador o nome do arquivo
+            String nomeArquivo = JOptionPane.showInputDialog(null, "Digite o nome do arquivo para salvar o jogo:", "Salvar Jogo", JOptionPane.QUESTION_MESSAGE);
+
+            // Verifica se o nome do arquivo não está vazio ou nulo
+            if (nomeArquivo != null && !nomeArquivo.trim().isEmpty()) {
+                // Adiciona a extensão ".txt" ao nome do arquivo, se necessário
+                if (!nomeArquivo.endsWith(".txt")) {
+                    nomeArquivo += ".txt";
+                }
+
+                // Tenta salvar o arquivo com os dados do jogo
+                try (FileWriter writer = new FileWriter(nomeArquivo)) {
+                    writer.write("dimensão: " + valor + "\n");
+                    writer.write("pedras: " + qtdPedrasAtual[0] + "\n");
+                    writer.write("maracuja: " + qtdMaracujasTotalAtual[0] + " " + qtdMaracujasAtual[0] + "\n");
+                    writer.write("laranja: " + qtdLaranjeirasAtual[0] + " " + qtdLaranjasAtual[0] + "\n");
+                    writer.write("abacate: " + qtdAbacateirosAtual[0] + " " + qtdAbacatesAtual[0] + "\n");
+                    writer.write("coco: " + qtdCoqueirosAtual[0] + " " + qtdCocoAtual[0] + "\n");
+                    writer.write("acerola: " + qtdAceroleirasAtual[0] + " " + qtdAcerolaAtual[0] + "\n");
+                    writer.write("amora: " + qtdAmoreirasAtual[0] + " " + qtdAmorasAtual[0] + "\n");
+                    writer.write("goiaba: " + qtdGoiabeirasAtual[0] + " " + qtdGoiabasAtual[0] + "\n");
+                    writer.write("bichadas: " + qtdBichadasAtual[0] + "\n");
+                    writer.write("mochila: " + qtdMochilaAtual[0] + "\n");
+
+                    // Exibe uma mensagem informando que o arquivo foi salvo com sucesso
+                    JOptionPane.showMessageDialog(null, "Jogo salvo com sucesso no arquivo: " + nomeArquivo);
+                } catch (IOException ex) {
+                    // Caso ocorra um erro ao salvar o arquivo
+                    JOptionPane.showMessageDialog(null, "Erro ao salvar o jogo: " + ex.getMessage());
+                }
+            } else {
+                // Caso o nome do arquivo seja inválido ou o usuário tenha cancelado
+                JOptionPane.showMessageDialog(null, "O nome do arquivo não pode ser vazio!");
+            }
+        });
+
+
+        
         // Botão "Iniciar Jogo"
         iniciarButton = new JButton("Iniciar Jogo");
-        iniciarButton.setBounds(341, 431, 150, 40);
+        iniciarButton.setBounds(325, 431, 150, 40);
         add(iniciarButton);
 
         iniciarButton.addActionListener(e -> iniciarJogo());
         
         visualizarButton = new JButton("Ver terreno");
-        visualizarButton.setBounds(480, 431, 180, 40);
+        visualizarButton.setBounds(491, 431, 150, 40);
         add(visualizarButton);
         
         //visualizarButton.addActionListener(e -> visualizarTerreno());
@@ -364,6 +423,8 @@ public class Configuração extends JPanel {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    
 
     // Salva as configurações em um arquivo de texto
     private void salvarConfiguracoes(String tamanho, String pedras,String maracujas, String laranjas, String laranjeiras, String abacate,String abacateiros,
@@ -383,7 +444,7 @@ public class Configuração extends JPanel {
             writer.write("mochila: " + mochila + "\n");
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } 
    
 	// Botão Importar Arquivo
 	/*JButton importButton = new JButton("Importar Arquivo");
