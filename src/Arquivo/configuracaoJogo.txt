@@ -1,11 +1,11 @@
-dimensão: 3
-pedras: 0
-maracuja: 1 0
-laranja: 0 0
-abacate: 0 0
-coco: 0 0
-acerola: 0 0
-amora: 0 0
-goiaba: 0 0
-bichadas: 0
-mochila: 0
+dimensão: 6
+pedras: 5
+maracuja: 3 3
+laranja: 2 1
+abacate: 2 1
+coco: 3 1
+acerola: 3 1
+amora: 1 2
+goiaba: 1 3
+bichadas: 1
+mochila: 1
