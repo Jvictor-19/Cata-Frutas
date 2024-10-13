@@ -162,37 +162,44 @@ public class TelaInicial extends JFrame {
                  }
              }
         });
-
-        // Botão Créditos
+     // Botão Créditos
         JButton creditsButton = new JButton("Créditos");
         creditsButton.setFont(FontePixel.carregarFontePixel(10));
-        creditsButton.setBounds(610, 480, 120, 50); 
+        creditsButton.setBounds(610, 480, 120, 50);
         background.add(creditsButton);
 
         // Carrega a imagem original de créditos
         ImageIcon originalIcon = new ImageIcon("src/imagens/FundoCreditos.png");
 
-        // Redimensiona a imagem para o tamanho desejado (por exemplo, 1600x900)
+        // Redimensiona a imagem para o tamanho desejado
         Image scaledImage = originalIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
 
         // Cria um novo ImageIcon com a imagem redimensionada
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
-        // JLabel para exibir a imagem de créditos com a nova imagem redimensionada
+        // JLabel para exibir a imagem de créditos
         JLabel creditsImageLabel = new JLabel(scaledIcon);
-        creditsImageLabel.setBounds(0, 0, 1500, 900); // Ajuste o tamanho do JLabel para corresponder à nova imagem
+        creditsImageLabel.setBounds(0, 0, 1500, 900); 
         creditsImageLabel.setVisible(false); // Inicialmente invisível
         add(creditsImageLabel);
 
-         // Instancia o botão "Voltar"
-         /*Voltar voltarButton = new Voltar(background, creditsImageLabel);
-         voltarButton.setVisible(false); // Inicialmente invisível
-         add(voltarButton);*/
+        // Botão "Voltar"
+        JButton voltarButton = new JButton("Voltar");
+        voltarButton.setFont(FontePixel.carregarFontePixel(10));
+        voltarButton.setBounds(1320, 10, 120, 50); // Ajuste para o lado direito da tela
+        creditsImageLabel.add(voltarButton); // Adiciona o botão na tela de créditos
+        voltarButton.setVisible(false); // Inicialmente invisível
 
         creditsButton.addActionListener(e -> {
-        background.setVisible(false); // Esconde o fundo principal
-        creditsImageLabel.setVisible(true); // Mostra a imagem de créditos
-        //voltarButton.setVisible(true); 
+            background.setVisible(false); // Esconde o fundo principal
+            creditsImageLabel.setVisible(true); // Mostra a imagem de créditos
+            voltarButton.setVisible(true); // Mostra o botão "Voltar"
+        });
+
+        voltarButton.addActionListener(e -> {
+            creditsImageLabel.setVisible(false); // Esconde a imagem de créditos
+            voltarButton.setVisible(false); // Esconde o botão "Voltar"
+            background.setVisible(true); // Mostra o fundo principal
         });
     }
     
