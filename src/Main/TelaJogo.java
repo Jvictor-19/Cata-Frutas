@@ -125,8 +125,8 @@ public class TelaJogo extends JPanel implements Runnable {
         //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
         //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
         
-        imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
-        imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
+        //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
+        //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
 
 
         // Configurar o painel principal
@@ -509,8 +509,8 @@ public class TelaJogo extends JPanel implements Runnable {
         int ver = 0;
 
         // Caminhos das imagens para os dois jogadores
-        String caminhoImagemJogador1 = "src/imagens/Joagdor1.png"; // Imagem do jogador 1
-        String caminhoImagemJogador2 = "src/imagens/Jogador2.png"; // Imagem do jogador 2
+        String caminhoImagemJogador1 = "/imagens/Joagdor1.png"; // Imagem do jogador 1
+        String caminhoImagemJogador2 = "/imagens/Jogador2.png"; // Imagem do jogador 2
 
         while (ver < 2) {
             int x = random.nextInt(maxColunasTela);

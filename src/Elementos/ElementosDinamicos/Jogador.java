@@ -2,6 +2,7 @@ package Elementos.ElementosDinamicos;
 
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+import java.net.URL;
 
 /**
  * A classe Jogador representa o jogador em um jogo, com uma posição (x, y) e uma imagem associada.
@@ -34,7 +35,13 @@ public class Jogador {
     public Jogador(int x, int y, String caminhoImagem) {
         this.x = x;
         this.y = y;
-        this.imagem = new ImageIcon(caminhoImagem); // Caminho para a imagem do jogador
+        URL imagemURL = getClass().getResource(caminhoImagem);
+        if (imagemURL != null) {
+            this.imagem = new ImageIcon(imagemURL); // Carrega a imagem a partir do URL
+        } else {
+            System.err.println("Imagem não encontrada: " + caminhoImagem);
+            this.imagem = null; // Pode-se adicionar uma imagem padrão ou tratar de outra forma
+        }
     }
 
     /**
@@ -64,8 +71,10 @@ public class Jogador {
      * @param tamanhoTile O tamanho do tile em que o jogador será desenhado.
      */
     public void desenhar(Graphics g, int tamanhoTile) {
-        int tamanhoJogador = (int) (tamanhoTile * 0.8); // Tamanho reduzido do jogador
-        int offset = (tamanhoTile - tamanhoJogador) / 2; // Para centralizar o jogador
-        g.drawImage(imagem.getImage(), x * tamanhoTile + offset, y * tamanhoTile + offset, tamanhoJogador, tamanhoJogador, null);
+        if (imagem != null) {
+            int tamanhoJogador = (int) (tamanhoTile * 0.8); // Tamanho reduzido do jogador
+            int offset = (tamanhoTile - tamanhoJogador) / 2; // Para centralizar o jogador
+            g.drawImage(imagem.getImage(), x * tamanhoTile + offset, y * tamanhoTile + offset, tamanhoJogador, tamanhoJogador, null);
+        }
     }
 }

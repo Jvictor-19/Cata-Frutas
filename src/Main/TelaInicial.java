@@ -67,10 +67,13 @@ public class TelaInicial extends JFrame {
         
         
 
-        // Botão de som no canto superior esquerdo
+     // Botão de som no canto superior esquerdo
         JLabel soundLabel = new JLabel();
-        ImageIcon soundOnIcon = new ImageIcon("src/imagens/alto.png");
-        ImageIcon soundOffIcon = new ImageIcon("src/imagens/mudo.png");
+
+        // Carregar as imagens usando getClass().getResource()
+        ImageIcon soundOnIcon = new ImageIcon(getClass().getResource("/imagens/alto.png"));
+        ImageIcon soundOffIcon = new ImageIcon(getClass().getResource("/imagens/mudo.png"));
+
 
         int iconWidth = 50;
         int iconHeight = 50;
@@ -192,13 +195,14 @@ public class TelaInicial extends JFrame {
 
 
         // Cria um novo ImageIcon com a imagem redimensionada
+        
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
         // JLabel para exibir a imagem de créditos
         JLabel creditsImageLabel = new JLabel(scaledIcon);
 
         creditsImageLabel.setBounds(0, 0, 1500, 900); // Ajuste o tamanho do JLabel para corresponder à nova imagem
-        creditsImageLabel.setVisible(true); // Inicialmente invisível
+        creditsImageLabel.setVisible(false); // Inicialmente invisível
 
         /*creditsImageLabel.setBounds(0, 0, 1500, 900); 
         creditsImageLabel.setVisible(false); // Inicialmente invisível*/

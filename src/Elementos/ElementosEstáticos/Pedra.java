@@ -10,7 +10,8 @@ public class Pedra {
     public Pedra(int x, int y) {
         this.x = x;
         this.y = y;
-        this.imagem = new ImageIcon("src/imagens/pedra.png"); // Caminho para a imagem da pedra
+        // Carrega a imagem usando getClass().getResource() para funcionar no JAR
+        this.imagem = new ImageIcon(getClass().getResource("/imagens/pedra.png"));
     }
 
     public int getX() {
@@ -22,6 +23,7 @@ public class Pedra {
     }
 
     public void desenhar(Graphics g, int tamanhoTile) {
+        // Desenha a imagem da pedra com o tamanho especificado
         g.drawImage(imagem.getImage(), x * tamanhoTile, y * tamanhoTile, tamanhoTile, tamanhoTile, null);
     }
 }
