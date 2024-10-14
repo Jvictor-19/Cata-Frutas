@@ -230,7 +230,9 @@ public class TelaInicial extends JFrame {
         });
     }
     
-    
+    /**
+     * Método para importar um arquivo e iniciar o jogo.
+     */
     private void importarArquivo() {
         JFileChooser fileChooser = new JFileChooser();
         int retorno = fileChooser.showOpenDialog(null);
@@ -265,6 +267,9 @@ public class TelaInicial extends JFrame {
         }
     }
     
+    /**
+     * Método que ajusta o tamanho do fundo ao redimensionar a janela.
+     */
     private void ajustarTamanhoFundo() {
         // Obter o tamanho atual da janela
         largura = getContentPane().getWidth();

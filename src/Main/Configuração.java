@@ -337,7 +337,33 @@ public class Configuração extends JPanel {
         visualizarButton.setBounds(491, 431, 150, 40);
         add(visualizarButton);
         
+        visualizarButton.addActionListener(e -> {
+        	iniciarJogo();
+            // Exemplo de valores a serem passados; substitua pelas suas variáveis reais
+            /*int dimensao = valor; // Use o valor que você armazenou anteriormente
+            int qtdPedras = qtdPedrasAtual[0]; // Quantidade de pedras
+            int qtdMaracujas = qtdMaracujasAtual[0]; // Quantidade de maracujas
+            int qtdLaranjas = qtdLaranjasAtual[0]; // Quantidade de laranjas
+            int qtdAbacates = qtdAbacatesAtual[0]; // Quantidade de abacates
+            int qtdCoco = qtdCocoAtual[0]; // Quantidade de cocos
+            int qtdAcerolas = qtdAcerolaAtual[0]; // Quantidade de acerolas
+            int qtdAmoras = qtdAmorasAtual[0]; // Quantidade de amoras
+            int qtdGoiabas = qtdGoiabasAtual[0]; // Quantidade de goiabas
+            int qtdBichadas = qtdBichadasAtual[0]; // Quantidade de bichadas
+            int qtdMochila = qtdMochilaAtual[0]; // Quantidade de mochilas
+
+            // Instancia e torna a tela visível
+            TelaVisualizacao tela = new TelaVisualizacao(dimensao, qtdPedras, qtdMaracujas, qtdLaranjas, 
+                                                            qtdAbacates, qtdCoco, qtdAcerolas, 
+                                                            qtdAmoras, qtdGoiabas, qtdBichadas, 
+                                                            qtdMochila);
+            tela.setVisible(true); // Exibe a tela de visualização do terreno*/
+        });
+
+
+        
         //visualizarButton.addActionListener(e -> visualizarTerreno());
+        
               
     }
     
@@ -477,7 +503,7 @@ public class Configuração extends JPanel {
 	     * 
 	     * @param label o rótulo a ser atualizado
 	     * @param novoValor o novo valor a ser exibido
-	     */
+	     */	
 	    // Atualiza o número exibido na interface
 	    private void atualizarNumero(JLabel label, int novoValor) {
 	        label.setText(String.valueOf(novoValor));
