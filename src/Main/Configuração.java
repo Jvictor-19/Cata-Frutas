@@ -6,30 +6,84 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Configuração extends JPanel {
 
     private static final long serialVersionUID = 1L;
-
     private JButton iniciarButton;
+    private JButton visualizarButton;
+    private JButton salvarButton;
 
     private JLabel labelNumero;
     private JLabel labelNumeroPedras;
-    private JLabel labelNumeroMaracujas; // Adicionado para maracujás
+    private JLabel labelNumeroMaracujasTotal; // Adicionado para maracujás
+    private JLabel labelNumeroMaracujas;
     private JLabel labelNumeroLaranjas;
+    private JLabel labelNumeroLaranjeiras;
     private JLabel labelNumeroAbacates;
-
+    private JLabel labelNumeroAbacateiros;
+    private JLabel labelNumeroCocos;
+    private JLabel labelNumeroCoqueiros;
+    private JLabel labelNumeroAcerola;
+    private JLabel labelNumeroAceroleiras;
+    private JLabel labelNumeroAmoras;
+    private JLabel labelNumeroAmoreiras;
+    private JLabel labelNumeroGoiaba;
+    private JLabel labelNumeroGoiabeira;
+    private JLabel labelNumeroBichadas;
+    private JLabel labelNumeroMochila;
+    
     private int valor = 3; // Variável que será incrementada ou decrementada
     private int qtdPedras = 0;
-    private int qtdMaracujas = 0; // Inicialização da quantidade de maracujás
+    private int qtdMaracujasTotal = 1; // Inicialização da quantidade de maracujás
+    private int qtdMaracujas = 0;
     private int qtdLaranjas = 0;
+    private int qtdLaranjeiras = 0;
     private int qtdAbacates = 0;
+    private int qtdAbacateiros = 0;
+    private int qtdCoco = 0;
+    private int qtdCoqueiros = 0;
+    private int qtdAcerola =0;
+    private int qtdAceroleiras = 0;
+    private int qtdAmoras =0;
+    private int qtdAmoreiras = 0;
+    private int qtdGoiaba =0;
+    private int qtdGoiabeira = 0;
+    private int porBichadas =0;
+    private int capMochila = 0;
+    
+    int[] qtdMaracujasTotalAtual = {qtdMaracujasTotal};
+    int[] qtdMaracujasAtual = {qtdMaracujas};
+    int[] qtdPedrasAtual = {qtdPedras};
+    int[] qtdLaranjeirasAtual = {qtdLaranjeiras};
+    int[] qtdLaranjasAtual = {qtdLaranjas};
+    int[] qtdAbacateirosAtual = {qtdAbacateiros};
+    int[] qtdAbacatesAtual = {qtdAbacates};
+    int[] qtdCoqueirosAtual = {qtdCoqueiros};
+    int[] qtdCocoAtual = {qtdCoco};
+    int[] qtdAceroleirasAtual = {qtdAceroleiras};
+    int[] qtdAcerolaAtual = {qtdAcerola};
+    int[] qtdAmoreirasAtual = {qtdAmoreiras};
+    int[] qtdAmorasAtual = {qtdAmoras};
+    int[] qtdGoiabeirasAtual = {qtdGoiabeira};
+    int[] qtdGoiabasAtual = {qtdGoiaba};
+    int[] qtdBichadasAtual = {porBichadas};
+    int[] qtdMochilaAtual = {capMochila};
+    
+    private int verificador = qtdPedras + qtdMaracujas + qtdLaranjas + qtdLaranjeiras + 
+            qtdAbacates + qtdAbacateiros + qtdCoco + qtdCoqueiros + qtdAcerola + 
+            qtdAceroleiras + qtdAmoras + qtdAmoreiras + qtdGoiaba + qtdGoiabeira;
+
 
     public Configuração() {
         setLayout(null);
         setPreferredSize(new Dimension(800, 600));
+        //setBackground(Color.decode("#e08475"));
 
         // Criação dos componentes
         JLabel tamanhoLabel = new JLabel("Dimensão da floresta (n x n):");
@@ -57,139 +111,226 @@ public class Configuração extends JPanel {
         });
 
         btnDecrementarDimensao.addActionListener(e -> {
-            if (valor == 3) {
+        	int limite = (valor-1)*(valor-1);
+            if (valor == 3 || verificador >= limite) {
                 JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
             } else {
                 valor--;
                 atualizarNumero(labelNumero, valor);
             }
         });
+      
 
-        // COMPONENTES PARA A QUANTIDADE DE PEDRAS
-        JLabel lblQuantidadeDePedras = new JLabel("Quantidade de Pedras:");
-        lblQuantidadeDePedras.setBounds(17, 60, 170, 15);
-        add(lblQuantidadeDePedras);
+        
+        labelNumeroPedras = new JLabel();
+        criarComponentesQuantidade("Quantidade de pedras:", qtdPedrasAtual, labelNumeroPedras, 22, 60, 305, 60, 229, 60);
+            
+        //int[] qtdMaracujasTotalAtual = {qtdMaracujasTotal};
+        labelNumeroMaracujasTotal = new JLabel();
+        criarComponentesQuantidade("Quantidade Total de maracujas:", qtdMaracujasTotalAtual, labelNumeroMaracujasTotal, 22, 87, 305, 87, 229, 87);
+        
+        //int[] qtdMaracujasAtual = {qtdMaracujas};
+        labelNumeroMaracujas = new JLabel();
+        criarComponentesQuantidade("Quantidade de maracujas:", qtdMaracujasAtual, labelNumeroMaracujas, 370, 87, 655, 87, 579, 87);
+        
+        //int[] qtdLaranjeirasAtual = {qtdLaranjeiras};
+        labelNumeroLaranjeiras = new JLabel();
+        criarComponentesQuantidade("Quantidade de Laranjeiras:", qtdLaranjeirasAtual, labelNumeroLaranjeiras, 22, 114, 305, 114, 229, 114);
+        
+        //int[] qtdLaranjasAtual = {qtdLaranjas};
+        labelNumeroLaranjas = new JLabel();
+        criarComponentesQuantidade("Quantidade de Laranjas:", qtdLaranjasAtual, labelNumeroLaranjas, 370, 114, 655, 114, 579, 114);
 
-        labelNumeroPedras = new JLabel(String.valueOf(qtdPedras));
-        labelNumeroPedras.setBounds(250, 60, 50, 25);
-        labelNumeroPedras.setHorizontalAlignment(SwingConstants.CENTER);
-        add(labelNumeroPedras);
+        //int[] qtdAbacateirosAtual = {qtdAbacateiros};
+        labelNumeroAbacateiros = new JLabel();
+        criarComponentesQuantidade("Quantidade de Abacateiros:", qtdAbacateirosAtual, labelNumeroAbacateiros, 22, 141, 305, 141, 229, 141);
 
-        JButton btnIncrementarPedras = criarBotao("+", 305, 60);
-        JButton btnDecrementarPedras = criarBotao("-", 229, 60);
-        add(btnIncrementarPedras);
-        add(btnDecrementarPedras);
+        //int[] qtdAbacatesAtual = {qtdAbacates};
+        labelNumeroAbacates = new JLabel();
+        criarComponentesQuantidade("Quantidade de Abacates:", qtdAbacatesAtual, labelNumeroAbacates, 370, 141, 655, 141, 579, 141);
 
-        int[] qtdPedrasAtual = {qtdPedras};
-        btnIncrementarPedras.addActionListener(e -> {
-            alterarValor(true, labelNumeroPedras, qtdPedrasAtual);
-            qtdPedras = qtdPedrasAtual[0];
+        //int[] qtdCoqueirosAtual = {qtdCoqueiros};
+        labelNumeroCoqueiros = new JLabel();
+        criarComponentesQuantidade("Quantidade de Coqueiros:", qtdCoqueirosAtual, labelNumeroCoqueiros, 22, 168, 305, 168, 229, 168);
+        
+        //int[] qtdCocoAtual = {qtdCoco};
+        labelNumeroCocos = new JLabel();
+        criarComponentesQuantidade("Quantidade de Cocos:", qtdCocoAtual, labelNumeroCocos, 370, 168, 655, 168, 579, 168);
+        
+        //int[] qtdAceroleirasAtual = {qtdAceroleiras};
+        labelNumeroAceroleiras = new JLabel();
+        criarComponentesQuantidade("Quantidade de Aceroleiras:", qtdAceroleirasAtual, labelNumeroAceroleiras, 22, 195, 305, 195, 229, 195);
+        
+        //int[] qtdAcerolaAtual = {qtdAcerola};
+        labelNumeroAcerola = new JLabel();
+        criarComponentesQuantidade("Quantidade de Acerolas:", qtdAcerolaAtual, labelNumeroAcerola, 370, 195, 655, 195, 579, 195);
+        
+        //int[] qtdAmoreirasAtual = {qtdAmoreiras};
+        labelNumeroAmoreiras = new JLabel();
+        criarComponentesQuantidade("Quantidade de Amoreiras:", qtdAmoreirasAtual, labelNumeroAmoreiras, 22, 222, 305, 222, 229, 222);
+
+        //int[] qtdAmorasAtual = {qtdAmoras};
+        labelNumeroAmoras = new JLabel();
+        criarComponentesQuantidade("Quantidade de Amoras:", qtdAmorasAtual, labelNumeroAmoras, 370, 222, 655, 222, 579, 222);
+        
+        //int[] qtdGoiabeirasAtual = {qtdGoiabeira};
+        labelNumeroGoiabeira = new JLabel();
+        criarComponentesQuantidade("Quantidade de Goiabeiras:", qtdGoiabeirasAtual, labelNumeroGoiabeira, 22, 249, 305, 249, 229, 249);
+
+        //int[] qtdGoiabasAtual = {qtdGoiaba};
+        labelNumeroGoiaba = new JLabel();
+        criarComponentesQuantidade("Quantidade de Goiabas:", qtdGoiabasAtual, labelNumeroGoiaba, 370, 249, 655, 249, 579, 249);
+        
+        //int[] qtdBichadasAtual = {porBichadas};
+        labelNumeroBichadas= new JLabel();
+        criarComponentesQuantidade("Porcentagem de Bichadas:", qtdBichadasAtual, labelNumeroBichadas, 22, 276, 305, 276, 229, 276);
+
+        //int[] qtdMochilaAtual = {capMochila};
+        labelNumeroMochila = new JLabel();
+        criarComponentesQuantidade("Capacidade da Mochila:", qtdMochilaAtual, labelNumeroMochila, 22, 303, 305, 303, 229, 303);
+
+        salvarButton = new JButton("Salvar terreno");
+        salvarButton.setBounds(159, 431, 150, 40);
+        add(salvarButton);
+        
+        salvarButton.addActionListener(e -> {
+            // Solicita ao jogador o nome do arquivo
+            String nomeArquivo = JOptionPane.showInputDialog(null, "Digite o nome do arquivo para salvar o jogo:", "Salvar Jogo", JOptionPane.QUESTION_MESSAGE);
+
+            // Verifica se o nome do arquivo não está vazio ou nulo
+            if (nomeArquivo != null && !nomeArquivo.trim().isEmpty()) {
+                // Adiciona a extensão ".txt" ao nome do arquivo, se necessário
+                if (!nomeArquivo.endsWith(".txt")) {
+                    nomeArquivo += ".txt";
+                }
+
+                // Tenta salvar o arquivo com os dados do jogo
+                try (FileWriter writer = new FileWriter(nomeArquivo)) {
+                    writer.write("dimensão: " + valor + "\n");
+                    writer.write("pedras: " + qtdPedrasAtual[0] + "\n");
+                    writer.write("maracuja: " + qtdMaracujasTotalAtual[0] + " " + qtdMaracujasAtual[0] + "\n");
+                    writer.write("laranja: " + qtdLaranjeirasAtual[0] + " " + qtdLaranjasAtual[0] + "\n");
+                    writer.write("abacate: " + qtdAbacateirosAtual[0] + " " + qtdAbacatesAtual[0] + "\n");
+                    writer.write("coco: " + qtdCoqueirosAtual[0] + " " + qtdCocoAtual[0] + "\n");
+                    writer.write("acerola: " + qtdAceroleirasAtual[0] + " " + qtdAcerolaAtual[0] + "\n");
+                    writer.write("amora: " + qtdAmoreirasAtual[0] + " " + qtdAmorasAtual[0] + "\n");
+                    writer.write("goiaba: " + qtdGoiabeirasAtual[0] + " " + qtdGoiabasAtual[0] + "\n");
+                    writer.write("bichadas: " + qtdBichadasAtual[0] + "\n");
+                    writer.write("mochila: " + qtdMochilaAtual[0] + "\n");
+
+                    // Exibe uma mensagem informando que o arquivo foi salvo com sucesso
+                    JOptionPane.showMessageDialog(null, "Jogo salvo com sucesso no arquivo: " + nomeArquivo);
+                } catch (IOException ex) {
+                    // Caso ocorra um erro ao salvar o arquivo
+                    JOptionPane.showMessageDialog(null, "Erro ao salvar o jogo: " + ex.getMessage());
+                }
+            } else {
+                // Caso o nome do arquivo seja inválido ou o usuário tenha cancelado
+                JOptionPane.showMessageDialog(null, "O nome do arquivo não pode ser vazio!");
+            }
         });
 
-        btnDecrementarPedras.addActionListener(e -> {
-            alterarValor(false, labelNumeroPedras, qtdPedrasAtual);
-            qtdPedras = qtdPedrasAtual[0];
-        });
 
-        // COMPONENTES PARA A QUANTIDADE DE MARACUJÁS 
-        JLabel lblQuantidadeDeMaracujas = new JLabel("Quantidade de Maracujás:");
-        lblQuantidadeDeMaracujas.setBounds(17, 87, 170, 15);
-        add(lblQuantidadeDeMaracujas);
-
-        labelNumeroMaracujas = new JLabel(String.valueOf(qtdMaracujas));
-        labelNumeroMaracujas.setBounds(250, 87, 50, 25);
-        labelNumeroMaracujas.setHorizontalAlignment(SwingConstants.CENTER);
-        add(labelNumeroMaracujas);
-
-        JButton btnIncrementarMaracujas = criarBotao("+", 305, 87);
-        JButton btnDecrementarMaracujas = criarBotao("-", 229, 87);
-        add(btnIncrementarMaracujas);
-        add(btnDecrementarMaracujas);
-
-        int[] qtdMaracujasAtual = {qtdMaracujas};
-        btnIncrementarMaracujas.addActionListener(e -> {
-            alterarValor(true, labelNumeroMaracujas, qtdMaracujasAtual);
-            qtdMaracujas = qtdMaracujasAtual[0];
-        });
-
-        btnDecrementarMaracujas.addActionListener(e -> {
-            alterarValor(false, labelNumeroMaracujas, qtdMaracujasAtual);
-            qtdMaracujas = qtdMaracujasAtual[0];
-        });
-
-        // COMPONENTES PARA A QUANTIDADE DE LARANJAS
-        JLabel lblQuantidadeDeLaranjas = new JLabel("Quantidade de Laranjas:");
-        lblQuantidadeDeLaranjas.setBounds(17, 114, 205, 15);
-        add(lblQuantidadeDeLaranjas);
-
-        labelNumeroLaranjas = new JLabel(String.valueOf(qtdLaranjas));
-        labelNumeroLaranjas.setBounds(250, 114, 50, 25);
-        labelNumeroLaranjas.setHorizontalAlignment(SwingConstants.CENTER);
-        add(labelNumeroLaranjas);
-
-        JButton btnIncrementarLaranjas = criarBotao("+", 305, 114);
-        JButton btnDecrementarLaranjas = criarBotao("-", 229, 114);
-        add(btnIncrementarLaranjas);
-        add(btnDecrementarLaranjas);
-
-        int[] qtdLaranjasAtual = {qtdLaranjas};
-        btnIncrementarLaranjas.addActionListener(e -> {
-            alterarValor(true, labelNumeroLaranjas, qtdLaranjasAtual);
-            qtdLaranjas = qtdLaranjasAtual[0];
-        });
-
-        btnDecrementarLaranjas.addActionListener(e -> {
-            alterarValor(false, labelNumeroLaranjas, qtdLaranjasAtual);
-            qtdLaranjas = qtdLaranjasAtual[0];
-        });
-
-        // COMPONENTES PARA A QUANTIDADE DE ABACATE
-        JLabel lblQuantidadeDeAbacates = new JLabel("Quantidade de Abacates:");
-        lblQuantidadeDeAbacates.setBounds(17, 141, 240, 15);
-        add(lblQuantidadeDeAbacates);
-
-        labelNumeroAbacates = new JLabel(String.valueOf(qtdAbacates));
-        labelNumeroAbacates.setBounds(250, 141, 50, 25);
-        labelNumeroAbacates.setHorizontalAlignment(SwingConstants.CENTER);
-        add(labelNumeroAbacates);
-
-        JButton btnIncrementarAbacates = criarBotao("+", 305, 141);
-        JButton btnDecrementarAbacates = criarBotao("-", 229, 141);
-        add(btnIncrementarAbacates);
-        add(btnDecrementarAbacates);
-
-        int[] qtdAbacatesAtual = {qtdAbacates};
-        btnIncrementarAbacates.addActionListener(e -> {
-            alterarValor(true, labelNumeroAbacates, qtdAbacatesAtual);
-            qtdAbacates = qtdAbacatesAtual[0];
-        });
-
-        btnDecrementarAbacates.addActionListener(e -> {
-            alterarValor(false, labelNumeroAbacates, qtdAbacatesAtual);
-            qtdAbacates = qtdAbacatesAtual[0];
-        });
-
+        
         // Botão "Iniciar Jogo"
         iniciarButton = new JButton("Iniciar Jogo");
-        iniciarButton.setBounds(341, 431, 150, 40);
+        iniciarButton.setBounds(325, 431, 150, 40);
         add(iniciarButton);
 
         iniciarButton.addActionListener(e -> iniciarJogo());
+        
+        visualizarButton = new JButton("Ver terreno");
+        visualizarButton.setBounds(491, 431, 150, 40);
+        add(visualizarButton);
+        
+        //visualizarButton.addActionListener(e -> visualizarTerreno());
+              
+    }
+    
+    private void criarComponentesQuantidade(String labelTexto, int[] quantidadeAtual, JLabel labelQuantidade, int xLabel, int yLabel, int xBotaoMais, int yBotaoMais, int xBotaoMenos, int yBotaoMenos) {
+        JLabel label = new JLabel(labelTexto);
+        label.setBounds(xLabel, yLabel, 205, 15); // Configurações de posição e tamanho
+        add(label);
+
+        labelQuantidade.setText(String.valueOf(quantidadeAtual[0]));
+        labelQuantidade.setBounds(xLabel + 230, yLabel, 50, 25);
+        labelQuantidade.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelQuantidade);
+
+        JButton btnIncrementar = criarBotao("+", xBotaoMais, yBotaoMais);
+        JButton btnDecrementar = criarBotao("-", xBotaoMenos, yBotaoMenos);
+        add(btnIncrementar);
+        add(btnDecrementar);
+
+        btnIncrementar.addActionListener(e -> {
+            alterarValor(true, labelQuantidade, quantidadeAtual);
+        });
+
+        btnDecrementar.addActionListener(e -> {
+            alterarValor(false, labelQuantidade, quantidadeAtual);
+        });
     }
 
     private void alterarValor(boolean incrementar, JLabel label, int[] valorAtual) {
+        // Atualiza o verificador com a soma atual de todas as variáveis
+        
         if (incrementar) {
-            valorAtual[0]++; // Incrementa o valor
+            // Verifica se o verificador é menor ou igual ao limite definido (valor - 2) para permitir o incremento
+            if (verificador <= (valor*valor)-3 || label == labelNumeroMaracujasTotal) {
+            	if(label == labelNumeroMaracujas && valorAtual[0]+1 > qtdMaracujasTotalAtual[0]) {
+            		JOptionPane.showMessageDialog(null, "Você atingiu o valor máximo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            	}else {         		
+            		if(label == labelNumeroMaracujasTotal) {
+        				valorAtual[0]++;
+        			}else {
+        				valorAtual[0]++; // Decrementa o valor
+	                    atualizarVerificador(1);
+        			}         		           		
+            	}              
+            } else {
+                JOptionPane.showMessageDialog(null, "Você atingiu o valor máximo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
         } else {
-            if (valorAtual[0] > 0) { // Certifica-se de que não se torne negativo
-                valorAtual[0]--;
+            // Permite decremento apenas se o valor atual for maior que 0
+            if (valorAtual[0] > 0 || label == labelNumeroMaracujasTotal) {
+            	if(label == labelNumeroMaracujasTotal && valorAtual[0] == 1) {
+            		JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            	}else {
+            		if(label == labelNumeroMaracujasTotal && valorAtual[0]-1 < qtdMaracujasAtual[0]){
+            			JOptionPane.showMessageDialog(null, "Você atingiu o valor mínio permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            		}else {
+            			if(label == labelNumeroMaracujasTotal) {
+            				valorAtual[0]--;
+            			}else {
+            				valorAtual[0]--; // Decrementa o valor
+    	                    atualizarVerificadorDec(1);
+            			}
+	            		
+            		}
+            	}
+                                
             } else {
                 JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
         }
-        atualizarNumero(label, valorAtual[0]); // Atualiza o JLabel com o novo valor
+
+        
+     // Atualiza o JLabel com o novo valor
+        atualizarNumero(label, valorAtual[0]);
+        
+        
+        //atualizarVerificador(valorAtual[0]);
     }
 
+    // Método para atualizar o verificador com a soma de todas as variáveis relevantes
+    private void atualizarVerificador(int valorr) {
+        verificador += valorr;
+    }
+    
+    private void atualizarVerificadorDec(int valorr) {
+        verificador -= valorr;
+    }
+    
     // Cria os botões de incremento e decremento com estilização
     private JButton criarBotao(String texto, int x, int y) {
         JButton botao = new JButton(texto);
@@ -223,24 +364,48 @@ public class Configuração extends JPanel {
     // Método que será chamado ao iniciar o jogo
     private void iniciarJogo() {
         String tamanhoFloresta = labelNumero.getText();
+        String qtdMaracujasTotalText = labelNumeroMaracujasTotal.getText();
         String qtdMaracujasText = labelNumeroMaracujas.getText();
         String qtdPedrasText = labelNumeroPedras.getText();
         String qtdLaranjasText = labelNumeroLaranjas.getText();
         String qtdAbacatesText = labelNumeroAbacates.getText();
-
+        String qtdLaranjeirasText = labelNumeroLaranjeiras.getText();
+        String qtdAbacateirosText = labelNumeroAbacateiros.getText();
+        String qtdCoqueirosText = labelNumeroCoqueiros.getText();
+        String qtdCocoText = labelNumeroCocos.getText();
+        String qtdAceroleirasText = labelNumeroAceroleiras.getText();
+        String qtdAcerolasText = labelNumeroAcerola.getText();
+        String qtdAmoreirasText = labelNumeroAmoreiras.getText();
+        String qtdAmorasText = labelNumeroAmoras.getText();
+        String qtdGoiabeirasText = labelNumeroGoiabeira.getText();
+        String qtdGoiabaText = labelNumeroGoiaba.getText();
+        String qtdBichadasText = labelNumeroBichadas.getText();
+        String qtdMochilaText = labelNumeroMochila.getText();
+        
         try {
             int n = Integer.parseInt(tamanhoFloresta);
             int quantidadePedras = Integer.parseInt(qtdPedrasText);
             int quantidadeLaranjas = Integer.parseInt(qtdLaranjasText);
+            int quantidadeLaranjeiras = Integer.parseInt(qtdLaranjeirasText);
             int quantidadeAbacates = Integer.parseInt(qtdAbacatesText);
+            int quantidadeAbacateiros = Integer.parseInt(qtdAbacateirosText);
             int quantidadeMaracujas = Integer.parseInt(qtdMaracujasText);
+            int quantidadeCoqueiro = Integer.parseInt(qtdCoqueirosText);
+            int quantidadeCocos = Integer.parseInt(qtdCocoText);
+            int quantidadeAceroleiras = Integer.parseInt(qtdAceroleirasText);
+            int quantidadeAcerolas = Integer.parseInt(qtdAcerolasText);
+            int quantidadeAmoreiras = Integer.parseInt(qtdAmoreirasText);
+            int quantidadeAmoras = Integer.parseInt(qtdAmorasText);
+            int quantidadeGoiabeiras = Integer.parseInt(qtdGoiabeirasText);
+            int quantidadeGoiabas = Integer.parseInt(qtdGoiabaText);
+            int quantidadeBichadas = Integer.parseInt(qtdBichadasText);
+            int quantidadeMochila = Integer.parseInt(qtdMochilaText);
 
-            if (n <= 2) {
-                throw new NumberFormatException("Dimensão deve ser maior que 2 e quantidades não podem ser negativas.");
-            }
 
             // Salvar as configurações e iniciar o jogo
-            salvarConfiguracoes(tamanhoFloresta, qtdPedrasText, qtdMaracujasText, qtdLaranjasText, qtdAbacatesText);
+            salvarConfiguracoes(tamanhoFloresta, qtdPedrasText, qtdMaracujasText, qtdLaranjasText, qtdLaranjeirasText, qtdAbacatesText,qtdAbacateirosText,
+            		qtdCoqueirosText, qtdCocoText, qtdAceroleirasText, qtdAcerolasText, qtdAmoreirasText, qtdAmorasText, 
+            		qtdGoiabeirasText, qtdGoiabaText, qtdBichadasText, qtdMochilaText, qtdMaracujasTotalText);
 
             // Criar a tela do jogo
             JFrame gameWindow = new JFrame("Cata Frutas");
@@ -258,36 +423,32 @@ public class Configuração extends JPanel {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    
 
     // Salva as configurações em um arquivo de texto
-    private void salvarConfiguracoes(String tamanho, String pedras,String maracujas, String laranjas, String abacate) {
+    private void salvarConfiguracoes(String tamanho, String pedras,String maracujas, String laranjas, String laranjeiras, String abacate,String abacateiros,
+    		String coqueiros, String cocos, String aceroleiras, String acerola, String amoreiras, String amora, String goiabeira, String goiaba, 
+    		String bichadas, String mochila, String maracujasTotal) {
         try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
         	writer.write("dimensão: " + tamanho + "\n");
             writer.write("pedras: " + pedras + "\n");
-            writer.write("maracuja: " + maracujas + " " + maracujas+ "\n");
-            writer.write("laranja: " + laranjas +  " " + laranjas + "\n");
-            writer.write("abacate: " + abacate +  " " + abacate + "\n");
-            writer.write("coco: " + laranjas +  " " + laranjas + "\n");
-            writer.write("acerola: " + laranjas + " " + laranjas + "\n");
-            writer.write("amora: " + laranjas + " " + laranjas + "\n");
-            writer.write("goiaba: " + laranjas + " " + laranjas + "\n");
-            writer.write("bichadas: " + laranjas + "\n");
-            writer.write("mochila: " + laranjas + "\n");
+            writer.write("maracuja: " + maracujasTotal + " " + maracujas+ "\n");
+            writer.write("laranja: " + laranjeiras +  " " + laranjas + "\n");
+            writer.write("abacate: " + abacateiros +  " " + abacate + "\n");
+            writer.write("coco: " + coqueiros +  " " + cocos + "\n");
+            writer.write("acerola: " + aceroleiras + " " + acerola + "\n");
+            writer.write("amora: " + amoreiras + " " + amora + "\n");
+            writer.write("goiaba: " + goiabeira + " " + goiaba + "\n");
+            writer.write("bichadas: " + bichadas + "\n");
+            writer.write("mochila: " + mochila + "\n");
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
+        } 
+   
+	
+}
 
-    // Método principal para iniciar a interface
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Tela de Configuração");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        Configuração telaInicial = new Configuração();
-        frame.getContentPane().add(telaInicial);
-        frame.pack(); // Ajusta o tamanho do JFrame com base nos componentes
-        frame.setLocationRelativeTo(null); // Centraliza na tela
-        frame.setVisible(true); // Torna a janela visível
-    }
-
+  
+    
 }
