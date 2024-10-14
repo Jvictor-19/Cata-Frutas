@@ -98,27 +98,29 @@ public class TelaJogo extends JPanel implements Runnable {
     private Thread threadJogo;
    
     
-    // Adicionar os layouts
+ // Adicionar os layouts
     public TelaJogo(String configFilePath) {
         // Lê os parâmetros do arquivo de configuração
         lerConfiguracao(configFilePath);
 
+        // Inicializa as listas
         this.pedras = new ArrayList<>();
         this.laranjasNoChao = new ArrayList<>();
         this.abacatesNoChao = new ArrayList<>();
-        this.maracujasNoChao = new ArrayList<>(); // Inicializa a lista de maracujás
+        this.maracujasNoChao = new ArrayList<>();
         this.laranjeiraNoChao = new ArrayList<>();
         this.abacateiroNoChao = new ArrayList<>();
         this.cocoNoChao = new ArrayList<>();
         this.coqueiroNoChao = new ArrayList<>();
-        this.acerolaNoChao = new ArrayList <>();
-        this.aceroleiraNoChao = new ArrayList <>();
-        this.amoraNoChao = new ArrayList <>();
-        this.amoreiraNoChao = new ArrayList <>();
-        this.goiabaNoChao = new ArrayList <>();
-        this.goiabeiraNoChao = new ArrayList <>();
+        this.acerolaNoChao = new ArrayList<>();
+        this.aceroleiraNoChao = new ArrayList<>();
+        this.amoraNoChao = new ArrayList<>();
+        this.amoreiraNoChao = new ArrayList<>();
+        this.goiabaNoChao = new ArrayList<>();
+        this.goiabeiraNoChao = new ArrayList<>();
         this.jogadoresNoChao = new ArrayList<>();
         this.quantidadeJogadores = 2;
+
         
         //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
         //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
@@ -132,13 +134,18 @@ public class TelaJogo extends JPanel implements Runnable {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         ajustarTamanhoTile(screenSize.width, screenSize.height);
 
-        this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela + 35)); // Aumentar altura para os botões
+        // Configurar o tamanho da tela e fundo
+        this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela + 40)); // Aumentar altura para os botões
         this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
 
+
         imagemGrama = new ImageIcon(getClass().getResource("/imagens/grama.png"));
 
+        //imagemGrama = new ImageIcon("src/imagens/grama.png");
 
+
+        // Gerar objetos no chão
         gerarPedras();
         gerarLaranjasNoChao();
         gerarAbacatesNoChao();
@@ -154,12 +161,18 @@ public class TelaJogo extends JPanel implements Runnable {
         gerarGoiabaNoChao();
         gerarGoiabeiraNoChao();
         gerarJogadoresNoChao();
-        
-        // Adicionar painel com botões "Pausar" e "Sair"
-        JPanel painelBotoes = new JPanel();
-        painelBotoes.setLayout(new FlowLayout());
 
-        // Modificação para exibir confirmação antes de sair
+        // Painel inferior contendo botões e informações dos jogadores
+        JPanel painelInferior = new JPanel();
+        painelInferior.setLayout(new BorderLayout());
+        painelInferior.setPreferredSize(new Dimension(400, 60)); // Define a altura do painel inferior
+        painelInferior.setBackground(Color.LIGHT_GRAY);
+
+        // Painel para os botões "Sair" e "Pausar"
+        JPanel painelBotoes = new JPanel();
+        painelBotoes.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        // Botão "Sair"
         JButton botaoSair = new JButton("Sair");
         botaoSair.addActionListener(e -> {
             int resposta = JOptionPane.showConfirmDialog(null, "Você deseja realmente sair?", "Confirmação", JOptionPane.YES_NO_OPTION);
@@ -167,14 +180,36 @@ public class TelaJogo extends JPanel implements Runnable {
                 System.exit(0);  // Sai do jogo se o usuário confirmar
             }
         });
-
-        
         painelBotoes.add(botaoSair);
 
-        // Adicionar painel de botões ao painel principal
-        this.add(painelBotoes, BorderLayout.SOUTH);
-        iniciarThreadJogo();
+        // Painel para as informações dos jogadores
+        JPanel painelJogadores = new JPanel();
+        painelJogadores.setLayout(new GridLayout(1, 3, 10, 10)); // Layout com três colunas para exibir dois jogadores e o botão "Sortear"
+
+        // Informações do Jogador 1
+        JLabel jogador1Label = new JLabel("Jogador 1: 0 passos");
+        painelJogadores.add(jogador1Label);
+
+        // Informações do Jogador 2
+        JLabel jogador2Label = new JLabel("Jogador 2: 0 passos");
+        painelJogadores.add(jogador2Label);
+
+        // Adicionar o botão "Sortear"
+        JButton botaoSortear = new JButton("Sortear");
+        botaoSortear.addActionListener(e -> {
+            // Adicione a lógica para sortear aqui
+            JOptionPane.showMessageDialog(null, "Sorteio realizado!");
+        });
+        painelJogadores.add(botaoSortear);
+
+        // Adicionar os painéis ao painel principal
+        painelInferior.add(painelBotoes, BorderLayout.WEST); // Botões à esquerda
+        painelInferior.add(painelJogadores, BorderLayout.CENTER); // Informações dos jogadores no centro
+
+        // Adicionar o painel inferior diretamente ao JFrame
+        this.add(painelInferior, BorderLayout.SOUTH);
     }
+
 
 
     private void lerConfiguracao(String configFilePath) {
