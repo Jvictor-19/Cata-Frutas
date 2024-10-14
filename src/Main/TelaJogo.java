@@ -40,6 +40,7 @@ public class TelaJogo extends JPanel implements Runnable {
 
     // Elementos do jogo
     private ImageIcon imagemGrama;
+    
     private ArrayList<Pedra> pedras;
     private int quantidadePedras;
 
@@ -120,9 +121,13 @@ public class TelaJogo extends JPanel implements Runnable {
         this.jogadoresNoChao = new ArrayList<>();
         this.quantidadeJogadores = 2;
 
-        // Carregar imagens dos jogadores
-        imagemJogador1 = Toolkit.getDefaultToolkit().getImage("Cata-Frutas/src/imagens/jogador1.png");
-        imagemJogador2 = Toolkit.getDefaultToolkit().getImage("Cata-Frutas/src/imagens/jogador2.png");
+        
+        //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
+        //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
+        
+        //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
+        //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
+
 
         // Configurar o painel principal
         this.setLayout(new BorderLayout());
@@ -133,7 +138,12 @@ public class TelaJogo extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela + 40)); // Aumentar altura para os botões
         this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
-        imagemGrama = new ImageIcon("src/imagens/grama.png");
+
+
+        imagemGrama = new ImageIcon(getClass().getResource("/imagens/grama.png"));
+
+        //imagemGrama = new ImageIcon("src/imagens/grama.png");
+
 
         // Gerar objetos no chão
         gerarPedras();
@@ -362,6 +372,7 @@ public class TelaJogo extends JPanel implements Runnable {
                 }
             }
         }
+        
     private void gerarMaracujaNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -498,8 +509,8 @@ public class TelaJogo extends JPanel implements Runnable {
         int ver = 0;
 
         // Caminhos das imagens para os dois jogadores
-        String caminhoImagemJogador1 = "src/imagens/Joagdor1.png"; // Imagem do jogador 1
-        String caminhoImagemJogador2 = "src/imagens/Jogador2.png"; // Imagem do jogador 2
+        String caminhoImagemJogador1 = "/imagens/Joagdor1.png"; // Imagem do jogador 1
+        String caminhoImagemJogador2 = "/imagens/Jogador2.png"; // Imagem do jogador 2
 
         while (ver < 2) {
             int x = random.nextInt(maxColunasTela);
