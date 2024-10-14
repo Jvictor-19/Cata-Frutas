@@ -1,6 +1,7 @@
 package Main;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,51 +13,139 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * A classe {@code Configuração} representa um painel de configuração 
+ * para um jogo, permitindo ao jogador ajustar a dimensão da floresta 
+ * e a quantidade de diferentes tipos de plantas e frutas. 
+ * Os dados de configuração podem ser salvos em um arquivo de texto.
+ * 
+ * Esta classe estende {@code JPanel} e contém componentes gráficos 
+ * como botões e rótulos para interação do usuário.
+ * 
+ * @version 1.0
+ */
+
 public class Configuração extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    /** Botão para iniciar o jogo. */
     private JButton iniciarButton;
+
+    /** Botão para visualizar as configurações. */
     private JButton visualizarButton;
+
+    /** Botão para salvar as configurações. */
     private JButton salvarButton;
 
+    /** Rótulo para exibir o número atual da dimensão da floresta. */
     private JLabel labelNumero;
+
+    /** Rótulo para exibir a quantidade de pedras. */
     private JLabel labelNumeroPedras;
-    private JLabel labelNumeroMaracujasTotal; // Adicionado para maracujás
+
+    /** Rótulo para exibir a quantidade total de maracujás. */
+    private JLabel labelNumeroMaracujasTotal;
+
+    /** Rótulo para exibir a quantidade de maracujás. */
     private JLabel labelNumeroMaracujas;
+
+    /** Rótulo para exibir a quantidade de laranjas. */
     private JLabel labelNumeroLaranjas;
+
+    /** Rótulo para exibir a quantidade de laranjeiras. */
     private JLabel labelNumeroLaranjeiras;
+
+    /** Rótulo para exibir a quantidade de abacates. */
     private JLabel labelNumeroAbacates;
+
+    /** Rótulo para exibir a quantidade de abacateiros. */
     private JLabel labelNumeroAbacateiros;
+
+    /** Rótulo para exibir a quantidade de cocos. */
     private JLabel labelNumeroCocos;
+
+    /** Rótulo para exibir a quantidade de coqueiros. */
     private JLabel labelNumeroCoqueiros;
+
+    /** Rótulo para exibir a quantidade de acerolas. */
     private JLabel labelNumeroAcerola;
+
+    /** Rótulo para exibir a quantidade de aceroleiras. */
     private JLabel labelNumeroAceroleiras;
+
+    /** Rótulo para exibir a quantidade de amoras. */
     private JLabel labelNumeroAmoras;
+
+    /** Rótulo para exibir a quantidade de amoreiras. */
     private JLabel labelNumeroAmoreiras;
+
+    /** Rótulo para exibir a quantidade de goiabas. */
     private JLabel labelNumeroGoiaba;
+
+    /** Rótulo para exibir a quantidade de goiabeiras. */
     private JLabel labelNumeroGoiabeira;
+
+    /** Rótulo para exibir a porcentagem de bichadas. */
     private JLabel labelNumeroBichadas;
+
+    /** Rótulo para exibir a capacidade da mochila. */
     private JLabel labelNumeroMochila;
-    
-    private int valor = 3; // Variável que será incrementada ou decrementada
+
+    /** Variável que será incrementada ou decrementada para a dimensão da floresta. */
+    private int valor = 3;
+
+    /** Quantidade de pedras no jogo. */
     private int qtdPedras = 0;
-    private int qtdMaracujasTotal = 1; // Inicialização da quantidade de maracujás
+
+    /** Quantidade total de maracujás. */
+    private int qtdMaracujasTotal = 1;
+
+    /** Quantidade de maracujás. */
     private int qtdMaracujas = 0;
+
+    /** Quantidade de laranjas. */
     private int qtdLaranjas = 0;
+
+    /** Quantidade de laranjeiras. */
     private int qtdLaranjeiras = 0;
+
+    /** Quantidade de abacates. */
     private int qtdAbacates = 0;
+
+    /** Quantidade de abacateiros. */
     private int qtdAbacateiros = 0;
+
+    /** Quantidade de cocos. */
     private int qtdCoco = 0;
+
+    /** Quantidade de coqueiros. */
     private int qtdCoqueiros = 0;
-    private int qtdAcerola =0;
+
+    /** Quantidade de acerolas. */
+    private int qtdAcerola = 0;
+
+    /** Quantidade de aceroleiras. */
     private int qtdAceroleiras = 0;
-    private int qtdAmoras =0;
+
+    /** Quantidade de amoras. */
+    private int qtdAmoras = 0;
+
+    /** Quantidade de amoreiras. */
     private int qtdAmoreiras = 0;
-    private int qtdGoiaba =0;
+
+    /** Quantidade de goiabas. */
+    private int qtdGoiaba = 0;
+
+    /** Quantidade de goiabeiras. */
     private int qtdGoiabeira = 0;
-    private int porBichadas =0;
+
+    /** Porcentagem de bichadas. */
+    private int porBichadas = 0;
+
+    /** Capacidade da mochila. */
     private int capMochila = 0;
     
+    /** Atualiza as quantidades atuais de maracujás, pedras, laranjas, etc. */
     int[] qtdMaracujasTotalAtual = {qtdMaracujasTotal};
     int[] qtdMaracujasAtual = {qtdMaracujas};
     int[] qtdPedrasAtual = {qtdPedras};
@@ -80,6 +169,11 @@ public class Configuração extends JPanel {
             qtdAceroleiras + qtdAmoras + qtdAmoreiras + qtdGoiaba + qtdGoiabeira;
 
 
+    /** 
+     * Construtor da classe {@code Configuração}. 
+     * Inicializa o painel, configura a interface gráfica e 
+     * adiciona os componentes.
+     */
     public Configuração() {
         setLayout(null);
         setPreferredSize(new Dimension(800, 600));
@@ -247,6 +341,20 @@ public class Configuração extends JPanel {
               
     }
     
+    /**
+     * Cria componentes para exibir a quantidade de itens, 
+     * incluindo rótulo e botões para incrementar e decrementar.
+     * 
+     * @param texto o texto do rótulo
+     * @param qtdAtual o array que contém a quantidade atual
+     * @param label o rótulo que exibirá a quantidade
+     * @param xLabel a posição x do rótulo
+     * @param yLabel a posição y do rótulo
+     * @param xIncrementar a posição x do botão de incremento
+     * @param yIncrementar a posição y do botão de incremento
+     * @param xDecrementar a posição x do botão de decremento
+     * @param yDecrementar a posição y do botão de decremento
+     */
     private void criarComponentesQuantidade(String labelTexto, int[] quantidadeAtual, JLabel labelQuantidade, int xLabel, int yLabel, int xBotaoMais, int yBotaoMais, int xBotaoMenos, int yBotaoMenos) {
         JLabel label = new JLabel(labelTexto);
         label.setBounds(xLabel, yLabel, 205, 15); // Configurações de posição e tamanho
@@ -321,191 +429,206 @@ public class Configuração extends JPanel {
         
         //atualizarVerificador(valorAtual[0]);
     }
-
-    // Método para atualizar o verificador com a soma de todas as variáveis relevantes
-    private void atualizarVerificador(int valorr) {
-        verificador += valorr;
-    }
-    
-    private void atualizarVerificadorDec(int valorr) {
-        verificador -= valorr;
-    }
-    
-    // Cria os botões de incremento e decremento com estilização
-    private JButton criarBotao(String texto, int x, int y) {
-        JButton botao = new JButton(texto);
-        botao.setBounds(x, y, 20, 20);
-        botao.setMargin(new Insets(0, 0, 0, 0));
-        botao.setBackground(Color.orange);
-        botao.setOpaque(true);
-        botao.setBorderPainted(false);
-
-        // Efeito ao clicar o botão
-        botao.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                botao.setBackground(Color.red);
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                botao.setBackground(Color.orange);
-            }
-        });
-
-        return botao;
-    }
-
-    // Atualiza o número exibido na interface
-    private void atualizarNumero(JLabel label, int novoValor) {
-        label.setText(String.valueOf(novoValor));
-    }
-
-    // Método que será chamado ao iniciar o jogo
-    private void iniciarJogo() {
-        String tamanhoFloresta = labelNumero.getText();
-        String qtdMaracujasTotalText = labelNumeroMaracujasTotal.getText();
-        String qtdMaracujasText = labelNumeroMaracujas.getText();
-        String qtdPedrasText = labelNumeroPedras.getText();
-        String qtdLaranjasText = labelNumeroLaranjas.getText();
-        String qtdAbacatesText = labelNumeroAbacates.getText();
-        String qtdLaranjeirasText = labelNumeroLaranjeiras.getText();
-        String qtdAbacateirosText = labelNumeroAbacateiros.getText();
-        String qtdCoqueirosText = labelNumeroCoqueiros.getText();
-        String qtdCocoText = labelNumeroCocos.getText();
-        String qtdAceroleirasText = labelNumeroAceroleiras.getText();
-        String qtdAcerolasText = labelNumeroAcerola.getText();
-        String qtdAmoreirasText = labelNumeroAmoreiras.getText();
-        String qtdAmorasText = labelNumeroAmoras.getText();
-        String qtdGoiabeirasText = labelNumeroGoiabeira.getText();
-        String qtdGoiabaText = labelNumeroGoiaba.getText();
-        String qtdBichadasText = labelNumeroBichadas.getText();
-        String qtdMochilaText = labelNumeroMochila.getText();
-        
-        try {
-            int n = Integer.parseInt(tamanhoFloresta);
-            int quantidadePedras = Integer.parseInt(qtdPedrasText);
-            int quantidadeLaranjas = Integer.parseInt(qtdLaranjasText);
-            int quantidadeLaranjeiras = Integer.parseInt(qtdLaranjeirasText);
-            int quantidadeAbacates = Integer.parseInt(qtdAbacatesText);
-            int quantidadeAbacateiros = Integer.parseInt(qtdAbacateirosText);
-            int quantidadeMaracujas = Integer.parseInt(qtdMaracujasText);
-            int quantidadeCoqueiro = Integer.parseInt(qtdCoqueirosText);
-            int quantidadeCocos = Integer.parseInt(qtdCocoText);
-            int quantidadeAceroleiras = Integer.parseInt(qtdAceroleirasText);
-            int quantidadeAcerolas = Integer.parseInt(qtdAcerolasText);
-            int quantidadeAmoreiras = Integer.parseInt(qtdAmoreirasText);
-            int quantidadeAmoras = Integer.parseInt(qtdAmorasText);
-            int quantidadeGoiabeiras = Integer.parseInt(qtdGoiabeirasText);
-            int quantidadeGoiabas = Integer.parseInt(qtdGoiabaText);
-            int quantidadeBichadas = Integer.parseInt(qtdBichadasText);
-            int quantidadeMochila = Integer.parseInt(qtdMochilaText);
-
-
-            // Salvar as configurações e iniciar o jogo
-            salvarConfiguracoes(tamanhoFloresta, qtdPedrasText, qtdMaracujasText, qtdLaranjasText, qtdLaranjeirasText, qtdAbacatesText,qtdAbacateirosText,
-            		qtdCoqueirosText, qtdCocoText, qtdAceroleirasText, qtdAcerolasText, qtdAmoreirasText, qtdAmorasText, 
-            		qtdGoiabeirasText, qtdGoiabaText, qtdBichadasText, qtdMochilaText, qtdMaracujasTotalText);
-
-            // Criar a tela do jogo
-            JFrame gameWindow = new JFrame("Cata Frutas");
-            gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            gameWindow.setResizable(false);
-         // Obtém o diretório do usuário
-            String userDir = System.getProperty("user.home");
-            // Define o caminho completo para o arquivo de configuração
-            String caminhoConfiguracao = userDir + File.separator + "configuracaoJogo.txt";
-
-            // Passa o caminho para o construtor TelaJogo
-            TelaJogo gamePainel = new TelaJogo(caminhoConfiguracao);
-
-            //TelaJogo gamePainel = new TelaJogo("src/Arquivo/configuracaoJogo.txt");
-            gameWindow.getContentPane().add(gamePainel);
-            gameWindow.pack();
-            gameWindow.setLocationRelativeTo(null);
-            gameWindow.setVisible(true);
-
-            // Fechar a tela de configuração
-            SwingUtilities.getWindowAncestor(this).dispose();
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
-    
-
-    // Salva as configurações em um arquivo de texto
-    private void salvarConfiguracoes(String tamanho, String pedras, String maracujas, String laranjas, String laranjeiras, String abacate, String abacateiros,
-            String coqueiros, String cocos, String aceroleiras, String acerola, String amoreiras, String amora, String goiabeira, String goiaba,
-            String bichadas, String mochila, String maracujasTotal) {
-        // Obtém o diretório do usuário
-        String userDir = System.getProperty("user.home");
-        // Define o caminho para o arquivo de configuração no diretório do usuário
-        File configFile = new File(userDir, "configuracaoJogo.txt");
-
-        try (FileWriter writer = new FileWriter(configFile)) {
-            writer.write("dimensão: " + tamanho + "\n");
-            writer.write("pedras: " + pedras + "\n");
-            writer.write("maracuja: " + maracujasTotal + " " + maracujas + "\n");
-            writer.write("laranja: " + laranjeiras + " " + laranjas + "\n");
-            writer.write("abacate: " + abacateiros + " " + abacate + "\n");
-            writer.write("coco: " + coqueiros + " " + cocos + "\n");
-            writer.write("acerola: " + aceroleiras + " " + acerola + "\n");
-            writer.write("amora: " + amoreiras + " " + amora + "\n");
-            writer.write("goiaba: " + goiabeira + " " + goiaba + "\n");
-            writer.write("bichadas: " + bichadas + "\n");
-            writer.write("mochila: " + mochila + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-  
-	// Botão Importar Arquivo
-	/*JButton importButton = new JButton("Importar Arquivo");
-	importButton.setBounds(300, 460, 120, 50);
-	importButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-	        JFileChooser fileChooser = new JFileChooser();
-	        int result = fileChooser.showOpenDialog(null);
-	        if (result == JFileChooser.APPROVE_OPTION) {
-	            File selectedFile = fileChooser.getSelectedFile();
-	            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selectedFile.getAbsolutePath());
 	
-	            // Tentativa de leitura do arquivo
-	            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
-	                String linha;
-	                StringBuilder conteudo = new StringBuilder(); // Armazenar o conteúdo do arquivo
-	                while ((linha = br.readLine()) != null) {
-	                    conteudo.append(linha).append("\n");
-	                }
-	                
-	                // Exibir o conteúdo do arquivo em um JOptionPane
-	                JOptionPane.showMessageDialog(null, "Conteúdo do arquivo:\n" + conteudo.toString());
+	    // Método para atualizar o verificador com a soma de todas as variáveis relevantes
+	    private void atualizarVerificador(int valorr) {
+	        verificador += valorr;
+	    }
+	    
+	    private void atualizarVerificadorDec(int valorr) {
+	        verificador -= valorr;
+	    }
+	    
+	    /**
+	     * Cria um botão com o texto e a posição especificados.
+	     * 
+	     * @param texto o texto do botão
+	     * @param x a posição x do botão
+	     * @param y a posição y do botão
+	     * @return o botão criado
+	     */
+	    // Cria os botões de incremento e decremento com estilização
+	    private JButton criarBotao(String texto, int x, int y) {
+	        JButton botao = new JButton(texto);
+	        botao.setBounds(x, y, 20, 20);
+	        botao.setMargin(new Insets(0, 0, 0, 0));
+	        botao.setBackground(Color.orange);
+	        botao.setOpaque(true);
+	        botao.setBorderPainted(false);
 	
-	            } catch (IOException ex) {
-	                ex.printStackTrace();
-	                JOptionPane.showMessageDialog(null, "Erro ao ler o arquivo.");
+	        // Efeito ao clicar o botão
+	        botao.addMouseListener(new MouseAdapter() {
+	            @Override
+	            public void mousePressed(MouseEvent e) {
+	                botao.setBackground(Color.red);
 	            }
-	        } else {
-	            JOptionPane.showMessageDialog(null, "Nenhum arquivo foi selecionado.");
+	
+	            @Override
+	            public void mouseReleased(MouseEvent e) {
+	                botao.setBackground(Color.orange);
+	            }
+	        });
+	
+	        return botao;
+	    }
+	    
+	    /**
+	     * Atualiza o rótulo com o novo valor fornecido.
+	     * 
+	     * @param label o rótulo a ser atualizado
+	     * @param novoValor o novo valor a ser exibido
+	     */
+	    // Atualiza o número exibido na interface
+	    private void atualizarNumero(JLabel label, int novoValor) {
+	        label.setText(String.valueOf(novoValor));
+	    }
+	
+	    // Método que será chamado ao iniciar o jogo
+	    private void iniciarJogo() {
+	        String tamanhoFloresta = labelNumero.getText();
+	        String qtdMaracujasTotalText = labelNumeroMaracujasTotal.getText();
+	        String qtdMaracujasText = labelNumeroMaracujas.getText();
+	        String qtdPedrasText = labelNumeroPedras.getText();
+	        String qtdLaranjasText = labelNumeroLaranjas.getText();
+	        String qtdAbacatesText = labelNumeroAbacates.getText();
+	        String qtdLaranjeirasText = labelNumeroLaranjeiras.getText();
+	        String qtdAbacateirosText = labelNumeroAbacateiros.getText();
+	        String qtdCoqueirosText = labelNumeroCoqueiros.getText();
+	        String qtdCocoText = labelNumeroCocos.getText();
+	        String qtdAceroleirasText = labelNumeroAceroleiras.getText();
+	        String qtdAcerolasText = labelNumeroAcerola.getText();
+	        String qtdAmoreirasText = labelNumeroAmoreiras.getText();
+	        String qtdAmorasText = labelNumeroAmoras.getText();
+	        String qtdGoiabeirasText = labelNumeroGoiabeira.getText();
+	        String qtdGoiabaText = labelNumeroGoiaba.getText();
+	        String qtdBichadasText = labelNumeroBichadas.getText();
+	        String qtdMochilaText = labelNumeroMochila.getText();
+	        
+	        try {
+	            int n = Integer.parseInt(tamanhoFloresta);
+	            int quantidadePedras = Integer.parseInt(qtdPedrasText);
+	            int quantidadeLaranjas = Integer.parseInt(qtdLaranjasText);
+	            int quantidadeLaranjeiras = Integer.parseInt(qtdLaranjeirasText);
+	            int quantidadeAbacates = Integer.parseInt(qtdAbacatesText);
+	            int quantidadeAbacateiros = Integer.parseInt(qtdAbacateirosText);
+	            int quantidadeMaracujas = Integer.parseInt(qtdMaracujasText);
+	            int quantidadeCoqueiro = Integer.parseInt(qtdCoqueirosText);
+	            int quantidadeCocos = Integer.parseInt(qtdCocoText);
+	            int quantidadeAceroleiras = Integer.parseInt(qtdAceroleirasText);
+	            int quantidadeAcerolas = Integer.parseInt(qtdAcerolasText);
+	            int quantidadeAmoreiras = Integer.parseInt(qtdAmoreirasText);
+	            int quantidadeAmoras = Integer.parseInt(qtdAmorasText);
+	            int quantidadeGoiabeiras = Integer.parseInt(qtdGoiabeirasText);
+	            int quantidadeGoiabas = Integer.parseInt(qtdGoiabaText);
+	            int quantidadeBichadas = Integer.parseInt(qtdBichadasText);
+	            int quantidadeMochila = Integer.parseInt(qtdMochilaText);
+	
+	
+	            // Salvar as configurações e iniciar o jogo
+	            salvarConfiguracoes(tamanhoFloresta, qtdPedrasText, qtdMaracujasText, qtdLaranjasText, qtdLaranjeirasText, qtdAbacatesText,qtdAbacateirosText,
+	            		qtdCoqueirosText, qtdCocoText, qtdAceroleirasText, qtdAcerolasText, qtdAmoreirasText, qtdAmorasText, 
+	            		qtdGoiabeirasText, qtdGoiabaText, qtdBichadasText, qtdMochilaText, qtdMaracujasTotalText);
+	
+	            // Criar a tela do jogo
+	            JFrame gameWindow = new JFrame("Cata Frutas");
+	            gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	            gameWindow.setResizable(false);
+	         // Obtém o diretório do usuário
+	            String userDir = System.getProperty("user.home");
+	            // Define o caminho completo para o arquivo de configuração
+	            String caminhoConfiguracao = userDir + File.separator + "configuracaoJogo.txt";
+	
+	            // Passa o caminho para o construtor TelaJogo
+	            TelaJogo gamePainel = new TelaJogo(caminhoConfiguracao);
+	
+	            //TelaJogo gamePainel = new TelaJogo("src/Arquivo/configuracaoJogo.txt");
+	            gameWindow.getContentPane().add(gamePainel);
+	            gameWindow.pack();
+	            gameWindow.setLocationRelativeTo(null);
+	            gameWindow.setVisible(true);
+	
+	            // Fechar a tela de configuração
+	            SwingUtilities.getWindowAncestor(this).dispose();
+	        } catch (NumberFormatException e) {
+	            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 	        }
 	    }
-	});
-	add(importButton);
-	setVisible(true);*/
+	    
+	    
+	
+	    // Salva as configurações em um arquivo de texto
+	    private void salvarConfiguracoes(String tamanho, String pedras, String maracujas, String laranjas, String laranjeiras, String abacate, String abacateiros,
+	            String coqueiros, String cocos, String aceroleiras, String acerola, String amoreiras, String amora, String goiabeira, String goiaba,
+	            String bichadas, String mochila, String maracujasTotal) {
+	        // Obtém o diretório do usuário
+	        String userDir = System.getProperty("user.home");
+	        // Define o caminho para o arquivo de configuração no diretório do usuário
+	        File configFile = new File(userDir, "configuracaoJogo.txt");
+	
+	        try (FileWriter writer = new FileWriter(configFile)) {
+	            writer.write("dimensão: " + tamanho + "\n");
+	            writer.write("pedras: " + pedras + "\n");
+	            writer.write("maracuja: " + maracujasTotal + " " + maracujas + "\n");
+	            writer.write("laranja: " + laranjeiras + " " + laranjas + "\n");
+	            writer.write("abacate: " + abacateiros + " " + abacate + "\n");
+	            writer.write("coco: " + coqueiros + " " + cocos + "\n");
+	            writer.write("acerola: " + aceroleiras + " " + acerola + "\n");
+	            writer.write("amora: " + amoreiras + " " + amora + "\n");
+	            writer.write("goiaba: " + goiabeira + " " + goiaba + "\n");
+	            writer.write("bichadas: " + bichadas + "\n");
+	            writer.write("mochila: " + mochila + "\n");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
 
-
-    // Método principal para iniciar a interface
-    /*public static void main(String[] args) {
-        JFrame frame = new JFrame("Tela de Configuração");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        Configuração telaInicial = new Configuração();
-        frame.getContentPane().add(telaInicial);
-        frame.pack(); // Ajusta o tamanho do JFrame com base nos componentes
-        frame.setLocationRelativeTo(null); // Centraliza na tela
-        frame.setVisible(true); // Torna a janela visível
-    }*/
-    
-}
+	  
+		// Botão Importar Arquivo
+		/*JButton importButton = new JButton("Importar Arquivo");
+		importButton.setBounds(300, 460, 120, 50);
+		importButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        JFileChooser fileChooser = new JFileChooser();
+		        int result = fileChooser.showOpenDialog(null);
+		        if (result == JFileChooser.APPROVE_OPTION) {
+		            File selectedFile = fileChooser.getSelectedFile();
+		            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selectedFile.getAbsolutePath());
+		
+		            // Tentativa de leitura do arquivo
+		            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+		                String linha;
+		                StringBuilder conteudo = new StringBuilder(); // Armazenar o conteúdo do arquivo
+		                while ((linha = br.readLine()) != null) {
+		                    conteudo.append(linha).append("\n");
+		                }
+		                
+		                // Exibir o conteúdo do arquivo em um JOptionPane
+		                JOptionPane.showMessageDialog(null, "Conteúdo do arquivo:\n" + conteudo.toString());
+		
+		            } catch (IOException ex) {
+		                ex.printStackTrace();
+		                JOptionPane.showMessageDialog(null, "Erro ao ler o arquivo.");
+		            }
+		        } else {
+		            JOptionPane.showMessageDialog(null, "Nenhum arquivo foi selecionado.");
+		        }
+		    }
+		});
+		add(importButton);
+		setVisible(true);*/
+	
+	
+	    // Método principal para iniciar a interface
+	    /*public static void main(String[] args) {
+	        JFrame frame = new JFrame("Tela de Configuração");
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        frame.setResizable(false);
+	        Configuração telaInicial = new Configuração();
+	        frame.getContentPane().add(telaInicial);
+	        frame.pack(); // Ajusta o tamanho do JFrame com base nos componentes
+	        frame.setLocationRelativeTo(null); // Centraliza na tela
+	        frame.setVisible(true); // Torna a janela visível
+	    }*/
+	    
+	}
