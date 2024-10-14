@@ -40,6 +40,7 @@ public class TelaJogo extends JPanel implements Runnable {
 
     // Elementos do jogo
     private ImageIcon imagemGrama;
+    
     private ArrayList<Pedra> pedras;
     private int quantidadePedras;
 
@@ -119,8 +120,11 @@ public class TelaJogo extends JPanel implements Runnable {
         this.jogadoresNoChao = new ArrayList<>();
         this.quantidadeJogadores = 2;
         
-        imagemJogador1 = Toolkit.getDefaultToolkit().getImage("Cata-Frutas/src/imagens/jogador1.png");
-        imagemJogador2 = Toolkit.getDefaultToolkit().getImage("Cata-Frutas/src/imagens/jogador2.png");
+        //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
+        //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
+        
+        imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
+        imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
 
 
         // Configurar o painel principal
@@ -132,7 +136,7 @@ public class TelaJogo extends JPanel implements Runnable {
         this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
 
-        imagemGrama = new ImageIcon("src/imagens/grama.png");
+        imagemGrama = new ImageIcon(getClass().getResource("/imagens/grama.png"));
 
 
         gerarPedras();
@@ -333,6 +337,7 @@ public class TelaJogo extends JPanel implements Runnable {
                 }
             }
         }
+        
     private void gerarMaracujaNoChao() {
         Random random = new Random();
         int contagem = 0;

@@ -76,7 +76,7 @@ public class TelaInicial extends JFrame {
         int iconHeight = 50;
         soundLabel.setIcon(new ImageIcon(soundOnIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH)));
         soundLabel.setBounds(10, 10, iconWidth, iconHeight);
-        background.add(soundLabel);
+        //background.add(soundLabel);
 
         soundLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -167,13 +167,25 @@ public class TelaInicial extends JFrame {
         JButton creditsButton = new JButton("Créditos");
         creditsButton.setFont(FontePixel.carregarFontePixel(10));
         creditsButton.setBounds(610, 480, 120, 50); 
-        background.add(creditsButton);
+        
+        //background.add(creditsButton);
 
         // Carrega a imagem original de créditos
-        ImageIcon originalIcon = new ImageIcon("src/imagens/FundoCreditos.png");
+        //ImageIcon originalIcon = new ImageIcon(getClass().getResource("/imagens/FundoCreditos.png"));
+        backgroundIcon = new ImageIcon(getClass().getResource("/imagens/backgraund1.jpg"));
+        background.setBounds(0, 0, 1472, 832);
+        add(background); // Adiciona o fundo primeiro
+
+        // Adiciona outros componentes depois
+        
+        background.add(playButton);
+        background.add(creditsButton);
+        background.add(soundLabel);
+        //add(creditsButton);
+        
 
         // Redimensiona a imagem para o tamanho desejado (por exemplo, 1600x900)
-        Image scaledImage = originalIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
+        Image scaledImage = backgroundIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
 
         // Cria um novo ImageIcon com a imagem redimensionada
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -181,8 +193,9 @@ public class TelaInicial extends JFrame {
         // JLabel para exibir a imagem de créditos com a nova imagem redimensionada
         JLabel creditsImageLabel = new JLabel(scaledIcon);
         creditsImageLabel.setBounds(0, 0, 1500, 900); // Ajuste o tamanho do JLabel para corresponder à nova imagem
-        creditsImageLabel.setVisible(false); // Inicialmente invisível
+        creditsImageLabel.setVisible(true); // Inicialmente invisível
         add(creditsImageLabel);
+        
 
          // Instancia o botão "Voltar"
          /*Voltar voltarButton = new Voltar(background, creditsImageLabel);
@@ -265,11 +278,11 @@ public class TelaInicial extends JFrame {
         music.stop();
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         // Executa a GUI em um thread separado para evitar problemas de thread
         SwingUtilities.invokeLater(() -> {
             TelaInicial telaInicial = new TelaInicial();
             telaInicial.setVisible(true);
         });
-    }
+    }*/
 }

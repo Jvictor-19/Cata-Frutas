@@ -1,4 +1,4 @@
-dimensão: 3
+dimensão: 4
 pedras: 0
 maracuja: 1 0
 laranja: 0 0

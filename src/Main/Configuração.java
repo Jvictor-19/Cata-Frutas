@@ -411,7 +411,15 @@ public class Configuração extends JPanel {
             JFrame gameWindow = new JFrame("Cata Frutas");
             gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameWindow.setResizable(false);
-            TelaJogo gamePainel = new TelaJogo("src/Arquivo/configuracaoJogo.txt");
+         // Obtém o diretório do usuário
+            String userDir = System.getProperty("user.home");
+            // Define o caminho completo para o arquivo de configuração
+            String caminhoConfiguracao = userDir + File.separator + "configuracaoJogo.txt";
+
+            // Passa o caminho para o construtor TelaJogo
+            TelaJogo gamePainel = new TelaJogo(caminhoConfiguracao);
+
+            //TelaJogo gamePainel = new TelaJogo("src/Arquivo/configuracaoJogo.txt");
             gameWindow.getContentPane().add(gamePainel);
             gameWindow.pack();
             gameWindow.setLocationRelativeTo(null);
@@ -427,16 +435,21 @@ public class Configuração extends JPanel {
     
 
     // Salva as configurações em um arquivo de texto
-    private void salvarConfiguracoes(String tamanho, String pedras,String maracujas, String laranjas, String laranjeiras, String abacate,String abacateiros,
-    		String coqueiros, String cocos, String aceroleiras, String acerola, String amoreiras, String amora, String goiabeira, String goiaba, 
-    		String bichadas, String mochila, String maracujasTotal) {
-        try (FileWriter writer = new FileWriter("src/Arquivo/configuracaoJogo.txt")) {
-        	writer.write("dimensão: " + tamanho + "\n");
+    private void salvarConfiguracoes(String tamanho, String pedras, String maracujas, String laranjas, String laranjeiras, String abacate, String abacateiros,
+            String coqueiros, String cocos, String aceroleiras, String acerola, String amoreiras, String amora, String goiabeira, String goiaba,
+            String bichadas, String mochila, String maracujasTotal) {
+        // Obtém o diretório do usuário
+        String userDir = System.getProperty("user.home");
+        // Define o caminho para o arquivo de configuração no diretório do usuário
+        File configFile = new File(userDir, "configuracaoJogo.txt");
+
+        try (FileWriter writer = new FileWriter(configFile)) {
+            writer.write("dimensão: " + tamanho + "\n");
             writer.write("pedras: " + pedras + "\n");
-            writer.write("maracuja: " + maracujasTotal + " " + maracujas+ "\n");
-            writer.write("laranja: " + laranjeiras +  " " + laranjas + "\n");
-            writer.write("abacate: " + abacateiros +  " " + abacate + "\n");
-            writer.write("coco: " + coqueiros +  " " + cocos + "\n");
+            writer.write("maracuja: " + maracujasTotal + " " + maracujas + "\n");
+            writer.write("laranja: " + laranjeiras + " " + laranjas + "\n");
+            writer.write("abacate: " + abacateiros + " " + abacate + "\n");
+            writer.write("coco: " + coqueiros + " " + cocos + "\n");
             writer.write("acerola: " + aceroleiras + " " + acerola + "\n");
             writer.write("amora: " + amoreiras + " " + amora + "\n");
             writer.write("goiaba: " + goiabeira + " " + goiaba + "\n");
@@ -444,8 +457,9 @@ public class Configuração extends JPanel {
             writer.write("mochila: " + mochila + "\n");
         } catch (IOException e) {
             e.printStackTrace();
-        } 
-   
+        }
+    }
+  
 	// Botão Importar Arquivo
 	/*JButton importButton = new JButton("Importar Arquivo");
 	importButton.setBounds(300, 460, 120, 50);
@@ -480,10 +494,10 @@ public class Configuração extends JPanel {
 	});
 	add(importButton);
 	setVisible(true);*/
-}
+
 
     // Método principal para iniciar a interface
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         JFrame frame = new JFrame("Tela de Configuração");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -492,6 +506,6 @@ public class Configuração extends JPanel {
         frame.pack(); // Ajusta o tamanho do JFrame com base nos componentes
         frame.setLocationRelativeTo(null); // Centraliza na tela
         frame.setVisible(true); // Torna a janela visível
-    }
+    }*/
     
 }
