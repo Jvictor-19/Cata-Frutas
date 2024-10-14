@@ -165,14 +165,10 @@ public class TelaInicial extends JFrame {
      // Botão Créditos
         JButton creditsButton = new JButton("Créditos");
         creditsButton.setFont(FontePixel.carregarFontePixel(10));
-<<<<<<< HEAD
-        creditsButton.setBounds(610, 480, 120, 50); 
-        
-        //background.add(creditsButton);
-=======
+
         creditsButton.setBounds(610, 480, 120, 50);
-        background.add(creditsButton);
->>>>>>> 00940ff5d1c526e6cdf0ce94a62b903ff83e2105
+        //background.add(creditsButton);
+
 
         // Carrega a imagem original de créditos
         //ImageIcon originalIcon = new ImageIcon(getClass().getResource("/imagens/FundoCreditos.png"));
@@ -188,26 +184,25 @@ public class TelaInicial extends JFrame {
         //add(creditsButton);
         
 
-<<<<<<< HEAD
         // Redimensiona a imagem para o tamanho desejado (por exemplo, 1600x900)
         Image scaledImage = backgroundIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
-=======
+
         // Redimensiona a imagem para o tamanho desejado
-        Image scaledImage = originalIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
->>>>>>> 00940ff5d1c526e6cdf0ce94a62b903ff83e2105
+        //Image scaledImage = originalIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
+
 
         // Cria um novo ImageIcon com a imagem redimensionada
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
         // JLabel para exibir a imagem de créditos
         JLabel creditsImageLabel = new JLabel(scaledIcon);
-<<<<<<< HEAD
+
         creditsImageLabel.setBounds(0, 0, 1500, 900); // Ajuste o tamanho do JLabel para corresponder à nova imagem
         creditsImageLabel.setVisible(true); // Inicialmente invisível
-=======
-        creditsImageLabel.setBounds(0, 0, 1500, 900); 
-        creditsImageLabel.setVisible(false); // Inicialmente invisível
->>>>>>> 00940ff5d1c526e6cdf0ce94a62b903ff83e2105
+
+        /*creditsImageLabel.setBounds(0, 0, 1500, 900); 
+        creditsImageLabel.setVisible(false); // Inicialmente invisível*/
+
         add(creditsImageLabel);
         
 
