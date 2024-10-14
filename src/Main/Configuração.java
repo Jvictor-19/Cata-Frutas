@@ -446,52 +446,9 @@ public class Configuração extends JPanel {
             e.printStackTrace();
         } 
    
-	// Botão Importar Arquivo
-	/*JButton importButton = new JButton("Importar Arquivo");
-	importButton.setBounds(300, 460, 120, 50);
-	importButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-	        JFileChooser fileChooser = new JFileChooser();
-	        int result = fileChooser.showOpenDialog(null);
-	        if (result == JFileChooser.APPROVE_OPTION) {
-	            File selectedFile = fileChooser.getSelectedFile();
-	            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selectedFile.getAbsolutePath());
 	
-	            // Tentativa de leitura do arquivo
-	            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
-	                String linha;
-	                StringBuilder conteudo = new StringBuilder(); // Armazenar o conteúdo do arquivo
-	                while ((linha = br.readLine()) != null) {
-	                    conteudo.append(linha).append("\n");
-	                }
-	                
-	                // Exibir o conteúdo do arquivo em um JOptionPane
-	                JOptionPane.showMessageDialog(null, "Conteúdo do arquivo:\n" + conteudo.toString());
-	
-	            } catch (IOException ex) {
-	                ex.printStackTrace();
-	                JOptionPane.showMessageDialog(null, "Erro ao ler o arquivo.");
-	            }
-	        } else {
-	            JOptionPane.showMessageDialog(null, "Nenhum arquivo foi selecionado.");
-	        }
-	    }
-	});
-	add(importButton);
-	setVisible(true);*/
 }
 
-    // Método principal para iniciar a interface
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Tela de Configuração");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        Configuração telaInicial = new Configuração();
-        frame.getContentPane().add(telaInicial);
-        frame.pack(); // Ajusta o tamanho do JFrame com base nos componentes
-        frame.setLocationRelativeTo(null); // Centraliza na tela
-        frame.setVisible(true); // Torna a janela visível
-    }
+  
     
 }
