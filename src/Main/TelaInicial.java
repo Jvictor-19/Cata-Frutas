@@ -1,6 +1,8 @@
 package Main;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import Fonte.FontePixel;
 
 import java.awt.*;
@@ -99,7 +101,24 @@ public class TelaInicial extends JFrame {
         JButton playButton = new JButton("Jogar");
         playButton.setFont(FontePixel.carregarFontePixel(10));
         playButton.setBounds(610, 400, 120, 50);
+        playButton.setForeground(Color.WHITE);
+        playButton.setBorder(new EmptyBorder(10, 20, 10, 20));
+        playButton.setFocusPainted(false);
+        playButton.setBackground(new Color(70, 130, 180));
         background.add(playButton);
+        
+     // Efeito de hover (quando o mouse passa por cima)
+        playButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	playButton.setBackground(new Color(100, 149, 237)); // Cor mais clara ao passar o mouse
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	playButton.setBackground(new Color(70, 130, 180)); // Voltar para a cor original
+            }
+        });
 
      // Variáveis para os nomes dos jogadores
         //String nomeJogador1 = "";
@@ -186,7 +205,7 @@ public class TelaInicial extends JFrame {
         background.add(soundLabel);
         //add(creditsButton);
         
-
+        
         // Redimensiona a imagem para o tamanho desejado (por exemplo, 1600x900)
         Image scaledImage = backgroundIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
 
