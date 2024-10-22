@@ -1,6 +1,8 @@
 package Main;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import Fonte.FontePixel;
 
 import java.awt.*;
@@ -67,16 +69,19 @@ public class TelaInicial extends JFrame {
         
         
 
-        // Botão de som no canto superior esquerdo
+     // Botão de som no canto superior esquerdo
         JLabel soundLabel = new JLabel();
-        ImageIcon soundOnIcon = new ImageIcon("src/imagens/alto.png");
-        ImageIcon soundOffIcon = new ImageIcon("src/imagens/mudo.png");
+
+        // Carregar as imagens usando getClass().getResource()
+        ImageIcon soundOnIcon = new ImageIcon(getClass().getResource("/imagens/alto.png"));
+        ImageIcon soundOffIcon = new ImageIcon(getClass().getResource("/imagens/mudo.png"));
+
 
         int iconWidth = 50;
         int iconHeight = 50;
         soundLabel.setIcon(new ImageIcon(soundOnIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH)));
         soundLabel.setBounds(10, 10, iconWidth, iconHeight);
-        background.add(soundLabel);
+        //background.add(soundLabel);
 
         soundLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -96,7 +101,24 @@ public class TelaInicial extends JFrame {
         JButton playButton = new JButton("Jogar");
         playButton.setFont(FontePixel.carregarFontePixel(10));
         playButton.setBounds(610, 400, 120, 50);
+        playButton.setForeground(Color.WHITE);
+        playButton.setBorder(new EmptyBorder(10, 20, 10, 20));
+        playButton.setFocusPainted(false);
+        playButton.setBackground(new Color(70, 130, 180));
         background.add(playButton);
+        
+     // Efeito de hover (quando o mouse passa por cima)
+        playButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	playButton.setBackground(new Color(100, 149, 237)); // Cor mais clara ao passar o mouse
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	playButton.setBackground(new Color(70, 130, 180)); // Voltar para a cor original
+            }
+        });
 
      // Variáveis para os nomes dos jogadores
         //String nomeJogador1 = "";
@@ -165,23 +187,47 @@ public class TelaInicial extends JFrame {
      // Botão Créditos
         JButton creditsButton = new JButton("Créditos");
         creditsButton.setFont(FontePixel.carregarFontePixel(10));
+
         creditsButton.setBounds(610, 480, 120, 50);
-        background.add(creditsButton);
+        //background.add(creditsButton);
+
 
         // Carrega a imagem original de créditos
-        ImageIcon originalIcon = new ImageIcon("src/imagens/FundoCreditos.png");
+        //ImageIcon originalIcon = new ImageIcon(getClass().getResource("/imagens/FundoCreditos.png"));
+        backgroundIcon = new ImageIcon(getClass().getResource("/imagens/backgraund1.jpg"));
+        background.setBounds(0, 0, 1472, 832);
+        add(background); // Adiciona o fundo primeiro
+
+        // Adiciona outros componentes depois
+        
+        background.add(playButton);
+        background.add(creditsButton);
+        background.add(soundLabel);
+        //add(creditsButton);
+        
+        
+        // Redimensiona a imagem para o tamanho desejado (por exemplo, 1600x900)
+        Image scaledImage = backgroundIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
 
         // Redimensiona a imagem para o tamanho desejado
-        Image scaledImage = originalIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
+        //Image scaledImage = originalIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
+
 
         // Cria um novo ImageIcon com a imagem redimensionada
+        
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
         // JLabel para exibir a imagem de créditos
         JLabel creditsImageLabel = new JLabel(scaledIcon);
-        creditsImageLabel.setBounds(0, 0, 1500, 900); 
+
+        creditsImageLabel.setBounds(0, 0, 1500, 900); // Ajuste o tamanho do JLabel para corresponder à nova imagem
         creditsImageLabel.setVisible(false); // Inicialmente invisível
+
+        /*creditsImageLabel.setBounds(0, 0, 1500, 900); 
+        creditsImageLabel.setVisible(false); // Inicialmente invisível*/
+
         add(creditsImageLabel);
+        
 
         // Botão "Voltar"
         JButton voltarButton = new JButton("Voltar");
@@ -203,7 +249,9 @@ public class TelaInicial extends JFrame {
         });
     }
     
-    
+    /**
+     * Método para importar um arquivo e iniciar o jogo.
+     */
     private void importarArquivo() {
         JFileChooser fileChooser = new JFileChooser();
         int retorno = fileChooser.showOpenDialog(null);
@@ -238,6 +286,9 @@ public class TelaInicial extends JFrame {
         }
     }
     
+    /**
+     * Método que ajusta o tamanho do fundo ao redimensionar a janela.
+     */
     private void ajustarTamanhoFundo() {
         // Obter o tamanho atual da janela
         largura = getContentPane().getWidth();
@@ -272,11 +323,11 @@ public class TelaInicial extends JFrame {
         music.stop();
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         // Executa a GUI em um thread separado para evitar problemas de thread
         SwingUtilities.invokeLater(() -> {
             TelaInicial telaInicial = new TelaInicial();
             telaInicial.setVisible(true);
         });
-    }
+    }*/
 }

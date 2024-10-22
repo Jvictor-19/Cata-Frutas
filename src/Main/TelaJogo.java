@@ -27,7 +27,10 @@ import Elementos.ElementosEstáticos.Goiabeira;
 import Elementos.ElementosEstáticos.Laranjeira;
 import Elementos.ElementosEstáticos.Pedra;
 
-
+/**
+ * Classe que representa a tela do jogo, responsável pela lógica de jogo e
+ * interface gráfica.
+ */
 public class TelaJogo extends JPanel implements Runnable {
 
     private static final long serialVersionUID = 1L;
@@ -40,6 +43,7 @@ public class TelaJogo extends JPanel implements Runnable {
 
     // Elementos do jogo
     private ImageIcon imagemGrama;
+    
     private ArrayList<Pedra> pedras;
     private int quantidadePedras;
 
@@ -96,8 +100,13 @@ public class TelaJogo extends JPanel implements Runnable {
     private boolean jogoPausado = false;  // Controle de pausa
     private Thread threadJogo;
    
-    
- // Adicionar os layouts
+    /**
+     * Construtor da classe TelaJogo.
+     * 
+     * @param configFilePath O caminho do arquivo de configuração a ser lido para
+     *                       inicializar a tela do jogo.
+     */	
+    // Adicionar os layouts
     public TelaJogo(String configFilePath) {
         // Lê os parâmetros do arquivo de configuração
         lerConfiguracao(configFilePath);
@@ -120,9 +129,13 @@ public class TelaJogo extends JPanel implements Runnable {
         this.jogadoresNoChao = new ArrayList<>();
         this.quantidadeJogadores = 2;
 
-        // Carregar imagens dos jogadores
-        imagemJogador1 = Toolkit.getDefaultToolkit().getImage("Cata-Frutas/src/imagens/jogador1.png");
-        imagemJogador2 = Toolkit.getDefaultToolkit().getImage("Cata-Frutas/src/imagens/jogador2.png");
+        
+        //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
+        //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
+        
+        //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
+        //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
+
 
         // Configurar o painel principal
         this.setLayout(new BorderLayout());
@@ -133,7 +146,12 @@ public class TelaJogo extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela + 40)); // Aumentar altura para os botões
         this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
-        imagemGrama = new ImageIcon("src/imagens/grama.png");
+
+
+        imagemGrama = new ImageIcon(getClass().getResource("/imagens/grama.png"));
+
+        //imagemGrama = new ImageIcon("src/imagens/grama.png");
+
 
         // Gerar objetos no chão
         gerarPedras();
@@ -201,7 +219,11 @@ public class TelaJogo extends JPanel implements Runnable {
     }
 
 
-
+    /**
+     * Lê a configuração do jogo a partir de um arquivo.
+     *
+     * @param configFilePath O caminho para o arquivo de configuração.
+     */
     private void lerConfiguracao(String configFilePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
             String linha;
@@ -274,7 +296,13 @@ public class TelaJogo extends JPanel implements Runnable {
             tamanhoMochila = 5; // Valor padrão
         }
     }
-
+    
+    /**
+     * Ajusta o tamanho dos tiles para que a matriz se ajuste à tela.
+     *
+     * @param larguraDisponivel A largura disponível da tela.
+     * @param alturaDisponivel  A altura disponível da tela.
+     */
     private void ajustarTamanhoTile(int larguraDisponivel, int alturaDisponivel) {
         // Calcular o tamanho do tile para que a matriz se ajuste à tela
         int alturaAreaJogo = alturaDisponivel - 100; // Deixar espaço para os botões
@@ -288,7 +316,9 @@ public class TelaJogo extends JPanel implements Runnable {
         tamanhoTile = Math.min(tamanhoTileHorizontal, tamanhoTileVertical);
     }
 
-
+    /**
+     * Gera pedras em posições aleatórias na matriz.
+     */
     private void gerarPedras() {
         Random random = new Random();
         int contagem = 0;
@@ -304,6 +334,9 @@ public class TelaJogo extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Gera laranjas no chão em posições aleatórias na matriz.
+     */
     private void gerarLaranjasNoChao() {
     	Random random = new Random();
         int contagem = 0;
@@ -319,6 +352,10 @@ public class TelaJogo extends JPanel implements Runnable {
         }
 
     }
+    
+    /**
+     * Gera laranjeiras no chão em posições aleatórias na matriz.
+     */
     private void gerarLaranjeiraNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -333,7 +370,10 @@ public class TelaJogo extends JPanel implements Runnable {
                 }
             }
         }
-        
+    
+    /**
+     * Gera abacates no chão em posições aleatórias na matriz.
+     */
     private void gerarAbacatesNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -348,20 +388,28 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         }
     }
-        private void gerarAbacateiroNoChao() {
-            Random random = new Random();
-            int contagem = 0;
+    
+    /**
+     * Gera abacateiros no chão em posições aleatórias na matriz.
+     */
+    private void gerarAbacateiroNoChao() {
+        Random random = new Random();
+        int contagem = 0;
 
-            while (contagem < quantidadeAbacateiroNoChao) {
-                int x = random.nextInt(maxColunasTela);
-                int y = random.nextInt(maxLinhasTela);
+        while (contagem < quantidadeAbacateiroNoChao) {
+            int x = random.nextInt(maxColunasTela);
+            int y = random.nextInt(maxLinhasTela);
 
-                if (!posicaoOcupada(x, y)) {
-                    abacateiroNoChao.add(new Abacateiro(x, y));
-                    contagem++;
-                }
+            if (!posicaoOcupada(x, y)) {
+                abacateiroNoChao.add(new Abacateiro(x, y));
+                contagem++;
             }
         }
+    }
+    
+    /**
+     * Gera maracujás no chão em posições aleatórias na matriz.
+     */
     private void gerarMaracujaNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -376,6 +424,10 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         }
     }
+    
+    /**
+     * Gera coqueiros no chão em posições aleatórias na matriz.
+     */
     private void gerarCoqueiroNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -390,6 +442,10 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         }
     }
+    
+    /**
+     * Gera cocos no chão em posições aleatórias na matriz.
+     */
     private void gerarCocoNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -404,6 +460,10 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         }
     }
+    
+    /**
+     * Gera acerolas no chão em posições aleatórias na matriz.
+     */
     private void gerarAcerolaNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -419,6 +479,9 @@ public class TelaJogo extends JPanel implements Runnable {
         }
     }
     
+    /**
+     * Gera aceroleiras no chão em posições aleatórias na matriz.
+     */
     private void gerarAceroleiraNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -434,6 +497,9 @@ public class TelaJogo extends JPanel implements Runnable {
         }
     }
     
+    /**
+     * Gera amoras no chão em posições aleatórias na matriz.
+     */
     private void gerarAmoraNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -449,6 +515,9 @@ public class TelaJogo extends JPanel implements Runnable {
         }
     }
     
+    /**
+     * Gera amoreiras no chão em posições aleatórias na matriz.
+     */
     private void gerarAmoreiraNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -463,6 +532,10 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         }
     }
+    
+    /**
+     * Gera goiabeiras no chão em posições aleatórias na matriz.
+     */
     private void gerarGoiabeiraNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -477,6 +550,10 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         }
     }
+    
+    /**
+     * Gera goiabas no chão em posições aleatórias na matriz.
+     */
     private void gerarGoiabaNoChao() {
         Random random = new Random();
         int contagem = 0;
@@ -492,14 +569,17 @@ public class TelaJogo extends JPanel implements Runnable {
         }
     }
     
+    /**
+     * Gera os jogadores no chão em posições aleatórias na matriz.
+     */
     private void gerarJogadoresNoChao() {
         Random random = new Random();
         int contagem = 0;
         int ver = 0;
 
         // Caminhos das imagens para os dois jogadores
-        String caminhoImagemJogador1 = "src/imagens/Joagdor1.png"; // Imagem do jogador 1
-        String caminhoImagemJogador2 = "src/imagens/Jogador2.png"; // Imagem do jogador 2
+        String caminhoImagemJogador1 = "/imagens/Joagdor1.png"; // Imagem do jogador 1
+        String caminhoImagemJogador2 = "/imagens/Jogador2.png"; // Imagem do jogador 2
 
         while (ver < 2) {
             int x = random.nextInt(maxColunasTela);
