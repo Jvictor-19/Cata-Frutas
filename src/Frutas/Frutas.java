@@ -5,6 +5,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 /**
+
  * Classe abstrata que representa frutas em um jogo.
  * A classe fornece propriedades e métodos comuns para diferentes tipos de frutas.
  */
@@ -20,15 +21,18 @@ public abstract class Frutas {
      * @param caminhoImagem URL que aponta para a imagem da fruta.
      */
     public Frutas(int x, int y, URL caminhoImagem) {
+
         this.x = x;
         this.y = y;
         this.imagem = new ImageIcon(caminhoImagem); // Carrega a imagem a partir do URL
     }
 
     /**
+
      * Obtém a coordenada x da fruta.
      *
      * @return A coordenada x da fruta.
+
      */
     public int getX() {
         return x;
@@ -48,6 +52,7 @@ public abstract class Frutas {
      *
      * @param g O objeto Graphics usado para desenhar.
      * @param tamanhoTile O tamanho de cada tile no grid do jogo.
+
      */
     public void desenhar(Graphics g, int tamanhoTile) {
         int tamanhoFruta = (int) (tamanhoTile * 0.5); // Tamanho reduzido da fruta
