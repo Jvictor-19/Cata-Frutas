@@ -2,13 +2,21 @@ package Main;
 
 import javax.swing.*;
 
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import Botões.BotaoSair;
+import Botões.BotaoSortear;
+
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import Main.SorteioDados;
 import Frutas.Frutas;
 import Frutas.Abacate;
 import Frutas.Acerola;
@@ -89,16 +97,16 @@ public class TelaJogo extends JPanel implements Runnable {
     private int quantidadeGoiabeiraNoChao;
     
     private ArrayList<Jogador> jogadoresNoChao;
-    private int quantidadeJogadores; 
-    
-    private Image imagemJogador1; // Imagem do primeiro jogador
-    private Image imagemJogador2; // Imagem do segundo jogador
     
     private int quantidadeBichadas;
     private int tamanhoMochila;
 
     private boolean jogoPausado = false;  // Controle de pausa
     private Thread threadJogo;
+    
+    private JLabel labelDado1;
+    private JLabel labelDado2;
+    private JButton botaoSortear;
    
     /**
      * Construtor da classe TelaJogo.
@@ -127,14 +135,32 @@ public class TelaJogo extends JPanel implements Runnable {
         this.goiabaNoChao = new ArrayList<>();
         this.goiabeiraNoChao = new ArrayList<>();
         this.jogadoresNoChao = new ArrayList<>();
-        this.quantidadeJogadores = 2;
-
         
-        //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
-        //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
-        
-        //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
-        //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
+     // Adicionar KeyListener
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int keyCode = e.getKeyCode();
+                for (Jogador jogador : jogadoresNoChao) {
+                    switch (keyCode) {
+                        case KeyEvent.VK_UP: // Cima
+                            jogador.mover(0, -1); // Mover para cima
+                            break;
+                        case KeyEvent.VK_DOWN: // Baixo
+                            jogador.mover(0, 1); // Mover para baixo
+                            break;
+                        case KeyEvent.VK_LEFT: // Esquerda
+                            jogador.mover(-1, 0); // Mover para esquerda
+                            break;
+                        case KeyEvent.VK_RIGHT: // Direita
+                            jogador.mover(1, 0); // Mover para direita
+                            break;
+                    }
+                }
+                repaint(); // Redesenhar a tela após a movimentação
+            }
+        });
+        this.setFocusable(true);
 
 
         // Configurar o painel principal
@@ -147,11 +173,7 @@ public class TelaJogo extends JPanel implements Runnable {
         this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
 
-
         imagemGrama = new ImageIcon(getClass().getResource("/imagens/grama.png"));
-
-        //imagemGrama = new ImageIcon("src/imagens/grama.png");
-
 
         // Gerar objetos no chão
         gerarPedras();
@@ -180,15 +202,10 @@ public class TelaJogo extends JPanel implements Runnable {
         JPanel painelBotoes = new JPanel();
         painelBotoes.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        // Botão "Sair"
-        JButton botaoSair = new JButton("Sair");
-        botaoSair.addActionListener(e -> {
-            int resposta = JOptionPane.showConfirmDialog(null, "Você deseja realmente sair?", "Confirmação", JOptionPane.YES_NO_OPTION);
-            if (resposta == JOptionPane.YES_OPTION) {
-                System.exit(0);  // Sai do jogo se o usuário confirmar
-            }
-        });
-        painelBotoes.add(botaoSair);
+        // Cria uma instância do botão "Sair"
+        BotaoSair botaoSair = new BotaoSair();
+        // Adiciona o botão "Sair" ao painel de botões
+        painelBotoes.add(botaoSair.getBotao());
 
         // Painel para as informações dos jogadores
         JPanel painelJogadores = new JPanel();
@@ -203,12 +220,23 @@ public class TelaJogo extends JPanel implements Runnable {
         painelJogadores.add(jogador2Label);
 
         // Adicionar o botão "Sortear"
-        JButton botaoSortear = new JButton("Sortear");
-        botaoSortear.addActionListener(e -> {
-            // Adicione a lógica para sortear aqui
-            JOptionPane.showMessageDialog(null, "Sorteio realizado!");
-        });
-        painelJogadores.add(botaoSortear);
+     // Criar os componentes
+        labelDado1 = new JLabel("Dado 1: ?");
+        labelDado2 = new JLabel("Dado 2: ?");
+
+        // Estilizando os textos
+        labelDado1.setFont(new Font("Serif", Font.BOLD, 14));
+        labelDado2.setFont(new Font("Serif", Font.BOLD, 14));
+
+     // Supondo que você tenha duas labels: labelDado1 e labelDado2
+        BotaoSortear botaoSortear = new BotaoSortear(labelDado1, labelDado2);
+        // Adiciona o botão "Sortear" ao painel
+        painelBotoes.add(botaoSortear.getBotao());
+
+        // Adicionar componentes ao painel
+        painelJogadores.add(labelDado1);
+        painelJogadores.add(labelDado2);
+        //painelJogadores.add(botaoSortear);
 
         // Adicionar os painéis ao painel principal
         painelInferior.add(painelBotoes, BorderLayout.WEST); // Botões à esquerda
@@ -315,258 +343,131 @@ public class TelaJogo extends JPanel implements Runnable {
         // Escolher o menor tamanho para garantir que a matriz caiba na tela
         tamanhoTile = Math.min(tamanhoTileHorizontal, tamanhoTileVertical);
     }
-
+    
     /**
-     * Gera pedras em posições aleatórias na matriz.
+     * Método genérico para gerar objetos em posições aleatórias na matriz.
+     * 
+     * @param lista a lista de objetos (por exemplo, pedras, laranjas, etc.)
+     * @param quantidade a quantidade de objetos a serem gerados
+     * @param tipoObjeto a classe do objeto a ser gerado
      */
-    private void gerarPedras() {
+    private <T> void gerarObjetosAleatorios(List<T> lista, int quantidade, Class<T> tipoObjeto) {
         Random random = new Random();
         int contagem = 0;
 
-        while (contagem < quantidadePedras) {
+        while (contagem < quantidade) {
             int x = random.nextInt(maxColunasTela);
             int y = random.nextInt(maxLinhasTela);
 
             if (!posicaoOcupada(x, y)) {
-                pedras.add(new Pedra(x, y));
-                contagem++;
+                try {
+                    // Usa reflexão para criar uma nova instância do objeto
+                    T objeto = tipoObjeto.getDeclaredConstructor(int.class, int.class).newInstance(x, y);
+                    lista.add(objeto);
+                    contagem++;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+    
+    /**
+     * Gera pedras em posições aleatórias na matriz.
+     */
+    private void gerarPedras() {
+        gerarObjetosAleatorios(pedras, quantidadePedras, Pedra.class);
     }
 
     /**
      * Gera laranjas no chão em posições aleatórias na matriz.
      */
     private void gerarLaranjasNoChao() {
-    	Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeLaranjasNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                laranjasNoChao.add(new Laranja(x, y));
-                contagem++;
-            }
-        }
-
+        gerarObjetosAleatorios(laranjasNoChao, quantidadeLaranjasNoChao, Laranja.class);
     }
-    
+
     /**
      * Gera laranjeiras no chão em posições aleatórias na matriz.
      */
     private void gerarLaranjeiraNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeLaranjeirasNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                laranjeiraNoChao.add(new Laranjeira(x, y));
-                contagem++;
-                }
-            }
-        }
+        gerarObjetosAleatorios(laranjeiraNoChao, quantidadeLaranjeirasNoChao, Laranjeira.class);
+    }
     
     /**
      * Gera abacates no chão em posições aleatórias na matriz.
      */
     private void gerarAbacatesNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAbacatesNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                abacatesNoChao.add(new Abacate(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(abacatesNoChao, quantidadeAbacatesNoChao, Abacate.class);
     }
     
     /**
      * Gera abacateiros no chão em posições aleatórias na matriz.
      */
     private void gerarAbacateiroNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAbacateiroNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                abacateiroNoChao.add(new Abacateiro(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(abacateiroNoChao, quantidadeAbacateiroNoChao, Abacateiro.class);
     }
     
     /**
      * Gera maracujás no chão em posições aleatórias na matriz.
      */
     private void gerarMaracujaNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeMaracujaNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                maracujasNoChao.add(new Maracuja(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(maracujasNoChao, quantidadeMaracujaNoChao, Maracuja.class);
     }
     
     /**
      * Gera coqueiros no chão em posições aleatórias na matriz.
      */
     private void gerarCoqueiroNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeCoqueiroNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                coqueiroNoChao.add(new Coqueiro(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(coqueiroNoChao, quantidadeCoqueiroNoChao, Coqueiro.class);
     }
     
     /**
      * Gera cocos no chão em posições aleatórias na matriz.
      */
     private void gerarCocoNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeCocoNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                cocoNoChao.add(new Coco(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(cocoNoChao, quantidadeCocoNoChao, Coco.class);
     }
     
     /**
      * Gera acerolas no chão em posições aleatórias na matriz.
      */
     private void gerarAcerolaNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAcerolaNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                acerolaNoChao.add(new Acerola(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(acerolaNoChao, quantidadeAcerolaNoChao, Acerola.class);
     }
     
     /**
      * Gera aceroleiras no chão em posições aleatórias na matriz.
      */
     private void gerarAceroleiraNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAceroleiraNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                aceroleiraNoChao.add(new Aceroleira(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(aceroleiraNoChao, quantidadeAceroleiraNoChao, Aceroleira.class);
     }
     
     /**
      * Gera amoras no chão em posições aleatórias na matriz.
      */
     private void gerarAmoraNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAmoraNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                amoraNoChao.add(new Amora(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(amoraNoChao, quantidadeAmoraNoChao, Amora.class);
     }
     
     /**
      * Gera amoreiras no chão em posições aleatórias na matriz.
      */
     private void gerarAmoreiraNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAmoreiraNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                amoreiraNoChao.add(new Amoreiro(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(amoreiraNoChao, quantidadeAmoreiraNoChao, Amoreiro.class);
     }
     
     /**
      * Gera goiabeiras no chão em posições aleatórias na matriz.
      */
     private void gerarGoiabeiraNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeGoiabeiraNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                goiabeiraNoChao.add(new Goiabeira(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(goiabeiraNoChao, quantidadeGoiabeiraNoChao, Goiabeira.class);
     }
     
     /**
      * Gera goiabas no chão em posições aleatórias na matriz.
      */
     private void gerarGoiabaNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeGoiabaNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                goiabaNoChao.add(new Goiaba(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(goiabaNoChao, quantidadeGoiabaNoChao, Goiaba.class);
     }
     
     /**
@@ -773,15 +674,15 @@ public class TelaJogo extends JPanel implements Runnable {
 
     }
 
-	    /*public static void main(String[] args) {
+	    public static void main(String[] args) {
 	        SwingUtilities.invokeLater(() -> {
 	            JFrame frame = new JFrame("Jogo de Laranjas");
 	            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	            frame.setResizable(false);
-	            frame.setContentPane(new TelaJogo("config.txt")); // Passando o caminho do arquivo de configuração
+	            frame.setContentPane(new TelaJogo("src/Arquivo/configuracaoJogo.txt")); // Passando o caminho do arquivo de configuração
 	            frame.pack();
 	            frame.setLocationRelativeTo(null);
 	            frame.setVisible(true);
 	        });
-	    }*/
-	}
+	    }
+}
