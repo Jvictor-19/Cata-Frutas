@@ -110,6 +110,10 @@ public class TelaJogo extends JPanel implements Runnable {
     private JButton botaoSortear;
    
     private boolean jogadaSorteada = false;
+    private boolean jogadaEncerrada = false;
+    private int somaPassos;
+    private int jogadorAtivo = 0; // Índice do jogador ativo (começando com o primeiro jogador)
+
     /**
      * Construtor da classe TelaJogo.
      * 
@@ -138,26 +142,59 @@ public class TelaJogo extends JPanel implements Runnable {
         this.goiabeiraNoChao = new ArrayList<>();
         this.jogadoresNoChao = new ArrayList<>();
         
-        int verificador = 0;
-        
-     // Adicionar KeyListener
+       // Adicionar KeyListener
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
-                for (Jogador jogador : jogadoresNoChao) {
+                Jogador jogadorAtual = jogadoresNoChao.get(jogadorAtivo); 
+                int posy = jogadorAtual.getY();
+                int posx = jogadorAtual.getX();
+
+                // Verifique se o índice do jogador ativo é válido
+                if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
+                    keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
+                    keyCode == KeyEvent.VK_C) {
+                    // Jogador ativo
+
                     switch (keyCode) {
                         case KeyEvent.VK_UP: // Cima
-                            jogador.mover(0, -1); // Mover para cima
+                        	if(posy >= 1) {
+                        		jogadorAtual.mover(0, -1); // Mover para cima
+                        		System.out.println("Pos y " + posy);
+                        	}
+                     
+                            
                             break;
                         case KeyEvent.VK_DOWN: // Baixo
-                            jogador.mover(0, 1); // Mover para baixo
+                        	if(posy <= maxLinhasTela-2) {
+                        		jogadorAtual.mover(0, 1); 
+                        		System.out.println("Pos y " + posy);
+                        	}
+                             // Mover para baixo
                             break;
                         case KeyEvent.VK_LEFT: // Esquerda
-                            jogador.mover(-1, 0); // Mover para esquerda
+                        	if(posx >= 1) {
+                        		jogadorAtual.mover(-1, 0);
+                        		System.out.println("Pos x " + posx);
+                        	}
+                             // Mover para esquerda
                             break;
                         case KeyEvent.VK_RIGHT: // Direita
-                            jogador.mover(1, 0); // Mover para direita
+                        	if(posx <= maxLinhasTela-2) {
+                        		jogadorAtual.mover(1, 0); // Mover para direita
+                        		System.out.println("Pos x " + posx);
+                        	}
+                            break;
+                        case KeyEvent.VK_C: // Troca de jogador com a tecla TAB
+                            if(jogadorAtivo == 1) {
+                            	jogadorAtivo = 0;
+                            	System.out.println("Jogador ativo agora é o jogador " + jogadorAtivo);
+                            }else {
+                            	jogadorAtivo = 1;
+                            	System.out.println("Jogador ativo agora é o jogador " + jogadorAtivo);
+                            }
+                        	 // Alterna entre os jogadores
                             break;
                     }
                 }
@@ -165,7 +202,6 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         });
         this.setFocusable(true);
-
 
         // Configurar o painel principal
         this.setLayout(new BorderLayout());
@@ -199,7 +235,7 @@ public class TelaJogo extends JPanel implements Runnable {
      // Painel inferior contendo botões e informações dos jogadores
         JPanel painelInferior = new JPanel();
         painelInferior.setLayout(new BorderLayout());
-        painelInferior.setPreferredSize(new Dimension(400, 70)); // Define a altura do painel inferior
+        painelInferior.setPreferredSize(new Dimension(400, 50)); // Define a altura do painel inferior
         painelInferior.setBackground(Color.LIGHT_GRAY);
 
         // Painel para os botões "Sair" e "Pausar"
@@ -211,9 +247,39 @@ public class TelaJogo extends JPanel implements Runnable {
         // Adiciona o botão "Sair" ao painel de botões
         painelBotoes.add(botaoSair.getBotao());
          
-        BotaoEncerrarJogada botaoEncerrar = new BotaoEncerrarJogada(jogadaSorteada);
-        painelBotoes.add(botaoEncerrar.getBotao());
+       // BotaoEncerrarJogada botaoEncerrar = new BotaoEncerrarJogada(jogadaSorteada);
+        //painelBotoes.add(botaoEncerrar.getBotao());
+        JButton botaoEncerrar = new JButton("Encerrar jogada");
+        botaoEncerrar.addActionListener(e -> {
+        	if (!jogadaSorteada) { // Verifica se os dados foram sorteados
+                // Exibe um aviso para informar que o jogador deve sortear os dados primeiro
+                JOptionPane.showMessageDialog(null, 
+                        "Você deve sortear os dados antes de encerrar a jogada!", 
+                        "Aviso", 
+                        JOptionPane.WARNING_MESSAGE);
 
+        	}else if (!jogadaEncerrada) { // Verifica se as condições para encerrar estão atendidas
+            	int resposta = JOptionPane.showConfirmDialog(null, 
+		                        "Deseja realmente encerrar a jogada?", 
+		                        "Confirmação de Encerramento", 
+		                        JOptionPane.YES_NO_OPTION);
+            	if(resposta == JOptionPane.YES_NO_OPTION) {
+            		jogadaEncerrada = true;
+            		jogadaSorteada = false;
+            		labelDado1.setText("Passos: ?");
+            	}
+                
+            } else {
+            	JOptionPane.showMessageDialog(null, 
+                        "A jogada já foi encerrada!", 
+                        "Aviso", 
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        	requestFocusInWindow();
+        });
+        painelBotoes.add(botaoEncerrar);
+        
+        
         // Painel para as informações dos jogadores
         JPanel painelJogadores = new JPanel();
         painelJogadores.setLayout(new GridLayout(2, 4, 0, 0)); // Layout com três colunas para exibir dois jogadores e o botão "Sortear"
@@ -240,9 +306,27 @@ public class TelaJogo extends JPanel implements Runnable {
         painelDados.add(labelDado1);
         
         // Cria uma instância do botão "Sortear"
-        BotaoSortear botaoSortear = new BotaoSortear(labelDado1);
+        //BotaoSortear botaoSortear = new BotaoSortear(labelDado1);
         // Adiciona o botão "Sortear" ao painel de botões
-        painelBotoes.add(botaoSortear.getBotao());
+        //painelBotoes.add(botaoSortear.getBotao());
+        JButton botaoSortear = new JButton("Sortear");
+        botaoSortear.addActionListener(e -> {
+        	if(!jogadaSorteada) {
+        		int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
+            	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
+                labelDado1.setText("Passos: " + somaPassos); // Atualiza o label com a soma dos passos
+                jogadaSorteada = true;
+                jogadaEncerrada = false;
+        	}else {
+        		JOptionPane.showMessageDialog(null, 
+                "Os dados não podem ser sorteados, novamente, antes de encerrar a jogada!", 
+                "Aviso", 
+                JOptionPane.WARNING_MESSAGE);
+        	}
+        	
+        	requestFocusInWindow();
+        });
+        painelBotoes.add(botaoSortear);
 
         // Adiciona o painel de dados ao painel de jogadores
         painelJogadores.add(painelDados);
@@ -485,7 +569,6 @@ public class TelaJogo extends JPanel implements Runnable {
      */
     private void gerarJogadoresNoChao() {
         Random random = new Random();
-        int contagem = 0;
         int ver = 0;
 
         // Caminhos das imagens para os dois jogadores
@@ -503,7 +586,7 @@ public class TelaJogo extends JPanel implements Runnable {
                 // Adiciona o jogador na lista com a imagem apropriada
                 jogadoresNoChao.add(new Jogador(x, y, caminhoImagem)); 
                 ver++;
-                contagem++;
+                
             }
         }
     }

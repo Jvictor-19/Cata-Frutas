@@ -3,6 +3,8 @@ package Elementos.ElementosDinamicos;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import java.net.URL;
+import java.util.List;
+import java.util.Random;
 
 /**
  * A classe Jogador representa o jogador em um jogo, com uma posição (x, y) e uma imagem associada.
@@ -58,5 +60,6 @@ public class Jogador {
             System.err.println("Imagem padrão não encontrada: " + caminhoImagemPadrao);
         }
     }
+    
 }
 
