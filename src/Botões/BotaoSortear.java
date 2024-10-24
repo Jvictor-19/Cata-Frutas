@@ -10,22 +10,26 @@ import java.awt.event.ActionListener;
 public class BotaoSortear {
 
     private JButton botao; // O botão "Sortear"
+    
 
-    public BotaoSortear(JLabel labelDado1, JLabel labelDado2) {
+    // Construtor agora recebe apenas um JLabel para exibir a soma dos passos
+    public BotaoSortear(JLabel labelPassos) {
         this.botao = new JButton("Sortear");
-        configurarAcao(labelDado1, labelDado2);
+        configurarAcao(labelPassos); // Configura a ação do botão
     }
 
-    private void configurarAcao(JLabel labelDado1, JLabel labelDado2) {
+    // Configura a ação do botão
+    private void configurarAcao(JLabel labelPassos) {
         ActionListener actionListener = e -> {
-            int[] resultados = SorteioDados.sortearDados(); // Chama o método da classe Sorteio
-            labelDado1.setText("Dado 1: " + resultados[0]); // Atualiza o label com o resultado do dado 1
-            labelDado2.setText("Dado 2: " + resultados[1]); // Atualiza o label com o resultado do dado 2
+            int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
+            int somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
+            labelPassos.setText("Passos: " + somaPassos); // Atualiza o label com a soma dos passos
         };
         this.botao.addActionListener(actionListener); // Adiciona a ação ao botão
     }
 
+    // Método para obter o botão
     public JButton getBotao() {
-        return botao; // Método para obter o botão
+        return botao;
     }
 }
