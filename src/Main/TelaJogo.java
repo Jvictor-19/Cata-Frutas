@@ -2,6 +2,7 @@ package Main;
 
 import javax.swing.*;
 
+import Botões.BotaoEncerrarJogada;
 import Botões.BotaoSair;
 import Botões.BotaoSortear;
 
@@ -108,6 +109,7 @@ public class TelaJogo extends JPanel implements Runnable {
     private JLabel labelDado2;
     private JButton botaoSortear;
    
+    private boolean jogadaSorteada = false;
     /**
      * Construtor da classe TelaJogo.
      * 
@@ -135,6 +137,8 @@ public class TelaJogo extends JPanel implements Runnable {
         this.goiabaNoChao = new ArrayList<>();
         this.goiabeiraNoChao = new ArrayList<>();
         this.jogadoresNoChao = new ArrayList<>();
+        
+        int verificador = 0;
         
      // Adicionar KeyListener
         this.addKeyListener(new KeyAdapter() {
@@ -192,10 +196,10 @@ public class TelaJogo extends JPanel implements Runnable {
         gerarGoiabeiraNoChao();
         gerarJogadoresNoChao();
 
-        // Painel inferior contendo botões e informações dos jogadores
+     // Painel inferior contendo botões e informações dos jogadores
         JPanel painelInferior = new JPanel();
         painelInferior.setLayout(new BorderLayout());
-        painelInferior.setPreferredSize(new Dimension(400, 60)); // Define a altura do painel inferior
+        painelInferior.setPreferredSize(new Dimension(400, 70)); // Define a altura do painel inferior
         painelInferior.setBackground(Color.LIGHT_GRAY);
 
         // Painel para os botões "Sair" e "Pausar"
@@ -206,10 +210,13 @@ public class TelaJogo extends JPanel implements Runnable {
         BotaoSair botaoSair = new BotaoSair();
         // Adiciona o botão "Sair" ao painel de botões
         painelBotoes.add(botaoSair.getBotao());
+         
+        BotaoEncerrarJogada botaoEncerrar = new BotaoEncerrarJogada(jogadaSorteada);
+        painelBotoes.add(botaoEncerrar.getBotao());
 
         // Painel para as informações dos jogadores
         JPanel painelJogadores = new JPanel();
-        painelJogadores.setLayout(new GridLayout(1, 3, 10, 10)); // Layout com três colunas para exibir dois jogadores e o botão "Sortear"
+        painelJogadores.setLayout(new GridLayout(2, 4, 0, 0)); // Layout com três colunas para exibir dois jogadores e o botão "Sortear"
 
         // Informações do Jogador 1
         JLabel jogador1Label = new JLabel("Jogador 1: 0 passos");
@@ -219,31 +226,34 @@ public class TelaJogo extends JPanel implements Runnable {
         JLabel jogador2Label = new JLabel("Jogador 2: 0 passos");
         painelJogadores.add(jogador2Label);
 
-        // Adicionar o botão "Sortear"
-     // Criar os componentes
-        labelDado1 = new JLabel("Dado 1: ?");
-        labelDado2 = new JLabel("Dado 2: ?");
+        // Painel dos dados e botão "Sortear"
+        JPanel painelDados = new JPanel();
+        painelDados.setLayout(new GridLayout(2, 1));
+
+        // Criar os componentes dos dados
+        labelDado1 = new JLabel("Passos: ?");
 
         // Estilizando os textos
         labelDado1.setFont(new Font("Serif", Font.BOLD, 14));
-        labelDado2.setFont(new Font("Serif", Font.BOLD, 14));
-
-     // Supondo que você tenha duas labels: labelDado1 e labelDado2
-        BotaoSortear botaoSortear = new BotaoSortear(labelDado1, labelDado2);
-        // Adiciona o botão "Sortear" ao painel
+        
+        // Adiciona os labels dos dados ao painel de dados
+        painelDados.add(labelDado1);
+        
+        // Cria uma instância do botão "Sortear"
+        BotaoSortear botaoSortear = new BotaoSortear(labelDado1);
+        // Adiciona o botão "Sortear" ao painel de botões
         painelBotoes.add(botaoSortear.getBotao());
 
-        // Adicionar componentes ao painel
-        painelJogadores.add(labelDado1);
-        painelJogadores.add(labelDado2);
-        //painelJogadores.add(botaoSortear);
+        // Adiciona o painel de dados ao painel de jogadores
+        painelJogadores.add(painelDados);
 
         // Adicionar os painéis ao painel principal
         painelInferior.add(painelBotoes, BorderLayout.WEST); // Botões à esquerda
-        painelInferior.add(painelJogadores, BorderLayout.CENTER); // Informações dos jogadores no centro
+        painelInferior.add(painelJogadores, BorderLayout.CENTER); // Informações dos jogadores e dados no centro
 
         // Adicionar o painel inferior diretamente ao JFrame
         this.add(painelInferior, BorderLayout.SOUTH);
+
     }
 
 
