@@ -64,4 +64,6 @@ public abstract class Posição {
     public void setIcone(ImageIcon icone) {
         this.icone = icone;
     }
+
 }
+

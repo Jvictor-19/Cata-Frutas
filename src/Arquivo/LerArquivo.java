@@ -1,6 +1,7 @@
 package Arquivo;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -20,21 +21,29 @@ public class LerArquivo {
      *         e os valores são as definições correspondentes. Se ocorrer um erro ao ler o arquivo,
      *         uma mensagem de erro será exibida no console e o HashMap retornado será vazio.
      */
-    public static HashMap<String, String> carregarConfiguracoes() {
-        HashMap<String, String> configuracoes = new HashMap<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("configuracoesJogo.txt"))) {
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] partes = linha.split("=");
-                if (partes.length == 2) {
-                    configuracoes.put(partes[0], partes[1]);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo de configurações: " + e.getMessage());
-        }
+	public static HashMap<String, String> carregarConfiguracoes() {
+	    HashMap<String, String> configuracoes = new HashMap<>();
 
-        return configuracoes;
-    }
+
+	    // Obtém o diretório do usuário
+	    String userDir = System.getProperty("user.home");
+	    // Define o caminho para o arquivo de configuração no diretório do usuário
+	    File configFile = new File(userDir, "configuracaoJogo.txt");
+
+	    try (BufferedReader br = new BufferedReader(new FileReader(configFile))) {
+	        String linha;
+	        while ((linha = br.readLine()) != null) {
+	            String[] partes = linha.split(":");
+	            if (partes.length == 2) {
+	                configuracoes.put(partes[0].trim(), partes[1].trim());
+	            }
+	        }
+	    } catch (IOException e) {
+	        System.out.println("Erro ao ler o arquivo de configurações: " + e.getMessage());
+	    }
+
+	    return configuracoes;
+	}
+
 }

@@ -15,13 +15,15 @@ public class Abacateiro extends Arvore {
 
     @Override
     protected void carregarImagem() {
-        ImageIcon icone = new ImageIcon("src/imagens/Abacateiro.png");
+        // Carrega a imagem do recurso incorporado
+        ImageIcon icone = new ImageIcon(getClass().getResource("/imagens/Abacateiro.png"));
         imagemArvore = icone.getImage(); // Mantenha a imagem original
 
         // Captura as dimensões originais da imagem
         larguraOriginal = imagemArvore.getWidth(null);
         alturaOriginal = imagemArvore.getHeight(null);
     }
+
 
     @Override
     public void desenhar(Graphics g, int tamanhoTile) {

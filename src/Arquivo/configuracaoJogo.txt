@@ -1,11 +1,11 @@
-dimensão: 7
-pedras: 1
-maracuja: 2 1
-laranja: 3 1
-abacate: 1 1
-coco: 1 1
-acerola: 1 1
-amora: 1 1
-goiaba: 1 0
+dimensão: 6
+pedras: 3
+maracuja: 1 1
+laranja: 4 2
+abacate: 3 2
+coco: 2 2
+acerola: 2 1
+amora: 1 2
+goiaba: 1 2
 bichadas: 0
 mochila: 0
