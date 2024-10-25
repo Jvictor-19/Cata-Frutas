@@ -265,6 +265,7 @@ public class TelaJogo extends JPanel implements Runnable {
                         
                     }
                     repaint(); // Redesenhar a tela após a movimentação
+                    
             	} else {
             		JOptionPane.showMessageDialog(null, 
                     "Você deve sortear os dados antes iniciar a movimentação!", 
@@ -340,7 +341,7 @@ public class TelaJogo extends JPanel implements Runnable {
             		jogadaEncerrada = true;
             		jogadaSorteada = false;
             		labelDado1.setText("Passos: ?");
-            		jogador1Label.setText("Jogador " + jogadorAtivo + ": ? passos");
+            		jogador1Label.setText("Jogador ?: ? passos");
             		
             	}
                 
@@ -361,7 +362,7 @@ public class TelaJogo extends JPanel implements Runnable {
 
         // Informações do Jogador 1
         
-        jogador1Label = new JLabel("Jogador 0: 0 passos");
+        jogador1Label = new JLabel("Jogador ?: ? passos");
         //painelJogadores.add(jogador1Label);
 
         // Informações do Jogador 2
@@ -392,10 +393,10 @@ public class TelaJogo extends JPanel implements Runnable {
         		int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
             	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
                 labelDado1.setText("Passos: " + somaPassos); // Atualiza o label com a soma dos passos
+                mudarJogador();
                 jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
                 jogadaSorteada = true;
                 jogadaEncerrada = false;
-                mudarJogador();
         	}else {
         		JOptionPane.showMessageDialog(null, 
                 "Os dados não podem ser sorteados, novamente, antes de encerrar a jogada!", 
