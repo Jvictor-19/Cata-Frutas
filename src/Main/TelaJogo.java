@@ -362,7 +362,7 @@ public class TelaJogo extends JPanel implements Runnable {
 
         // Informações do Jogador 1
         
-        jogador1Label = new JLabel("Jogador ?: ? passos");
+        jogador1Label = new JLabel("Jogador * : * passos");
         //painelJogadores.add(jogador1Label);
 
         // Informações do Jogador 2
