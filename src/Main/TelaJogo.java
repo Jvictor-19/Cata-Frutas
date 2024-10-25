@@ -106,6 +106,7 @@ public class TelaJogo extends JPanel implements Runnable {
     private Thread threadJogo;
     
     private JLabel labelDado1;
+    private JLabel jogador1Label;
     private JLabel labelDado2;
     private JButton botaoSortear;
    
@@ -238,7 +239,7 @@ public class TelaJogo extends JPanel implements Runnable {
                             		}
                             	}
                                 break;
-                            case KeyEvent.VK_C: // Troca de jogador com a tecla TAB
+                             /*case KeyEvent.VK_C: // Troca de jogador com a tecla TAB
                                 if(jogadorAtivo == 1) {
                                 	jogadorAtivo = 0;
                                 	System.out.println("Jogador ativo agora é o jogador " + jogadorAtivo);
@@ -247,11 +248,14 @@ public class TelaJogo extends JPanel implements Runnable {
                                 	System.out.println("Jogador ativo agora é o jogador " + jogadorAtivo);
                                 }
                             	 // Alterna entre os jogadores
-                                break;
+                                break;*/
                     		}
                     		//if(existePedraNaPosicao())
-                    		
+                    		/*if (somaPassos == 0) {
+                    			mudarJogador();
+                    		}*/
                     		labelDado1.setText("Passos: " + somaPassos);
+                    		jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
                     	} else {
                     		JOptionPane.showMessageDialog(null, 
                             "Você não tem mais pontos para movimentação!", 
@@ -336,6 +340,8 @@ public class TelaJogo extends JPanel implements Runnable {
             		jogadaEncerrada = true;
             		jogadaSorteada = false;
             		labelDado1.setText("Passos: ?");
+            		jogador1Label.setText("Jogador " + jogadorAtivo + ": ? passos");
+            		
             	}
                 
             } else {
@@ -351,19 +357,20 @@ public class TelaJogo extends JPanel implements Runnable {
         
         // Painel para as informações dos jogadores
         JPanel painelJogadores = new JPanel();
-        painelJogadores.setLayout(new GridLayout(2, 4, 0, 0)); // Layout com três colunas para exibir dois jogadores e o botão "Sortear"
+        painelJogadores.setLayout(new GridLayout(1, 1, 0, 0)); // Layout com três colunas para exibir dois jogadores e o botão "Sortear"
 
         // Informações do Jogador 1
-        JLabel jogador1Label = new JLabel("Jogador 1: 0 passos");
-        painelJogadores.add(jogador1Label);
+        
+        jogador1Label = new JLabel("Jogador 0: 0 passos");
+        //painelJogadores.add(jogador1Label);
 
         // Informações do Jogador 2
-        JLabel jogador2Label = new JLabel("Jogador 2: 0 passos");
-        painelJogadores.add(jogador2Label);
+        //JLabel jogador2Label = new JLabel("Jogador 2: 0 passos");
+        //painelJogadores.add(jogador2Label);
 
         // Painel dos dados e botão "Sortear"
         JPanel painelDados = new JPanel();
-        painelDados.setLayout(new GridLayout(2, 1));
+        painelDados.setLayout(new GridLayout(1, 2));
 
         // Criar os componentes dos dados
         labelDado1 = new JLabel("Passos: ?");
@@ -373,6 +380,7 @@ public class TelaJogo extends JPanel implements Runnable {
         
         // Adiciona os labels dos dados ao painel de dados
         painelDados.add(labelDado1);
+        painelDados.add(jogador1Label);
         
         // Cria uma instância do botão "Sortear"
         //BotaoSortear botaoSortear = new BotaoSortear(labelDado1);
@@ -380,12 +388,14 @@ public class TelaJogo extends JPanel implements Runnable {
         //painelBotoes.add(botaoSortear.getBotao());
         JButton botaoSortear = new JButton("Sortear");
         botaoSortear.addActionListener(e -> {
-        	if(!jogadaSorteada) {
+        	if(!jogadaSorteada || somaPassos == 0) {
         		int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
             	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
                 labelDado1.setText("Passos: " + somaPassos); // Atualiza o label com a soma dos passos
+                jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
                 jogadaSorteada = true;
                 jogadaEncerrada = false;
+                mudarJogador();
         	}else {
         		JOptionPane.showMessageDialog(null, 
                 "Os dados não podem ser sorteados, novamente, antes de encerrar a jogada!", 
@@ -407,6 +417,14 @@ public class TelaJogo extends JPanel implements Runnable {
         // Adicionar o painel inferior diretamente ao JFrame
         this.add(painelInferior, BorderLayout.SOUTH);
 
+    }
+    
+    private void mudarJogador() {
+    	if(jogadorAtivo == 1) {
+			jogadorAtivo = 0;
+		} else {
+			jogadorAtivo = 1;
+		}
     }
 
     private void mensagemMovImpossivel(){
