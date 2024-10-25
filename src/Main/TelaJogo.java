@@ -146,59 +146,128 @@ public class TelaJogo extends JPanel implements Runnable {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                int keyCode = e.getKeyCode();
-                Jogador jogadorAtual = jogadoresNoChao.get(jogadorAtivo); 
-                int posy = jogadorAtual.getY();
-                int posx = jogadorAtual.getX();
+            	if(jogadaSorteada) {
+            		int keyCode = e.getKeyCode();
+                    Jogador jogadorAtual = jogadoresNoChao.get(jogadorAtivo); 
+                    int posy = jogadorAtual.getY();
+                    int posx = jogadorAtual.getX();
 
-                // Verifique se o índice do jogador ativo é válido
-                if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
-                    keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
-                    keyCode == KeyEvent.VK_C) {
-                    // Jogador ativo
-
-                    switch (keyCode) {
-                        case KeyEvent.VK_UP: // Cima
-                        	if(posy >= 1) {
-                        		jogadorAtual.mover(0, -1); // Mover para cima
-                        		System.out.println("Pos y " + posy);
-                        	}
-                     
-                            
-                            break;
-                        case KeyEvent.VK_DOWN: // Baixo
-                        	if(posy <= maxLinhasTela-2) {
-                        		jogadorAtual.mover(0, 1); 
-                        		System.out.println("Pos y " + posy);
-                        	}
-                             // Mover para baixo
-                            break;
-                        case KeyEvent.VK_LEFT: // Esquerda
-                        	if(posx >= 1) {
-                        		jogadorAtual.mover(-1, 0);
-                        		System.out.println("Pos x " + posx);
-                        	}
-                             // Mover para esquerda
-                            break;
-                        case KeyEvent.VK_RIGHT: // Direita
-                        	if(posx <= maxLinhasTela-2) {
-                        		jogadorAtual.mover(1, 0); // Mover para direita
-                        		System.out.println("Pos x " + posx);
-                        	}
-                            break;
-                        case KeyEvent.VK_C: // Troca de jogador com a tecla TAB
-                            if(jogadorAtivo == 1) {
-                            	jogadorAtivo = 0;
-                            	System.out.println("Jogador ativo agora é o jogador " + jogadorAtivo);
-                            }else {
-                            	jogadorAtivo = 1;
-                            	System.out.println("Jogador ativo agora é o jogador " + jogadorAtivo);
-                            }
-                        	 // Alterna entre os jogadores
-                            break;
+                    // Verifique se o índice do jogador ativo é válido
+                    if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
+                        keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
+                        keyCode == KeyEvent.VK_C) {
+                        // Jogador ativo
+                    	if(somaPassos > 0) {
+                    		switch (keyCode) {
+                            case KeyEvent.VK_UP: // Cima
+                            	if(posy >= 1) {
+                            		if(existePedraNaPosicao(posx, posy-1)) {
+                            			if(existePedraNaPosicao(posx, posy-2)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posy-1 == 0 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(0, -2); 
+                                    			somaPassos -= 3;
+                            				}
+                            				
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(0, -1); 
+                            			somaPassos -= 1;
+                            		}	
+                            	}
+                                break;
+                            case KeyEvent.VK_DOWN: // Baixo
+                            	if(posy <= maxLinhasTela-2) {
+                            		if(existePedraNaPosicao(posx, posy+1)) {
+                            			if(existePedraNaPosicao(posx, posy+2)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posy+1 == maxLinhasTela-1 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(0, 2); 
+                                    			somaPassos -= 3;
+                            				}
+                            				
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(0, 1); 
+                            			somaPassos -= 1;
+                            		}
+                            	}
+                                 // Mover para baixo
+                                break;
+                            case KeyEvent.VK_LEFT: // Esquerda
+                            	if(posx >= 1) {
+                            		if(existePedraNaPosicao(posx - 1, posy)) {
+                            			if(existePedraNaPosicao(posx - 2, posy)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posx -1 == 0 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(-2, 0); 
+                                    			somaPassos -= 3;
+                            				}
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(-1, 0); 
+                            			somaPassos -= 1;
+                            		}
+                            	}
+                            	break;
+                            case KeyEvent.VK_RIGHT: // Direita
+                            	if(posx <= maxLinhasTela-2) {
+                            		if(existePedraNaPosicao(posx + 1, posy)) {
+                            			if(existePedraNaPosicao(posx + 2, posy)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posx +1 == maxLinhasTela-1 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(2, 0); 
+                                    			somaPassos -= 3;
+                            				}
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(1, 0); 
+                            			somaPassos -= 1;
+                            		}
+                            	}
+                                break;
+                            case KeyEvent.VK_C: // Troca de jogador com a tecla TAB
+                                if(jogadorAtivo == 1) {
+                                	jogadorAtivo = 0;
+                                	System.out.println("Jogador ativo agora é o jogador " + jogadorAtivo);
+                                }else {
+                                	jogadorAtivo = 1;
+                                	System.out.println("Jogador ativo agora é o jogador " + jogadorAtivo);
+                                }
+                            	 // Alterna entre os jogadores
+                                break;
+                    		}
+                    		//if(existePedraNaPosicao())
+                    		
+                    		labelDado1.setText("Passos: " + somaPassos);
+                    	} else {
+                    		JOptionPane.showMessageDialog(null, 
+                            "Você não tem mais pontos para movimentação!", 
+                            "Aviso", 
+                            JOptionPane.WARNING_MESSAGE);
+                    	}
+                        
                     }
-                }
-                repaint(); // Redesenhar a tela após a movimentação
+                    repaint(); // Redesenhar a tela após a movimentação
+            	} else {
+            		JOptionPane.showMessageDialog(null, 
+                    "Você deve sortear os dados antes iniciar a movimentação!", 
+                    "Aviso", 
+                    JOptionPane.WARNING_MESSAGE);
+            	}
+                
             }
         });
         this.setFocusable(true);
@@ -340,6 +409,12 @@ public class TelaJogo extends JPanel implements Runnable {
 
     }
 
+    private void mensagemMovImpossivel(){
+    	JOptionPane.showMessageDialog(null, 
+        "Não é possível realizar esse movimento!!", 
+         "Aviso", 
+         JOptionPane.WARNING_MESSAGE);
+    }
 
     /**
      * Lê a configuração do jogo a partir de um arquivo.
@@ -590,6 +665,23 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         }
     }
+    
+    private boolean posInvalida(int x, int y) {
+    	if (x == maxColunasTela -1 || y == maxLinhasTela - 1 || x == 0 || y == 0) {
+            return true; // Está fora dos limites
+        }
+    	return false;
+    }
+    
+    private boolean existePedraNaPosicao(int x, int y) {
+        for (Pedra pedra : pedras) {
+            if (pedra.getX() == x && pedra.getY() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
     private boolean posicaoOcupada(int x, int y) {
