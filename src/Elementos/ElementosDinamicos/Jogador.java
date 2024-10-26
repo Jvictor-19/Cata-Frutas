@@ -2,7 +2,11 @@ package Elementos.ElementosDinamicos;
 
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+
+import Frutas.Frutas;
+
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -13,12 +17,14 @@ import java.util.Random;
 public class Jogador {
     private int x;
     private int y;
+    private List<Frutas> mochila; 
     private ImageIcon imagem;
     private ImageIcon imagemPadrao; // Adiciona uma imagem padrão
 
     public Jogador(int x, int y, String caminhoImagem) {
         this.x = x;
         this.y = y;
+        this.mochila = new ArrayList<>();
         URL imagemURL = getClass().getResource(caminhoImagem);
         if (imagemURL != null) {
             this.imagem = new ImageIcon(imagemURL);
@@ -26,6 +32,14 @@ public class Jogador {
             System.err.println("Imagem não encontrada: " + caminhoImagem);
             this.imagem = imagemPadrao; // Define imagem padrão caso a imagem não seja encontrada
         }
+    }
+    
+    public void adicionarNaMochila(Frutas fruta) {
+        mochila.add(fruta); // Adiciona fruta na mochila
+    }
+    
+    public List<Frutas> getMochila() {
+        return mochila; // Retorna a mochila
     }
 
     public int getX() {
