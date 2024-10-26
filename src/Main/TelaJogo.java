@@ -98,9 +98,8 @@ public class TelaJogo extends JPanel implements Runnable {
     private int quantidadeGoiabeiraNoChao;
     
     private ArrayList<Jogador> jogadoresNoChao;
-    
-    private List<Frutas> quantidadefrutas;
-    
+
+    private List<List<? extends Frutas>> frutasNoChao;
     
     private int quantidadeBichadas;
     private int tamanhoMochila;
@@ -157,11 +156,18 @@ public class TelaJogo extends JPanel implements Runnable {
         this.goiabaNoChao = new ArrayList<>();
         this.goiabeiraNoChao = new ArrayList<>();
         this.jogadoresNoChao = new ArrayList<>();
-        this.quantidadefrutas = new ArrayList<>();
-        // Chama o método para inicializar a quantidade de frutas
-        inicializarQuantidadeFrutas();
-       
-     // Adicionar KeyListener
+        this.frutasNoChao = new ArrayList<>();
+        
+        this.frutasNoChao.add(this.laranjasNoChao);
+        this.frutasNoChao.add(this.abacatesNoChao);
+        this.frutasNoChao.add(this.maracujasNoChao);
+        this.frutasNoChao.add(this.cocoNoChao);
+        this.frutasNoChao.add(this.acerolaNoChao);
+        this.frutasNoChao.add(this.amoraNoChao);
+        this.frutasNoChao.add(this.goiabaNoChao);
+        
+       // Adicionar KeyListener
+
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -175,98 +181,112 @@ public class TelaJogo extends JPanel implements Runnable {
                     // Verifique se o índice do jogador ativo é válido
                     if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
                         keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
-                        keyCode == KeyEvent.VK_C) {
-                        if (somaPassos > 0) {
-                            switch (keyCode) {
-                                case KeyEvent.VK_UP: // Cima
-                                    if (posy >= 1) {
-                                        if (existePedraNaPosicao(posx, posy - 1)) {
-                                            if (existePedraNaPosicao(posx, posy - 2)) {
-                                                mensagemMovImpossivel();
-                                            } else {
-                                                if (posy - 1 == 0 || somaPassos - 3 < 0) {
-                                                    mensagemMovImpossivel();
-                                                } else {
-                                                    jogadorAtual.mover(0, -2);
-                                                    somaPassos -= 3;
-                                                }
-                                            }
-                                        } else {
-                                            jogadorAtual.mover(0, -1);
-                                            somaPassos -= 1;
-                                        }
-                                    }
-                                    break;
-                                case KeyEvent.VK_DOWN: // Baixo
-                                    if (posy <= maxLinhasTela - 2) {
-                                        if (existePedraNaPosicao(posx, posy + 1)) {
-                                            if (existePedraNaPosicao(posx, posy + 2)) {
-                                                mensagemMovImpossivel();
-                                            } else {
-                                                if (posy + 1 == maxLinhasTela - 1 || somaPassos - 3 < 0) {
-                                                    mensagemMovImpossivel();
-                                                } else {
-                                                    jogadorAtual.mover(0, 2);
-                                                    somaPassos -= 3;
-                                                }
-                                            }
-                                        } else {
-                                            jogadorAtual.mover(0, 1);
-                                            somaPassos -= 1;
-                                        }
-                                    }
-                                    break;
-                                case KeyEvent.VK_LEFT: // Esquerda
-                                    if (posx >= 1) {
-                                        if (existePedraNaPosicao(posx - 1, posy)) {
-                                            if (existePedraNaPosicao(posx - 2, posy)) {
-                                                mensagemMovImpossivel();
-                                            } else {
-                                                if (posx - 1 == 0 || somaPassos - 3 < 0) {
-                                                    mensagemMovImpossivel();
-                                                } else {
-                                                    jogadorAtual.mover(-2, 0);
-                                                    somaPassos -= 3;
-                                                }
-                                            }
-                                        } else {
-                                            jogadorAtual.mover(-1, 0);
-                                            somaPassos -= 1;
-                                        }
-                                    }
-                                    break;
-                                case KeyEvent.VK_RIGHT: // Direita
-                                    if (posx <= maxLinhasTela - 2) {
-                                        if (existePedraNaPosicao(posx + 1, posy)) {
-                                            if (existePedraNaPosicao(posx + 2, posy)) {
-                                                mensagemMovImpossivel();
-                                            } else {
-                                                if (posx + 1 == maxLinhasTela - 1 || somaPassos - 3 < 0) {
-                                                    mensagemMovImpossivel();
-                                                } else {
-                                                    jogadorAtual.mover(2, 0);
-                                                    somaPassos -= 3;
-                                                }
-                                            }
-                                        } else {
-                                            jogadorAtual.mover(1, 0);
-                                            somaPassos -= 1;
-                                        }
-                                    }
-                                    break;
-                            }
+                        keyCode == KeyEvent.VK_ENTER) {
+                        // Jogador ativo
+                    	if(somaPassos > 0) {
+                    		switch (keyCode) {
+                            case KeyEvent.VK_UP: // Cima
+                            	if(posy >= 1) {
+                            		if(existePedraNaPosicao(posx, posy-1)) {
+                            			if(existePedraNaPosicao(posx, posy-2)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posy-1 == 0 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(0, -2); 
+                                    			somaPassos -= 3;
+                            				}
+                            				
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(0, -1); 
+                            			somaPassos -= 1;
+                            		}	
+                            	}
+                                break;
+                            case KeyEvent.VK_DOWN: // Baixo
+                            	if(posy <= maxLinhasTela-2) {
+                            		if(existePedraNaPosicao(posx, posy+1)) {
+                            			if(existePedraNaPosicao(posx, posy+2)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posy+1 == maxLinhasTela-1 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(0, 2); 
+                                    			somaPassos -= 3;
+                            				}
+                            				
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(0, 1); 
+                            			somaPassos -= 1;
+                            		}
+                            	}
+                                 // Mover para baixo
+                                break;
+                            case KeyEvent.VK_LEFT: // Esquerda
+                            	if(posx >= 1) {
+                            		if(existePedraNaPosicao(posx - 1, posy)) {
+                            			if(existePedraNaPosicao(posx - 2, posy)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posx -1 == 0 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(-2, 0); 
+                                    			somaPassos -= 3;
+                            				}
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(-1, 0); 
+                            			somaPassos -= 1;
+                            		}
+                            	}
+                            	break;
+                            case KeyEvent.VK_RIGHT: // Direita
+                            	if(posx <= maxLinhasTela-2) {
+                            		if(existePedraNaPosicao(posx + 1, posy)) {
+                            			if(existePedraNaPosicao(posx + 2, posy)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posx +1 == maxLinhasTela-1 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(2, 0); 
+                                    			somaPassos -= 3;
+                            				}
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(1, 0); 
+                            			somaPassos -= 1;
+                            		}
+                            	}
+                                break;
+                            case KeyEvent.VK_ENTER:
+                            	if(posicaoOcupadaPorFruta(posx,posy)) {
+                            		JOptionPane.showMessageDialog(null, 
+                                    "Pegando fruta!", 
+                                    "Aviso", 
+                                    JOptionPane.WARNING_MESSAGE);
+                            		
+                            		pegarFruta(jogadoresNoChao.get(jogadorAtivo), frutasNoChao);
+                            	}else {
+                            		JOptionPane.showMessageDialog(null, 
+                                    "Não tem fruta!", 
+                                    "Aviso", 
+                                    JOptionPane.WARNING_MESSAGE);
+                            	}
+                            	
+                            	break;
+                    		}
+                    		labelDado1.setText("Passos: " + somaPassos);
+                    		jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
+                    	} else {
+                    		JOptionPane.showMessageDialog(null, 
+                            "Você não tem mais pontos para movimentação!", 
 
-                            labelDado1.setText("Passos: " + somaPassos);
-                            jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
-                        } else {
-                            JOptionPane.showMessageDialog(null, 
-                                "Você não tem mais pontos para movimentação!", 
-                                "Aviso", 
-                                JOptionPane.WARNING_MESSAGE);
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, 
-                            "Você deve sortear os dados antes de iniciar a movimentação!", 
                             "Aviso", 
                             JOptionPane.WARNING_MESSAGE);
                     }
@@ -429,6 +449,26 @@ public class TelaJogo extends JPanel implements Runnable {
 
     }
     
+    public void pegarFruta(Jogador jogador, List<List<? extends Frutas>> frutasNoChao) {
+        // Itera sobre cada lista de frutas
+        for (List<? extends Frutas> listaFrutas : frutasNoChao) {
+            Iterator<? extends Frutas> iterator = listaFrutas.iterator();
+
+            while (iterator.hasNext()) {
+                Frutas fruta = iterator.next();
+
+                // Verifica se a posição do jogador é igual à da fruta
+                if (jogador.getX() == fruta.getX() && jogador.getY() == fruta.getY()) {
+                    jogador.adicionarNaMochila(fruta); // Adiciona fruta na mochila do jogador
+                    iterator.remove(); // Remove a fruta do terreno
+                    System.out.println("Fruta " + fruta.getClass().getSimpleName() + " foi adicionada à mochila do jogador!" + jogadorAtivo); // Usar o nome da classe da fruta
+                    break; // Para sair do loop após pegar uma fruta
+                }
+            }
+        }
+    }
+
+
     private void mudarJogador() {
     	if(jogadorAtivo == 1) {
 			jogadorAtivo = 0;
