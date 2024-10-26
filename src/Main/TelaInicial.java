@@ -32,6 +32,7 @@ public class TelaInicial extends JFrame {
     private ImageIcon backgroundIcon;
     private JLabel background;
     
+    
     private JFrame parentFrame;
     
     private int largura = getContentPane().getWidth();
@@ -194,7 +195,7 @@ public class TelaInicial extends JFrame {
 
         // Carrega a imagem original de créditos
         //ImageIcon originalIcon = new ImageIcon(getClass().getResource("/imagens/FundoCreditos.png"));
-        backgroundIcon = new ImageIcon(getClass().getResource("/imagens/backgraund1.jpg"));
+        ImageIcon backgroundIcon2 = new ImageIcon(getClass().getResource("/imagens/FundoCreditos.png"));
         background.setBounds(0, 0, 1472, 832);
         add(background); // Adiciona o fundo primeiro
 
@@ -207,7 +208,7 @@ public class TelaInicial extends JFrame {
         
         
         // Redimensiona a imagem para o tamanho desejado (por exemplo, 1600x900)
-        Image scaledImage = backgroundIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
+        Image scaledImage = backgroundIcon2.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
 
         // Redimensiona a imagem para o tamanho desejado
         //Image scaledImage = originalIcon.getImage().getScaledInstance(900, 900, Image.SCALE_SMOOTH);
