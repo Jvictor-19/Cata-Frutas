@@ -8,6 +8,7 @@ import Botões.BotaoSortear;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import java.awt.*;
@@ -98,6 +99,7 @@ public class TelaJogo extends JPanel implements Runnable {
     private int quantidadeGoiabeiraNoChao;
     
     private ArrayList<Jogador> jogadoresNoChao;
+    private List<Frutas> frutasNoChao;
     
     private int quantidadeBichadas;
     private int tamanhoMochila;
@@ -109,6 +111,7 @@ public class TelaJogo extends JPanel implements Runnable {
     private JLabel jogador1Label;
     private JLabel labelDado2;
     private JButton botaoSortear;
+    private Random random = new Random();
    
     private boolean jogadaSorteada = false;
     private boolean jogadaEncerrada = false;
@@ -142,6 +145,7 @@ public class TelaJogo extends JPanel implements Runnable {
         this.goiabaNoChao = new ArrayList<>();
         this.goiabeiraNoChao = new ArrayList<>();
         this.jogadoresNoChao = new ArrayList<>();
+        this.frutasNoChao = new ArrayList<>();
         
        // Adicionar KeyListener
         this.addKeyListener(new KeyAdapter() {
@@ -156,7 +160,7 @@ public class TelaJogo extends JPanel implements Runnable {
                     // Verifique se o índice do jogador ativo é válido
                     if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
                         keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
-                        keyCode == KeyEvent.VK_C) {
+                        keyCode == KeyEvent.VK_ENTER) {
                         // Jogador ativo
                     	if(somaPassos > 0) {
                     		switch (keyCode) {
@@ -239,21 +243,26 @@ public class TelaJogo extends JPanel implements Runnable {
                             		}
                             	}
                                 break;
-                             /*case KeyEvent.VK_C: // Troca de jogador com a tecla TAB
-                                if(jogadorAtivo == 1) {
-                                	jogadorAtivo = 0;
-                                	System.out.println("Jogador ativo agora é o jogador " + jogadorAtivo);
-                                }else {
-                                	jogadorAtivo = 1;
-                                	System.out.println("Jogador ativo agora é o jogador " + jogadorAtivo);
-                                }
-                            	 // Alterna entre os jogadores
-                                break;*/
+                            case KeyEvent.VK_ENTER:
+                            	if(posicaoOcupadaPorFruta(posx,posy)) {
+                            		JOptionPane.showMessageDialog(null, 
+                                    "Pegando fruta!", 
+                                    "Aviso", 
+                                    JOptionPane.WARNING_MESSAGE);
+                            		
+                            		pegarFruta(jogadoresNoChao.get(jogadorAtivo), laranjasNoChao);
+                            		
+                                	
+                            	}else {
+                            		JOptionPane.showMessageDialog(null, 
+                                    "Não tem fruta!", 
+                                    "Aviso", 
+                                    JOptionPane.WARNING_MESSAGE);
+                                	
+                            	}
+                            	
+                            	break;
                     		}
-                    		//if(existePedraNaPosicao())
-                    		/*if (somaPassos == 0) {
-                    			mudarJogador();
-                    		}*/
                     		labelDado1.setText("Passos: " + somaPassos);
                     		jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
                     	} else {
@@ -265,6 +274,7 @@ public class TelaJogo extends JPanel implements Runnable {
                         
                     }
                     repaint(); // Redesenhar a tela após a movimentação
+                    
             	} else {
             		JOptionPane.showMessageDialog(null, 
                     "Você deve sortear os dados antes iniciar a movimentação!", 
@@ -340,7 +350,7 @@ public class TelaJogo extends JPanel implements Runnable {
             		jogadaEncerrada = true;
             		jogadaSorteada = false;
             		labelDado1.setText("Passos: ?");
-            		jogador1Label.setText("Jogador " + jogadorAtivo + ": ? passos");
+            		jogador1Label.setText("Jogador ?: ? passos");
             		
             	}
                 
@@ -361,7 +371,7 @@ public class TelaJogo extends JPanel implements Runnable {
 
         // Informações do Jogador 1
         
-        jogador1Label = new JLabel("Jogador 0: 0 passos");
+        jogador1Label = new JLabel("Jogador ?: ? passos");
         //painelJogadores.add(jogador1Label);
 
         // Informações do Jogador 2
@@ -392,10 +402,10 @@ public class TelaJogo extends JPanel implements Runnable {
         		int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
             	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
                 labelDado1.setText("Passos: " + somaPassos); // Atualiza o label com a soma dos passos
+                mudarJogador();
                 jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
                 jogadaSorteada = true;
                 jogadaEncerrada = false;
-                mudarJogador();
         	}else {
         		JOptionPane.showMessageDialog(null, 
                 "Os dados não podem ser sorteados, novamente, antes de encerrar a jogada!", 
@@ -419,6 +429,22 @@ public class TelaJogo extends JPanel implements Runnable {
 
     }
     
+    public void pegarFruta(Jogador jogador, List<Laranja> frutasNoChao) {
+        Iterator<Laranja> iterator = frutasNoChao.iterator();
+        
+        while (iterator.hasNext()) {
+            Frutas fruta = iterator.next();
+            
+            // Verifica se a posição do jogador é igual à da fruta
+            if (jogador.getX() == fruta.getX() && jogador.getY() == fruta.getY()) {
+                jogador.adicionarNaMochila(fruta); // Adiciona fruta na mochila do jogador
+                iterator.remove(); // Remove a fruta do terreno
+                System.out.println("Fruta foi adicionada à mochila do jogador!");
+                break;
+            }
+        }
+    }
+    
     private void mudarJogador() {
     	if(jogadorAtivo == 1) {
 			jogadorAtivo = 0;
@@ -440,12 +466,14 @@ public class TelaJogo extends JPanel implements Runnable {
      * @param configFilePath O caminho para o arquivo de configuração.
      */
     private void lerConfiguracao(String configFilePath) {
+    	
         try (BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] partes = linha.split(":");
                 String chave = partes[0].trim();
                 String valor = partes[1].trim();
+                
 
                 switch (chave) {
                     case "dimensão":
@@ -458,6 +486,7 @@ public class TelaJogo extends JPanel implements Runnable {
                         String[] valoresMaracuja = valor.split(" ");
                         quantidadeMaracujasTotal = Integer.parseInt(valoresMaracuja[0].trim());
                         quantidadeMaracujaNoChao = Integer.parseInt(valoresMaracuja[1].trim());
+                        
                         break;
                     case "laranja":
                         String[] valoresLaranja = valor.split(" ");
@@ -683,13 +712,7 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         }
     }
-    
-    private boolean posInvalida(int x, int y) {
-    	if (x == maxColunasTela -1 || y == maxLinhasTela - 1 || x == 0 || y == 0) {
-            return true; // Está fora dos limites
-        }
-    	return false;
-    }
+   
     
     private boolean existePedraNaPosicao(int x, int y) {
         for (Pedra pedra : pedras) {
@@ -699,17 +722,9 @@ public class TelaJogo extends JPanel implements Runnable {
         }
         return false;
     }
-
-
-
-    private boolean posicaoOcupada(int x, int y) {
-        for (Pedra pedra : pedras) {
-            if (pedra.getX() == x && pedra.getY() == y) {
-                return true;
-            }
-        }
-
-        for (Laranja laranjaChao : laranjasNoChao) {
+    
+    private boolean posicaoOcupadaPorFruta (int x, int y) {
+    	for (Laranja laranjaChao : laranjasNoChao) {
             if (laranjaChao.getX() == x && laranjaChao.getY() == y) {
                 return true;
             }
@@ -720,12 +735,89 @@ public class TelaJogo extends JPanel implements Runnable {
                 return true;
             }
         }
-
+        
         for (Maracuja maracujaChao : maracujasNoChao) {
             if (maracujaChao.getX() == x && maracujaChao.getY() == y) {
                 return true;
             }
           }
+        
+        for (Coco cocoChao : cocoNoChao) {
+            if (cocoChao.getX() == x && cocoChao.getY() == y) {
+                return true;
+                }
+        }
+        
+        for (Acerola acerolaChao : acerolaNoChao) {
+            if (acerolaChao.getX() == x && acerolaChao.getY() == y) {
+                return true;
+                }
+        }
+        
+        for (Amora amoraChao : amoraNoChao) {
+            if (amoraChao.getX() == x && amoraChao.getY() == y) {
+                return true;
+                }
+            }
+        for (Goiaba goiabaChao : goiabaNoChao) {
+            if (goiabaChao.getX() == x && goiabaChao.getY() == y) {
+                return true;
+                }
+            }
+       
+        return false;
+    }
+
+
+
+    private boolean posicaoOcupada(int x, int y) {
+    	for (Laranja laranjaChao : laranjasNoChao) {
+            if (laranjaChao.getX() == x && laranjaChao.getY() == y) {
+                return true;
+            }
+        }
+
+        for (Abacate abacateChao : abacatesNoChao) {
+            if (abacateChao.getX() == x && abacateChao.getY() == y) {
+                return true;
+            }
+        }
+        
+        for (Maracuja maracujaChao : maracujasNoChao) {
+            if (maracujaChao.getX() == x && maracujaChao.getY() == y) {
+                return true;
+            }
+          }
+        
+        for (Coco cocoChao : cocoNoChao) {
+            if (cocoChao.getX() == x && cocoChao.getY() == y) {
+                return true;
+                }
+        }
+        
+        for (Acerola acerolaChao : acerolaNoChao) {
+            if (acerolaChao.getX() == x && acerolaChao.getY() == y) {
+                return true;
+                }
+        }
+        
+        for (Amora amoraChao : amoraNoChao) {
+            if (amoraChao.getX() == x && amoraChao.getY() == y) {
+                return true;
+                }
+            }
+        for (Goiaba goiabaChao : goiabaNoChao) {
+            if (goiabaChao.getX() == x && goiabaChao.getY() == y) {
+                return true;
+                }
+            }
+        for (Pedra pedra : pedras) {
+            if (pedra.getX() == x && pedra.getY() == y) {
+                return true;
+            }
+        }
+
+        
        for (Laranjeira laranjeiraChao : laranjeiraNoChao) {
             if (laranjeiraChao.getX() == x && laranjeiraChao.getY() == y) {
                 return true;
@@ -736,11 +828,7 @@ public class TelaJogo extends JPanel implements Runnable {
                return true;
                }
        }
-       for (Coco cocoChao : cocoNoChao) {
-           if (cocoChao.getX() == x && cocoChao.getY() == y) {
-               return true;
-               }
-       }
+      
        for (Coqueiro coqueiroChao : coqueiroNoChao) {
            if (coqueiroChao.getX() == x && coqueiroChao.getY() == y) {
                return true;
@@ -748,31 +836,19 @@ public class TelaJogo extends JPanel implements Runnable {
            
        }
        
-       for (Acerola acerolaChao : acerolaNoChao) {
-           if (acerolaChao.getX() == x && acerolaChao.getY() == y) {
-               return true;
-               }
-       }
+       
        for (Aceroleira aceroleiraChao : aceroleiraNoChao) {
            if (aceroleiraChao.getX() == x && aceroleiraChao.getY() == y) {
                return true;
                }
            }
-       for (Amora amoraChao : amoraNoChao) {
-           if (amoraChao.getX() == x && amoraChao.getY() == y) {
-               return true;
-               }
-           }
+       
        for (Amoreiro amoreiraChao : amoreiraNoChao) {
            if (amoreiraChao.getX() == x && amoreiraChao.getY() == y) {
                return true;
                }
            }
-       for (Goiaba goiabaChao : goiabaNoChao) {
-           if (goiabaChao.getX() == x && goiabaChao.getY() == y) {
-               return true;
-               }
-           }
+       
        for (Goiabeira goiabeiraChao : goiabeiraNoChao) {
            if (goiabeiraChao.getX() == x && goiabeiraChao.getY() == y) {
                return true;
@@ -873,8 +949,6 @@ public class TelaJogo extends JPanel implements Runnable {
         for (Jogador jogador : jogadoresNoChao) {
             jogador.desenhar(g, tamanhoTile); // Chama o método de desenhar do jogador
         }
-        
-
     }
 
 	    public static void main(String[] args) {
