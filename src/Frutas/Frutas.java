@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
+import Elementos.ElementosDinamicos.Jogador;
+
 /**
  * Classe abstrata que representa frutas em um jogo.
  * A classe fornece propriedades e métodos comuns para diferentes tipos de frutas.
@@ -76,4 +78,12 @@ public abstract class Frutas {
         this.y = -1;
         
     }
+    public abstract void aplicarEfeito(Jogador jogador);
+
+	public abstract String getNome();
+
+	public void aplicarEfeito(Jogador jogador, int p) {
+		// TODO Auto-generated method stub
+		
+	}
 }
