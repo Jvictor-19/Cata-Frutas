@@ -70,7 +70,7 @@ public class PainelJogador extends JPanel {
      * 
      * Este método sorteia aleatoriamente um número entre 1 e 2, e exibe uma mensagem
      * informando qual jogador foi sorteado.
-     */
+      */
     private void realizarSorteio() {
         int sorteado = random.nextInt(2) + 1; // Sorteia um número entre 1 e 2
         JOptionPane.showMessageDialog(null, "Jogador " + sorteado + " foi sorteado!");
