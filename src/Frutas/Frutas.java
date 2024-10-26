@@ -5,13 +5,13 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 /**
-
  * Classe abstrata que representa frutas em um jogo.
  * A classe fornece propriedades e métodos comuns para diferentes tipos de frutas.
  */
 public abstract class Frutas {
-    protected int x, y; // Coordenadas da fruta
-    protected ImageIcon imagem; // Imagem da fruta
+    protected int x, y;           // Coordenadas da fruta
+    protected ImageIcon imagem;    // Imagem da fruta
+    private boolean coletada;      // Estado de coleta da fruta
 
     /**
      * Construtor que cria uma fruta com as coordenadas especificadas e a imagem correspondente.
@@ -21,18 +21,16 @@ public abstract class Frutas {
      * @param caminhoImagem URL que aponta para a imagem da fruta.
      */
     public Frutas(int x, int y, URL caminhoImagem) {
-
         this.x = x;
         this.y = y;
+        this.coletada = false; // Inicialmente, a fruta não está coletada
         this.imagem = new ImageIcon(caminhoImagem); // Carrega a imagem a partir do URL
     }
 
     /**
-
      * Obtém a coordenada x da fruta.
      *
      * @return A coordenada x da fruta.
-
      */
     public int getX() {
         return x;
@@ -52,11 +50,30 @@ public abstract class Frutas {
      *
      * @param g O objeto Graphics usado para desenhar.
      * @param tamanhoTile O tamanho de cada tile no grid do jogo.
-
      */
     public void desenhar(Graphics g, int tamanhoTile) {
+    	if (!coletada) {
         int tamanhoFruta = (int) (tamanhoTile * 0.5); // Tamanho reduzido da fruta
         int offset = (tamanhoTile - tamanhoFruta) / 2; // Para centralizar a fruta
         g.drawImage(imagem.getImage(), x * tamanhoTile + offset, y * tamanhoTile + offset, tamanhoFruta, tamanhoFruta, null);
+    }
+    }
+    /**
+     * Verifica se a fruta foi coletada.
+     *
+     * @return True se a fruta foi coletada, false caso contrário.
+     */
+    public boolean isColetada() {
+        return coletada;
+    }
+
+    /**
+     * Marca a fruta como coletada.
+     */
+    public void coletar() {
+        this.coletada = true;
+        this.x = -1; // ou qualquer valor que represente "fora do campo"
+        this.y = -1;
+        
     }
 }
