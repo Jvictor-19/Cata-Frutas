@@ -99,7 +99,7 @@ public class TelaJogo extends JPanel implements Runnable {
     private int quantidadeGoiabeiraNoChao;
     
     private ArrayList<Jogador> jogadoresNoChao;
-    private List<Frutas> frutasNoChao;
+    private List<List<? extends Frutas>> frutasNoChao;
     
     private int quantidadeBichadas;
     private int tamanhoMochila;
@@ -146,6 +146,14 @@ public class TelaJogo extends JPanel implements Runnable {
         this.goiabeiraNoChao = new ArrayList<>();
         this.jogadoresNoChao = new ArrayList<>();
         this.frutasNoChao = new ArrayList<>();
+        
+        this.frutasNoChao.add(this.laranjasNoChao);
+        this.frutasNoChao.add(this.abacatesNoChao);
+        this.frutasNoChao.add(this.maracujasNoChao);
+        this.frutasNoChao.add(this.cocoNoChao);
+        this.frutasNoChao.add(this.acerolaNoChao);
+        this.frutasNoChao.add(this.amoraNoChao);
+        this.frutasNoChao.add(this.goiabaNoChao);
         
        // Adicionar KeyListener
         this.addKeyListener(new KeyAdapter() {
@@ -250,15 +258,12 @@ public class TelaJogo extends JPanel implements Runnable {
                                     "Aviso", 
                                     JOptionPane.WARNING_MESSAGE);
                             		
-                            		pegarFruta(jogadoresNoChao.get(jogadorAtivo), laranjasNoChao);
-                            		
-                                	
+                            		pegarFruta(jogadoresNoChao.get(jogadorAtivo), frutasNoChao);
                             	}else {
                             		JOptionPane.showMessageDialog(null, 
                                     "Não tem fruta!", 
                                     "Aviso", 
                                     JOptionPane.WARNING_MESSAGE);
-                                	
                             	}
                             	
                             	break;
@@ -429,21 +434,25 @@ public class TelaJogo extends JPanel implements Runnable {
 
     }
     
-    public void pegarFruta(Jogador jogador, List<Laranja> frutasNoChao) {
-        Iterator<Laranja> iterator = frutasNoChao.iterator();
-        
-        while (iterator.hasNext()) {
-            Frutas fruta = iterator.next();
-            
-            // Verifica se a posição do jogador é igual à da fruta
-            if (jogador.getX() == fruta.getX() && jogador.getY() == fruta.getY()) {
-                jogador.adicionarNaMochila(fruta); // Adiciona fruta na mochila do jogador
-                iterator.remove(); // Remove a fruta do terreno
-                System.out.println("Fruta foi adicionada à mochila do jogador!");
-                break;
+    public void pegarFruta(Jogador jogador, List<List<? extends Frutas>> frutasNoChao) {
+        // Itera sobre cada lista de frutas
+        for (List<? extends Frutas> listaFrutas : frutasNoChao) {
+            Iterator<? extends Frutas> iterator = listaFrutas.iterator();
+
+            while (iterator.hasNext()) {
+                Frutas fruta = iterator.next();
+
+                // Verifica se a posição do jogador é igual à da fruta
+                if (jogador.getX() == fruta.getX() && jogador.getY() == fruta.getY()) {
+                    jogador.adicionarNaMochila(fruta); // Adiciona fruta na mochila do jogador
+                    iterator.remove(); // Remove a fruta do terreno
+                    System.out.println("Fruta " + fruta.getClass().getSimpleName() + " foi adicionada à mochila do jogador!" + jogadorAtivo); // Usar o nome da classe da fruta
+                    break; // Para sair do loop após pegar uma fruta
+                }
             }
         }
     }
+
     
     private void mudarJogador() {
     	if(jogadorAtivo == 1) {
