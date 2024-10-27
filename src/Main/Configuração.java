@@ -26,6 +26,8 @@ import java.io.IOException;
  */
 
 public class Configuração extends JPanel {
+	private String nomeJogadorA;
+	private String nomeJogadorB;
 
     private static final long serialVersionUID = 1L;
     /** Botão para iniciar o jogo. */
@@ -175,6 +177,7 @@ public class Configuração extends JPanel {
      * adiciona os componentes.
      */
     public Configuração() {
+    	
         setLayout(null);
         setPreferredSize(new Dimension(800, 600));
         //setBackground(Color.decode("#e08475"));

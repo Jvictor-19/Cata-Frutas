@@ -21,6 +21,7 @@ public class Jogador {
     private ImageIcon imagem;
     private ImageIcon imagemPadrao; // Adiciona uma imagem padrão
     private int quantFrutasOuro;
+    private String nome;
 
     public Jogador(int x, int y, String caminhoImagem) {
     	this.quantFrutasOuro = 0;
@@ -35,6 +36,7 @@ public class Jogador {
             this.imagem = imagemPadrao; // Define imagem padrão caso a imagem não seja encontrada
         }
     }
+    
     
     public boolean venceu(int quantidadeMaracujasTotal) {
         return quantFrutasOuro > (quantidadeMaracujasTotal / 2);
