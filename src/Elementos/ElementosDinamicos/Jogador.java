@@ -2,7 +2,6 @@ package Elementos.ElementosDinamicos;
 
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 import Frutas.Abacate;
 import Frutas.Coco;
@@ -10,10 +9,13 @@ import Frutas.Frutas;
 import Frutas.Laranja;
 import Frutas.Maracuja;
 
+
+import Frutas.Frutas;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A classe Jogador representa o jogador em um jogo, com uma posição (x, y) e uma imagem associada.
@@ -25,6 +27,7 @@ public class Jogador {
     private List<Frutas> mochila; 
     private ImageIcon imagem;
     private ImageIcon imagemPadrao; // Adiciona uma imagem padrão
+
     
     // Atributos adicionais para efeitos de frutas
     private int pontosMovimento = 1;      // Efeito do coco (agilidade)
@@ -34,6 +37,12 @@ public class Jogador {
     private boolean comeuCoco; // Indica se o jogador comeu um coco
     
     public Jogador(int x, int y, String caminhoImagem) {
+
+    private int quantFrutasOuro;
+    private String nome;
+
+    public Jogador(int x, int y, String caminhoImagem) {
+    	this.quantFrutasOuro = 0;
         this.x = x;
         this.y = y;
         this.mochila = new ArrayList<>();
@@ -46,7 +55,22 @@ public class Jogador {
         }
     }
     
+
+    public boolean venceu(int quantidadeMaracujasTotal) {
+        return quantFrutasOuro > (quantidadeMaracujasTotal / 2);
+    }
+
     
+ // Método para coletar um maracujá
+    public void coletarMaracuja() {
+    	quantFrutasOuro++;
+    }
+    
+    // Getter para a quantidade de maracujás que o jogador coletou
+    public int getMaracujasColetados() {
+        return quantFrutasOuro;
+    }
+
     public void adicionarNaMochila(Frutas fruta) {
         mochila.add(fruta); // Adiciona fruta na mochila
     }
@@ -178,8 +202,11 @@ public class Jogador {
         }
     }
 
+
 	public int getPontosMovimento() {
 		// TODO Auto-generated method stub
 		return pontosMovimento;
 	}
+
 }
+

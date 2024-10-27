@@ -31,6 +31,8 @@ public class TelaInicial extends JFrame {
     private JPanel backGround; // Declare a JPanel para o fundo
     private ImageIcon backgroundIcon;
     private JLabel background;
+    private String nomeJogador1;
+    private String nomeJogador2;
     
     
     private JFrame parentFrame;
@@ -160,8 +162,8 @@ public class TelaInicial extends JFrame {
                  }
 
                  // Verifica se os campos de nome dos jogadores estão preenchidos
-                 String nomeJogador1 = jogador1Field.getText().trim();
-                 String nomeJogador2 = jogador2Field.getText().trim();
+                 nomeJogador1 = jogador1Field.getText().trim();
+                 nomeJogador2 = jogador2Field.getText().trim();
 
                  if (nomeJogador1.isEmpty() || nomeJogador2.isEmpty()) {            	
                      JOptionPane.showMessageDialog(null, "Por favor, insira os nomes dos dois jogadores antes de continuar.");
