@@ -212,7 +212,7 @@ public class TelaJogo extends JPanel implements Runnable {
                     	            JOptionPane.WARNING_MESSAGE);
                     	    }
                     	}
-  // Jogador ativo
+  
                     	if(somaPassos > 0) {
                     		switch (keyCode) {
                             case KeyEvent.VK_UP: // Cima
@@ -435,7 +435,7 @@ public class TelaJogo extends JPanel implements Runnable {
             	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
                 labelDado1.setText("N° Sorteado: " + somaPassos); // Atualiza o label com a soma dos passos
                 mudarJogador();
-                jogador1Label.setText("Jogador " + (jogadorAtivo +1) + ": " + somaPassos + " passos");
+                jogador1Label.setText("Jogador " + (jogadorAtivo + 1) + ": " + somaPassos + " passos");
                 jogadaSorteada = true;
                 jogadaEncerrada = false;
         	}else {
