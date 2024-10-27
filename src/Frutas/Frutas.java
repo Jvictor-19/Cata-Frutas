@@ -12,6 +12,7 @@ public abstract class Frutas {
     protected int x, y;           // Coordenadas da fruta
     protected ImageIcon imagem;    // Imagem da fruta
     private boolean coletada;      // Estado de coleta da fruta
+    private boolean bichada;
 
     /**
      * Construtor que cria uma fruta com as coordenadas especificadas e a imagem correspondente.
@@ -21,6 +22,7 @@ public abstract class Frutas {
      * @param caminhoImagem URL que aponta para a imagem da fruta.
      */
     public Frutas(int x, int y, URL caminhoImagem) {
+    	this.bichada = false;
         this.x = x;
         this.y = y;
         this.coletada = false; // Inicialmente, a fruta não está coletada
@@ -76,4 +78,14 @@ public abstract class Frutas {
         this.y = -1;
         
     }
+    
+    public void setBichada(boolean bichada) {
+        this.bichada = bichada;
+    }
+
+    public boolean isBichada() {
+        return bichada;
+    }
+
+	//protected abstract void setBichada(boolean bichada2);
 }

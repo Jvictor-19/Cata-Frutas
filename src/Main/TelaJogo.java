@@ -102,7 +102,7 @@ public class TelaJogo extends JPanel implements Runnable {
     private ArrayList<Jogador> jogadoresNoChao;
     private List<List<? extends Frutas>> frutasNoChao;
     
-    private int quantidadeBichadas;
+    private double quantidadeBichadas;
     private int tamanhoMochila;
 
     private boolean jogoPausado = false;  // Controle de pausa
@@ -155,7 +155,31 @@ public class TelaJogo extends JPanel implements Runnable {
         this.frutasNoChao.add(this.acerolaNoChao);
         this.frutasNoChao.add(this.amoraNoChao);
         this.frutasNoChao.add(this.goiabaNoChao);
+       
+     // Gerar objetos no chão
+        gerarPedras();
+        gerarLaranjasNoChao();
+        gerarAbacatesNoChao();
+        gerarMaracujaNoChao(); 
+        gerarLaranjeiraNoChao();
+        gerarAbacateiroNoChao();
+        gerarCocoNoChao();
+        gerarCoqueiroNoChao();
+        gerarAcerolaNoChao();
+        gerarAceroleiraNoChao();
+        gerarAmoraNoChao();
+        gerarAmoreiraNoChao();
+        gerarGoiabaNoChao();
+        gerarGoiabeiraNoChao();
+        gerarJogadoresNoChao();
         
+        System.out.println("Porcentagem: " + quantidadeBichadas);
+        System.out.println("Laranjas no chão: " + this.laranjasNoChao);
+        System.out.println("Abacates no chão: " + this.abacatesNoChao);
+        System.out.println("Conteúdo de frutasNoChao: " + frutasNoChao);
+        marcarFrutasBichadas(quantidadeBichadas);
+
+       
        // Adicionar KeyListener
         this.addKeyListener(new KeyAdapter() {
             @Override
@@ -170,6 +194,32 @@ public class TelaJogo extends JPanel implements Runnable {
                     if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
                         keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
                         keyCode == KeyEvent.VK_ENTER) {
+                    	
+                    	if(keyCode == KeyEvent.VK_ENTER) {
+                    		if(posicaoOcupadaPorFruta(posx,posy)) {
+                    			//marcarFrutasBichadas(quantidadeBichadas);
+                    			if(isFrutaBichada(posx, posy)) {
+                    				JOptionPane.showMessageDialog(null, 
+                                            "Você encontrou uma fruta bichada!", 
+                                            "Aviso", 
+                                            JOptionPane.WARNING_MESSAGE);
+                    						
+                    			}else {
+                    				JOptionPane.showMessageDialog(null, 
+                                    "Pegando fruta!", 
+                                    "Aviso", 
+                                    JOptionPane.WARNING_MESSAGE);
+                    				
+                    				pegarFruta(jogadoresNoChao.get(jogadorAtivo), frutasNoChao);
+                    				
+                    			}
+                        	}else {
+                        		JOptionPane.showMessageDialog(null, 
+                                "Não tem fruta!", 
+                                "Aviso", 
+                                JOptionPane.WARNING_MESSAGE);
+                        	}
+                    	}
                         // Jogador ativo
                     	if(somaPassos > 0) {
                     		switch (keyCode) {
@@ -252,7 +302,7 @@ public class TelaJogo extends JPanel implements Runnable {
                             		}
                             	}
                                 break;
-                            case KeyEvent.VK_ENTER:
+                            /*case KeyEvent.VK_ENTER:
                             	if(posicaoOcupadaPorFruta(posx,posy)) {
                             		JOptionPane.showMessageDialog(null, 
                                     "Pegando fruta!", 
@@ -267,7 +317,7 @@ public class TelaJogo extends JPanel implements Runnable {
                                     JOptionPane.WARNING_MESSAGE);
                             	}
                             	
-                            	break;
+                            	break;*/
                     		}
                     		labelDado1.setText("Passos: " + somaPassos);
                     		jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
@@ -291,7 +341,7 @@ public class TelaJogo extends JPanel implements Runnable {
             }
         });
         this.setFocusable(true);
-
+        
         // Configurar o painel principal
         this.setLayout(new BorderLayout());
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -304,22 +354,7 @@ public class TelaJogo extends JPanel implements Runnable {
 
         imagemGrama = new ImageIcon(getClass().getResource("/imagens/grama.png"));
 
-        // Gerar objetos no chão
-        gerarPedras();
-        gerarLaranjasNoChao();
-        gerarAbacatesNoChao();
-        gerarMaracujaNoChao(); 
-        gerarLaranjeiraNoChao();
-        gerarAbacateiroNoChao();
-        gerarCocoNoChao();
-        gerarCoqueiroNoChao();
-        gerarAcerolaNoChao();
-        gerarAceroleiraNoChao();
-        gerarAmoraNoChao();
-        gerarAmoreiraNoChao();
-        gerarGoiabaNoChao();
-        gerarGoiabeiraNoChao();
-        gerarJogadoresNoChao();
+        
 
      // Painel inferior contendo botões e informações dos jogadores
         JPanel painelInferior = new JPanel();
@@ -374,7 +409,7 @@ public class TelaJogo extends JPanel implements Runnable {
         // Painel para as informações dos jogadores
         JPanel painelJogadores = new JPanel();
         painelJogadores.setLayout(new GridLayout(1, 1, 0, 0)); // Layout com três colunas para exibir dois jogadores e o botão "Sortear"
-
+        
         // Informações do Jogador 1
         
         jogador1Label = new JLabel("Jogador ?: ? passos");
@@ -409,6 +444,7 @@ public class TelaJogo extends JPanel implements Runnable {
             	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
                 labelDado1.setText("Passos: " + somaPassos); // Atualiza o label com a soma dos passos
                 mudarJogador();
+                verificarVencedor(jogadoresNoChao.get(jogadorAtivo));
                 jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
                 jogadaSorteada = true;
                 jogadaEncerrada = false;
@@ -432,6 +468,55 @@ public class TelaJogo extends JPanel implements Runnable {
 
         // Adicionar o painel inferior diretamente ao JFrame
         this.add(painelInferior, BorderLayout.SOUTH);
+        
+
+    }
+    
+    public boolean isFrutaBichada(int x, int y) {
+        for (List<? extends Frutas> listaFrutas : frutasNoChao) {
+            for (Frutas fruta : listaFrutas) {
+                // Verifica se as coordenadas da fruta coincidem com as coordenadas fornecidas e se a fruta está bichada
+                if (fruta.getX() == x && fruta.getY() == y && fruta.isBichada()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+ // Exemplo de como verificar se um jogador venceu
+    public void verificarVencedor(Jogador jogador) {
+        if (jogador.venceu(quantidadeMaracujasTotal)) {
+        	JOptionPane.showMessageDialog(null, 
+            "Você venceu!", 
+            "Aviso", 
+            JOptionPane.WARNING_MESSAGE);
+            
+        }
+    }
+
+ 
+    public void marcarFrutasBichadas(double porcentagem) {
+        Random random = new Random();
+        
+        double cont = porcentagem/100;
+
+        for (List<? extends Frutas> listaFrutas : frutasNoChao) {
+            for (Frutas fruta : listaFrutas) {
+            	//System.out.println( random.nextDouble());
+            	//System.out.println( cont);
+                // Gerar um número aleatório entre 0 e 1
+                if (random.nextDouble() < cont) {
+                    System.out.println("Fruta bichada: " + fruta); // Exibe a fruta que foi marcada como bichada
+                    // Marcar a fruta como bichada com base na chance
+                    fruta.setBichada(true);
+                } else {
+                	System.out.println("Fruta não bichada: " + fruta); 
+                    // Garantir que a fruta não seja bichada
+                    fruta.setBichada(false);
+                }
+            }
+        }
 
     }
     
@@ -445,6 +530,11 @@ public class TelaJogo extends JPanel implements Runnable {
 
                 // Verifica se a posição do jogador é igual à da fruta
                 if (jogador.getX() == fruta.getX() && jogador.getY() == fruta.getY()) {
+                	if (fruta instanceof Maracuja) {
+                        // Lógica específica para maracujá (se necessário)
+                        System.out.println("O jogador coletou um maracujá!");
+                        jogador.coletarMaracuja();
+                    }
                     jogador.adicionarNaMochila(fruta); // Adiciona fruta na mochila do jogador
                     iterator.remove(); // Remove a fruta do terreno
                     System.out.println("Fruta " + fruta.getClass().getSimpleName() + " foi adicionada à mochila do jogador!" + jogadorAtivo); // Usar o nome da classe da fruta
@@ -529,7 +619,7 @@ public class TelaJogo extends JPanel implements Runnable {
                         quantidadeGoiabaNoChao = Integer.parseInt(valoresGoiaba[1].trim());
                         break;
                     case "bichadas":
-                        quantidadeBichadas = Integer.parseInt(valor);
+                        quantidadeBichadas = Integer.parseInt(valor);; //Integer.parseInt(valor);
                         break;
                     case "mochila":
                         tamanhoMochila = Integer.parseInt(valor);
@@ -549,6 +639,8 @@ public class TelaJogo extends JPanel implements Runnable {
             quantidadeBichadas = 0; // Valor padrão
             tamanhoMochila = 5; // Valor padrão
         }
+        
+        
     }
     
     /**
@@ -734,6 +826,7 @@ public class TelaJogo extends JPanel implements Runnable {
     }
     
     private boolean posicaoOcupadaPorFruta (int x, int y) {
+    	
     	for (Laranja laranjaChao : laranjasNoChao) {
             if (laranjaChao.getX() == x && laranjaChao.getY() == y) {
                 return true;

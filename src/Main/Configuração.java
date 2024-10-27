@@ -143,7 +143,7 @@ public class Configuração extends JPanel {
     private int porBichadas = 0;
 
     /** Capacidade da mochila. */
-    private int capMochila = 0;
+    private int capMochila = 1;
     
     /** Atualiza as quantidades atuais de maracujás, pedras, laranjas, etc. */
     int[] qtdMaracujasTotalAtual = {qtdMaracujasTotal};
@@ -276,13 +276,72 @@ public class Configuração extends JPanel {
         criarComponentesQuantidade("Quantidade de Goiabas:", qtdGoiabasAtual, labelNumeroGoiaba, 370, 249, 655, 249, 579, 249);
         
         //int[] qtdBichadasAtual = {porBichadas};
+        JLabel label = new JLabel("Porcentagem de Bichadas:");
+        label.setBounds(22, 276, 205, 15); // Configurações de posição e tamanho
+        add(label);
+        
         labelNumeroBichadas= new JLabel();
-        criarComponentesQuantidade("Porcentagem de Bichadas:", qtdBichadasAtual, labelNumeroBichadas, 22, 276, 305, 276, 229, 276);
+        labelNumeroBichadas.setText(String.valueOf(qtdBichadasAtual[0]));
+        labelNumeroBichadas.setBounds(22 + 230, 276, 50, 25);
+        labelNumeroBichadas.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelNumeroBichadas);
+        //criarComponentesQuantidade("Porcentagem de Bichadas:", qtdBichadasAtual, labelNumeroBichadas, 22, 276, 305, 276, 229, 276);
 
-        //int[] qtdMochilaAtual = {capMochila};
+        JButton btnIncrementarBichadas = criarBotao("+", 305, 276);
+        JButton btnDecrementarBichadas = criarBotao("-", 229, 276);
+        add(btnIncrementarBichadas);
+        add(btnDecrementarBichadas);
+
+        btnIncrementarBichadas.addActionListener(e -> {
+        	if (porBichadas == 100) {
+        		JOptionPane.showMessageDialog(null, "Você atingiu o percentual máximo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+        	}else {
+        		porBichadas++;
+                atualizarNumero(labelNumeroBichadas, porBichadas);
+        	}
+        	
+        });
+
+        btnDecrementarBichadas.addActionListener(e -> {
+        	
+            if (porBichadas == 0) {
+                JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            } else {
+            	porBichadas--;
+                atualizarNumero(labelNumeroBichadas, porBichadas);
+            }
+        });
+        
+        JLabel labelM = new JLabel("Capacidade da Mochila:");
+        labelM.setBounds(22, 303, 205, 15); // Configurações de posição e tamanho
+        add(labelM);
+        
         labelNumeroMochila = new JLabel();
-        criarComponentesQuantidade("Capacidade da Mochila:", qtdMochilaAtual, labelNumeroMochila, 22, 303, 305, 303, 229, 303);
+        labelNumeroMochila.setText(String.valueOf(qtdMochilaAtual[0]));
+        labelNumeroMochila.setBounds(22 + 230, 303, 50, 25);
+        labelNumeroMochila.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelNumeroMochila);
+        //criarComponentesQuantidade("Capacidade da Mochila:", qtdMochilaAtual, labelNumeroMochila, 22, 303, 305, 303, 229, 303);
+        JButton btnIncrementarMochila = criarBotao("+", 305, 303);
+        JButton btnDecrementarMochila = criarBotao("-", 229, 303);
+        add(btnIncrementarMochila);
+        add(btnDecrementarMochila);
 
+        btnIncrementarMochila.addActionListener(e -> {
+        	capMochila++;
+            atualizarNumero(labelNumeroMochila, capMochila);
+        	
+        });
+
+        btnDecrementarMochila.addActionListener(e -> {
+            if (capMochila == 1) {
+                JOptionPane.showMessageDialog(null, "Você atingiu o valor mínimo permitido!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            } else {
+            	capMochila--;
+                atualizarNumero(labelNumeroMochila, capMochila);
+            }
+        });
+        
         salvarButton = new JButton("Salvar terreno");
         salvarButton.setBounds(159, 431, 150, 40);
         add(salvarButton);
