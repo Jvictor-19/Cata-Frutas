@@ -2,6 +2,7 @@ package Elementos.ElementosDinamicos;
 
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import Frutas.Abacate;
 import Frutas.Coco;
@@ -36,7 +37,7 @@ public class Jogador {
     private int pontosVitoria = 0;         // Pontuação do jogador
     private boolean comeuCoco; // Indica se o jogador comeu um coco
     
-    public Jogador(int x, int y, String caminhoImagem) {
+   
 
     private int quantFrutasOuro;
     private String nome;
