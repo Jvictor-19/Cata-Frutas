@@ -2,13 +2,24 @@ package Main;
 
 import javax.swing.*;
 
+
+import Botões.BotaoEncerrarJogada;
+import Botões.BotaoSair;
+import Botões.BotaoSortear;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
+
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
 
+import Main.SorteioDados;
 import Frutas.Frutas;
 import Frutas.Abacate;
 import Frutas.Acerola;
@@ -27,7 +38,10 @@ import Elementos.ElementosEstáticos.Goiabeira;
 import Elementos.ElementosEstáticos.Laranjeira;
 import Elementos.ElementosEstáticos.Pedra;
 
-
+/**
+ * Classe que representa a tela do jogo, responsável pela lógica de jogo e
+ * interface gráfica.
+ */
 public class TelaJogo extends JPanel implements Runnable {
 
     private static final long serialVersionUID = 1L;
@@ -86,19 +100,32 @@ public class TelaJogo extends JPanel implements Runnable {
     private int quantidadeGoiabeiraNoChao;
     
     private ArrayList<Jogador> jogadoresNoChao;
-    private int quantidadeJogadores; 
+    private List<List<? extends Frutas>> frutasNoChao;
     
-    private Image imagemJogador1; // Imagem do primeiro jogador
-    private Image imagemJogador2; // Imagem do segundo jogador
-    
-    private int quantidadeBichadas;
+    private double quantidadeBichadas;
     private int tamanhoMochila;
 
     private boolean jogoPausado = false;  // Controle de pausa
     private Thread threadJogo;
-   
     
- // Adicionar os layouts
+    private JLabel labelDado1;
+    private JLabel jogador1Label;
+    private JLabel labelDado2;
+    private JButton botaoSortear;
+    private Random random = new Random();
+   
+    private boolean jogadaSorteada = false;
+    private boolean jogadaEncerrada = false;
+    private int somaPassos;
+    private int jogadorAtivo = 0; // Índice do jogador ativo (começando com o primeiro jogador)
+
+    /**
+     * Construtor da classe TelaJogo.
+     * 
+     * @param configFilePath O caminho do arquivo de configuração a ser lido para
+     *                       inicializar a tela do jogo.
+     */	
+    // Adicionar os layouts
     public TelaJogo(String configFilePath) {
         // Lê os parâmetros do arquivo de configuração
         lerConfiguracao(configFilePath);
@@ -119,33 +146,17 @@ public class TelaJogo extends JPanel implements Runnable {
         this.goiabaNoChao = new ArrayList<>();
         this.goiabeiraNoChao = new ArrayList<>();
         this.jogadoresNoChao = new ArrayList<>();
-        this.quantidadeJogadores = 2;
-
+        this.frutasNoChao = new ArrayList<>();
         
-        //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
-        //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
-        
-        //imagemJogador1 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador1.png");
-        //imagemJogador2 = Toolkit.getDefaultToolkit().getImage("/imagens/jogador2.png");
-
-
-        // Configurar o painel principal
-        this.setLayout(new BorderLayout());
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        ajustarTamanhoTile(screenSize.width, screenSize.height);
-
-        // Configurar o tamanho da tela e fundo
-        this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela + 40)); // Aumentar altura para os botões
-        this.setBackground(Color.lightGray);
-        this.setDoubleBuffered(true);
-
-
-        imagemGrama = new ImageIcon(getClass().getResource("/imagens/grama.png"));
-
-        //imagemGrama = new ImageIcon("src/imagens/grama.png");
-
-
-        // Gerar objetos no chão
+        this.frutasNoChao.add(this.laranjasNoChao);
+        this.frutasNoChao.add(this.abacatesNoChao);
+        this.frutasNoChao.add(this.maracujasNoChao);
+        this.frutasNoChao.add(this.cocoNoChao);
+        this.frutasNoChao.add(this.acerolaNoChao);
+        this.frutasNoChao.add(this.amoraNoChao);
+        this.frutasNoChao.add(this.goiabaNoChao);
+       
+     // Gerar objetos no chão
         gerarPedras();
         gerarLaranjasNoChao();
         gerarAbacatesNoChao();
@@ -161,64 +172,408 @@ public class TelaJogo extends JPanel implements Runnable {
         gerarGoiabaNoChao();
         gerarGoiabeiraNoChao();
         gerarJogadoresNoChao();
+        
+        System.out.println("Porcentagem: " + quantidadeBichadas);
+        System.out.println("Laranjas no chão: " + this.laranjasNoChao);
+        System.out.println("Abacates no chão: " + this.abacatesNoChao);
+        System.out.println("Conteúdo de frutasNoChao: " + frutasNoChao);
+        marcarFrutasBichadas(quantidadeBichadas);
 
-        // Painel inferior contendo botões e informações dos jogadores
+       
+       // Adicionar KeyListener
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+            	if(jogadaSorteada) {
+            		int keyCode = e.getKeyCode();
+                    Jogador jogadorAtual = jogadoresNoChao.get(jogadorAtivo); 
+                    int posy = jogadorAtual.getY();
+                    int posx = jogadorAtual.getX();
+
+                    // Verifique se o índice do jogador ativo é válido
+                    if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
+                        keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
+                        keyCode == KeyEvent.VK_ENTER) {
+                    	
+                    	if(keyCode == KeyEvent.VK_ENTER) {
+                    		if(posicaoOcupadaPorFruta(posx,posy)) {
+                    			//marcarFrutasBichadas(quantidadeBichadas);
+                    			if(isFrutaBichada(posx, posy)) {
+                    				JOptionPane.showMessageDialog(null, 
+                                            "Você encontrou uma fruta bichada!", 
+                                            "Aviso", 
+                                            JOptionPane.WARNING_MESSAGE);
+                    						
+                    			}else {
+                    				JOptionPane.showMessageDialog(null, 
+                                    "Pegando fruta!", 
+                                    "Aviso", 
+                                    JOptionPane.WARNING_MESSAGE);
+                    				
+                    				pegarFruta(jogadoresNoChao.get(jogadorAtivo), frutasNoChao);
+                    				
+                    			}
+                        	}else {
+                        		JOptionPane.showMessageDialog(null, 
+                                "Não tem fruta!", 
+                                "Aviso", 
+                                JOptionPane.WARNING_MESSAGE);
+                        	}
+                    	}
+                        // Jogador ativo
+                    	if(somaPassos > 0) {
+                    		switch (keyCode) {
+                            case KeyEvent.VK_UP: // Cima
+                            	if(posy >= 1) {
+                            		if(existePedraNaPosicao(posx, posy-1)) {
+                            			if(existePedraNaPosicao(posx, posy-2)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posy-1 == 0 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(0, -2); 
+                                    			somaPassos -= 3;
+                            				}
+                            				
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(0, -1); 
+                            			somaPassos -= 1;
+                            		}	
+                            	}
+                                break;
+                            case KeyEvent.VK_DOWN: // Baixo
+                            	if(posy <= maxLinhasTela-2) {
+                            		if(existePedraNaPosicao(posx, posy+1)) {
+                            			if(existePedraNaPosicao(posx, posy+2)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posy+1 == maxLinhasTela-1 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(0, 2); 
+                                    			somaPassos -= 3;
+                            				}
+                            				
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(0, 1); 
+                            			somaPassos -= 1;
+                            		}
+                            	}
+                                 // Mover para baixo
+                                break;
+                            case KeyEvent.VK_LEFT: // Esquerda
+                            	if(posx >= 1) {
+                            		if(existePedraNaPosicao(posx - 1, posy)) {
+                            			if(existePedraNaPosicao(posx - 2, posy)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posx -1 == 0 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(-2, 0); 
+                                    			somaPassos -= 3;
+                            				}
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(-1, 0); 
+                            			somaPassos -= 1;
+                            		}
+                            	}
+                            	break;
+                            case KeyEvent.VK_RIGHT: // Direita
+                            	if(posx <= maxLinhasTela-2) {
+                            		if(existePedraNaPosicao(posx + 1, posy)) {
+                            			if(existePedraNaPosicao(posx + 2, posy)) {
+                            				mensagemMovImpossivel();
+                            			}else {
+                            				if(posx +1 == maxLinhasTela-1 || somaPassos - 3 < 0) {
+                            					mensagemMovImpossivel();
+                            				}else {
+                            					jogadorAtual.mover(2, 0); 
+                                    			somaPassos -= 3;
+                            				}
+                            			}
+                            		}else {
+                            			jogadorAtual.mover(1, 0); 
+                            			somaPassos -= 1;
+                            		}
+                            	}
+                                break;
+                            /*case KeyEvent.VK_ENTER:
+                            	if(posicaoOcupadaPorFruta(posx,posy)) {
+                            		JOptionPane.showMessageDialog(null, 
+                                    "Pegando fruta!", 
+                                    "Aviso", 
+                                    JOptionPane.WARNING_MESSAGE);
+                            		
+                            		pegarFruta(jogadoresNoChao.get(jogadorAtivo), frutasNoChao);
+                            	}else {
+                            		JOptionPane.showMessageDialog(null, 
+                                    "Não tem fruta!", 
+                                    "Aviso", 
+                                    JOptionPane.WARNING_MESSAGE);
+                            	}
+                            	
+                            	break;*/
+                    		}
+                    		labelDado1.setText("Passos: " + somaPassos);
+                    		jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
+                    	} else {
+                    		JOptionPane.showMessageDialog(null, 
+                            "Você não tem mais pontos para movimentação!", 
+                            "Aviso", 
+                            JOptionPane.WARNING_MESSAGE);
+                    	}
+                        
+                    }
+                    repaint(); // Redesenhar a tela após a movimentação
+                    
+            	} else {
+            		JOptionPane.showMessageDialog(null, 
+                    "Você deve sortear os dados antes iniciar a movimentação!", 
+                    "Aviso", 
+                    JOptionPane.WARNING_MESSAGE);
+            	}
+                
+            }
+        });
+        this.setFocusable(true);
+        
+        // Configurar o painel principal
+        this.setLayout(new BorderLayout());
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        ajustarTamanhoTile(screenSize.width, screenSize.height);
+
+        // Configurar o tamanho da tela e fundo
+        this.setPreferredSize(new Dimension(tamanhoTile * maxColunasTela, tamanhoTile * maxLinhasTela + 40)); // Aumentar altura para os botões
+        this.setBackground(Color.lightGray);
+        this.setDoubleBuffered(true);
+
+        imagemGrama = new ImageIcon(getClass().getResource("/imagens/grama.png"));
+
+        
+
+     // Painel inferior contendo botões e informações dos jogadores
         JPanel painelInferior = new JPanel();
         painelInferior.setLayout(new BorderLayout());
-        painelInferior.setPreferredSize(new Dimension(400, 60)); // Define a altura do painel inferior
+        painelInferior.setPreferredSize(new Dimension(400, 50)); // Define a altura do painel inferior
         painelInferior.setBackground(Color.LIGHT_GRAY);
 
         // Painel para os botões "Sair" e "Pausar"
         JPanel painelBotoes = new JPanel();
         painelBotoes.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        // Botão "Sair"
-        JButton botaoSair = new JButton("Sair");
-        botaoSair.addActionListener(e -> {
-            int resposta = JOptionPane.showConfirmDialog(null, "Você deseja realmente sair?", "Confirmação", JOptionPane.YES_NO_OPTION);
-            if (resposta == JOptionPane.YES_OPTION) {
-                System.exit(0);  // Sai do jogo se o usuário confirmar
-            }
-        });
-        painelBotoes.add(botaoSair);
+        // Cria uma instância do botão "Sair"
+        BotaoSair botaoSair = new BotaoSair();
+        // Adiciona o botão "Sair" ao painel de botões
+        painelBotoes.add(botaoSair.getBotao());
+         
+       // BotaoEncerrarJogada botaoEncerrar = new BotaoEncerrarJogada(jogadaSorteada);
+        //painelBotoes.add(botaoEncerrar.getBotao());
+        JButton botaoEncerrar = new JButton("Encerrar jogada");
+        botaoEncerrar.addActionListener(e -> {
+        	if (!jogadaSorteada) { // Verifica se os dados foram sorteados
+                // Exibe um aviso para informar que o jogador deve sortear os dados primeiro
+                JOptionPane.showMessageDialog(null, 
+                        "Você deve sortear os dados antes de encerrar a jogada!", 
+                        "Aviso", 
+                        JOptionPane.WARNING_MESSAGE);
 
+        	}else if (!jogadaEncerrada) { // Verifica se as condições para encerrar estão atendidas
+            	int resposta = JOptionPane.showConfirmDialog(null, 
+		                        "Deseja realmente encerrar a jogada?", 
+		                        "Confirmação de Encerramento", 
+		                        JOptionPane.YES_NO_OPTION);
+            	if(resposta == JOptionPane.YES_NO_OPTION) {
+            		jogadaEncerrada = true;
+            		jogadaSorteada = false;
+            		labelDado1.setText("Passos: ?");
+            		jogador1Label.setText("Jogador ?: ? passos");
+            		
+            	}
+                
+            } else {
+            	JOptionPane.showMessageDialog(null, 
+                        "A jogada já foi encerrada!", 
+                        "Aviso", 
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        	requestFocusInWindow();
+        });
+        painelBotoes.add(botaoEncerrar);
+        
+        
         // Painel para as informações dos jogadores
         JPanel painelJogadores = new JPanel();
-        painelJogadores.setLayout(new GridLayout(1, 3, 10, 10)); // Layout com três colunas para exibir dois jogadores e o botão "Sortear"
-
+        painelJogadores.setLayout(new GridLayout(1, 1, 0, 0)); // Layout com três colunas para exibir dois jogadores e o botão "Sortear"
+        
         // Informações do Jogador 1
-        JLabel jogador1Label = new JLabel("Jogador 1: 0 passos");
-        painelJogadores.add(jogador1Label);
+        
+        jogador1Label = new JLabel("Jogador ?: ? passos");
+        //painelJogadores.add(jogador1Label);
 
         // Informações do Jogador 2
-        JLabel jogador2Label = new JLabel("Jogador 2: 0 passos");
-        painelJogadores.add(jogador2Label);
+        //JLabel jogador2Label = new JLabel("Jogador 2: 0 passos");
+        //painelJogadores.add(jogador2Label);
 
-        // Adicionar o botão "Sortear"
+        // Painel dos dados e botão "Sortear"
+        JPanel painelDados = new JPanel();
+        painelDados.setLayout(new GridLayout(1, 2));
+
+        // Criar os componentes dos dados
+        labelDado1 = new JLabel("Passos: ?");
+
+        // Estilizando os textos
+        labelDado1.setFont(new Font("Serif", Font.BOLD, 14));
+        
+        // Adiciona os labels dos dados ao painel de dados
+        painelDados.add(labelDado1);
+        painelDados.add(jogador1Label);
+        
+        // Cria uma instância do botão "Sortear"
+        //BotaoSortear botaoSortear = new BotaoSortear(labelDado1);
+        // Adiciona o botão "Sortear" ao painel de botões
+        //painelBotoes.add(botaoSortear.getBotao());
         JButton botaoSortear = new JButton("Sortear");
         botaoSortear.addActionListener(e -> {
-            // Adicione a lógica para sortear aqui
-            JOptionPane.showMessageDialog(null, "Sorteio realizado!");
+        	if(!jogadaSorteada || somaPassos == 0) {
+        		int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
+            	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
+                labelDado1.setText("Passos: " + somaPassos); // Atualiza o label com a soma dos passos
+                mudarJogador();
+                verificarVencedor(jogadoresNoChao.get(jogadorAtivo));
+                jogador1Label.setText("Jogador " + jogadorAtivo + ": " + somaPassos + " passos");
+                jogadaSorteada = true;
+                jogadaEncerrada = false;
+        	}else {
+        		JOptionPane.showMessageDialog(null, 
+                "Os dados não podem ser sorteados, novamente, antes de encerrar a jogada!", 
+                "Aviso", 
+                JOptionPane.WARNING_MESSAGE);
+        	}
+        	
+        	requestFocusInWindow();
         });
-        painelJogadores.add(botaoSortear);
+        painelBotoes.add(botaoSortear);
+
+        // Adiciona o painel de dados ao painel de jogadores
+        painelJogadores.add(painelDados);
 
         // Adicionar os painéis ao painel principal
         painelInferior.add(painelBotoes, BorderLayout.WEST); // Botões à esquerda
-        painelInferior.add(painelJogadores, BorderLayout.CENTER); // Informações dos jogadores no centro
+        painelInferior.add(painelJogadores, BorderLayout.CENTER); // Informações dos jogadores e dados no centro
 
         // Adicionar o painel inferior diretamente ao JFrame
         this.add(painelInferior, BorderLayout.SOUTH);
+        
+
+    }
+    
+    public boolean isFrutaBichada(int x, int y) {
+        for (List<? extends Frutas> listaFrutas : frutasNoChao) {
+            for (Frutas fruta : listaFrutas) {
+                // Verifica se as coordenadas da fruta coincidem com as coordenadas fornecidas e se a fruta está bichada
+                if (fruta.getX() == x && fruta.getY() == y && fruta.isBichada()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+ // Exemplo de como verificar se um jogador venceu
+    public void verificarVencedor(Jogador jogador) {
+        if (jogador.venceu(quantidadeMaracujasTotal)) {
+        	JOptionPane.showMessageDialog(null, 
+            "Você venceu!", 
+            "Aviso", 
+            JOptionPane.WARNING_MESSAGE);
+            
+        }
     }
 
+ 
+    public void marcarFrutasBichadas(double porcentagem) {
+        Random random = new Random();
+        
+        double cont = porcentagem/100;
 
+        for (List<? extends Frutas> listaFrutas : frutasNoChao) {
+            for (Frutas fruta : listaFrutas) {
+            	//System.out.println( random.nextDouble());
+            	//System.out.println( cont);
+                // Gerar um número aleatório entre 0 e 1
+                if (random.nextDouble() < cont) {
+                    System.out.println("Fruta bichada: " + fruta); // Exibe a fruta que foi marcada como bichada
+                    // Marcar a fruta como bichada com base na chance
+                    fruta.setBichada(true);
+                } else {
+                	System.out.println("Fruta não bichada: " + fruta); 
+                    // Garantir que a fruta não seja bichada
+                    fruta.setBichada(false);
+                }
+            }
+        }
 
+    }
+    
+    public void pegarFruta(Jogador jogador, List<List<? extends Frutas>> frutasNoChao) {
+        // Itera sobre cada lista de frutas
+        for (List<? extends Frutas> listaFrutas : frutasNoChao) {
+            Iterator<? extends Frutas> iterator = listaFrutas.iterator();
+
+            while (iterator.hasNext()) {
+                Frutas fruta = iterator.next();
+
+                // Verifica se a posição do jogador é igual à da fruta
+                if (jogador.getX() == fruta.getX() && jogador.getY() == fruta.getY()) {
+                	if (fruta instanceof Maracuja) {
+                        // Lógica específica para maracujá (se necessário)
+                        System.out.println("O jogador coletou um maracujá!");
+                        jogador.coletarMaracuja();
+                    }
+                    jogador.adicionarNaMochila(fruta); // Adiciona fruta na mochila do jogador
+                    iterator.remove(); // Remove a fruta do terreno
+                    System.out.println("Fruta " + fruta.getClass().getSimpleName() + " foi adicionada à mochila do jogador!" + jogadorAtivo); // Usar o nome da classe da fruta
+                    break; // Para sair do loop após pegar uma fruta
+                }
+            }
+        }
+    }
+
+    
+    private void mudarJogador() {
+    	if(jogadorAtivo == 1) {
+			jogadorAtivo = 0;
+		} else {
+			jogadorAtivo = 1;
+		}
+    }
+
+    private void mensagemMovImpossivel(){
+    	JOptionPane.showMessageDialog(null, 
+        "Não é possível realizar esse movimento!!", 
+         "Aviso", 
+         JOptionPane.WARNING_MESSAGE);
+    }
+
+    /**
+     * Lê a configuração do jogo a partir de um arquivo.
+     *
+     * @param configFilePath O caminho para o arquivo de configuração.
+     */
     private void lerConfiguracao(String configFilePath) {
+    	
         try (BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] partes = linha.split(":");
                 String chave = partes[0].trim();
                 String valor = partes[1].trim();
+                
 
                 switch (chave) {
                     case "dimensão":
@@ -231,6 +586,7 @@ public class TelaJogo extends JPanel implements Runnable {
                         String[] valoresMaracuja = valor.split(" ");
                         quantidadeMaracujasTotal = Integer.parseInt(valoresMaracuja[0].trim());
                         quantidadeMaracujaNoChao = Integer.parseInt(valoresMaracuja[1].trim());
+                        
                         break;
                     case "laranja":
                         String[] valoresLaranja = valor.split(" ");
@@ -263,7 +619,7 @@ public class TelaJogo extends JPanel implements Runnable {
                         quantidadeGoiabaNoChao = Integer.parseInt(valoresGoiaba[1].trim());
                         break;
                     case "bichadas":
-                        quantidadeBichadas = Integer.parseInt(valor);
+                        quantidadeBichadas = Integer.parseInt(valor);; //Integer.parseInt(valor);
                         break;
                     case "mochila":
                         tamanhoMochila = Integer.parseInt(valor);
@@ -283,8 +639,16 @@ public class TelaJogo extends JPanel implements Runnable {
             quantidadeBichadas = 0; // Valor padrão
             tamanhoMochila = 5; // Valor padrão
         }
+        
+        
     }
-
+    
+    /**
+     * Ajusta o tamanho dos tiles para que a matriz se ajuste à tela.
+     *
+     * @param larguraDisponivel A largura disponível da tela.
+     * @param alturaDisponivel  A altura disponível da tela.
+     */
     private void ajustarTamanhoTile(int larguraDisponivel, int alturaDisponivel) {
         // Calcular o tamanho do tile para que a matriz se ajuste à tela
         int alturaAreaJogo = alturaDisponivel - 100; // Deixar espaço para os botões
@@ -297,215 +661,138 @@ public class TelaJogo extends JPanel implements Runnable {
         // Escolher o menor tamanho para garantir que a matriz caiba na tela
         tamanhoTile = Math.min(tamanhoTileHorizontal, tamanhoTileVertical);
     }
-
-
-    private void gerarPedras() {
+    
+    /**
+     * Método genérico para gerar objetos em posições aleatórias na matriz.
+     * 
+     * @param lista a lista de objetos (por exemplo, pedras, laranjas, etc.)
+     * @param quantidade a quantidade de objetos a serem gerados
+     * @param tipoObjeto a classe do objeto a ser gerado
+     */
+    private <T> void gerarObjetosAleatorios(List<T> lista, int quantidade, Class<T> tipoObjeto) {
         Random random = new Random();
         int contagem = 0;
 
-        while (contagem < quantidadePedras) {
+        while (contagem < quantidade) {
             int x = random.nextInt(maxColunasTela);
             int y = random.nextInt(maxLinhasTela);
 
             if (!posicaoOcupada(x, y)) {
-                pedras.add(new Pedra(x, y));
-                contagem++;
-            }
-        }
-    }
-
-    private void gerarLaranjasNoChao() {
-    	Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeLaranjasNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                laranjasNoChao.add(new Laranja(x, y));
-                contagem++;
-            }
-        }
-
-    }
-    private void gerarLaranjeiraNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeLaranjeirasNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                laranjeiraNoChao.add(new Laranjeira(x, y));
-                contagem++;
-                }
-            }
-        }
-        
-    private void gerarAbacatesNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAbacatesNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                abacatesNoChao.add(new Abacate(x, y));
-                contagem++;
-            }
-        }
-    }
-        private void gerarAbacateiroNoChao() {
-            Random random = new Random();
-            int contagem = 0;
-
-            while (contagem < quantidadeAbacateiroNoChao) {
-                int x = random.nextInt(maxColunasTela);
-                int y = random.nextInt(maxLinhasTela);
-
-                if (!posicaoOcupada(x, y)) {
-                    abacateiroNoChao.add(new Abacateiro(x, y));
+                try {
+                    // Usa reflexão para criar uma nova instância do objeto
+                    T objeto = tipoObjeto.getDeclaredConstructor(int.class, int.class).newInstance(x, y);
+                    lista.add(objeto);
                     contagem++;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
-        
+    }
+    
+    /**
+     * Gera pedras em posições aleatórias na matriz.
+     */
+    private void gerarPedras() {
+        gerarObjetosAleatorios(pedras, quantidadePedras, Pedra.class);
+    }
+
+    /**
+     * Gera laranjas no chão em posições aleatórias na matriz.
+     */
+    private void gerarLaranjasNoChao() {
+        gerarObjetosAleatorios(laranjasNoChao, quantidadeLaranjasNoChao, Laranja.class);
+    }
+
+    /**
+     * Gera laranjeiras no chão em posições aleatórias na matriz.
+     */
+    private void gerarLaranjeiraNoChao() {
+        gerarObjetosAleatorios(laranjeiraNoChao, quantidadeLaranjeirasNoChao, Laranjeira.class);
+    }
+    
+    /**
+     * Gera abacates no chão em posições aleatórias na matriz.
+     */
+    private void gerarAbacatesNoChao() {
+        gerarObjetosAleatorios(abacatesNoChao, quantidadeAbacatesNoChao, Abacate.class);
+    }
+    
+    /**
+     * Gera abacateiros no chão em posições aleatórias na matriz.
+     */
+    private void gerarAbacateiroNoChao() {
+        gerarObjetosAleatorios(abacateiroNoChao, quantidadeAbacateiroNoChao, Abacateiro.class);
+    }
+    
+    /**
+     * Gera maracujás no chão em posições aleatórias na matriz.
+     */
     private void gerarMaracujaNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeMaracujaNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                maracujasNoChao.add(new Maracuja(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(maracujasNoChao, quantidadeMaracujaNoChao, Maracuja.class);
     }
+    
+    /**
+     * Gera coqueiros no chão em posições aleatórias na matriz.
+     */
     private void gerarCoqueiroNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeCoqueiroNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                coqueiroNoChao.add(new Coqueiro(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(coqueiroNoChao, quantidadeCoqueiroNoChao, Coqueiro.class);
     }
+    
+    /**
+     * Gera cocos no chão em posições aleatórias na matriz.
+     */
     private void gerarCocoNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeCocoNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                cocoNoChao.add(new Coco(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(cocoNoChao, quantidadeCocoNoChao, Coco.class);
     }
+    
+    /**
+     * Gera acerolas no chão em posições aleatórias na matriz.
+     */
     private void gerarAcerolaNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAcerolaNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                acerolaNoChao.add(new Acerola(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(acerolaNoChao, quantidadeAcerolaNoChao, Acerola.class);
     }
     
+    /**
+     * Gera aceroleiras no chão em posições aleatórias na matriz.
+     */
     private void gerarAceroleiraNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAceroleiraNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                aceroleiraNoChao.add(new Aceroleira(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(aceroleiraNoChao, quantidadeAceroleiraNoChao, Aceroleira.class);
     }
     
+    /**
+     * Gera amoras no chão em posições aleatórias na matriz.
+     */
     private void gerarAmoraNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAmoraNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                amoraNoChao.add(new Amora(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(amoraNoChao, quantidadeAmoraNoChao, Amora.class);
     }
     
+    /**
+     * Gera amoreiras no chão em posições aleatórias na matriz.
+     */
     private void gerarAmoreiraNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeAmoreiraNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                amoreiraNoChao.add(new Amoreiro(x, y));
-                contagem++;
-            }
-        }
-    }
-    private void gerarGoiabeiraNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeGoiabeiraNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                goiabeiraNoChao.add(new Goiabeira(x, y));
-                contagem++;
-            }
-        }
-    }
-    private void gerarGoiabaNoChao() {
-        Random random = new Random();
-        int contagem = 0;
-
-        while (contagem < quantidadeGoiabaNoChao) {
-            int x = random.nextInt(maxColunasTela);
-            int y = random.nextInt(maxLinhasTela);
-
-            if (!posicaoOcupada(x, y)) {
-                goiabaNoChao.add(new Goiaba(x, y));
-                contagem++;
-            }
-        }
+        gerarObjetosAleatorios(amoreiraNoChao, quantidadeAmoreiraNoChao, Amoreiro.class);
     }
     
+    /**
+     * Gera goiabeiras no chão em posições aleatórias na matriz.
+     */
+    private void gerarGoiabeiraNoChao() {
+        gerarObjetosAleatorios(goiabeiraNoChao, quantidadeGoiabeiraNoChao, Goiabeira.class);
+    }
+    
+    /**
+     * Gera goiabas no chão em posições aleatórias na matriz.
+     */
+    private void gerarGoiabaNoChao() {
+        gerarObjetosAleatorios(goiabaNoChao, quantidadeGoiabaNoChao, Goiaba.class);
+    }
+    
+    /**
+     * Gera os jogadores no chão em posições aleatórias na matriz.
+     */
     private void gerarJogadoresNoChao() {
         Random random = new Random();
-        int contagem = 0;
         int ver = 0;
 
         // Caminhos das imagens para os dois jogadores
@@ -523,20 +810,24 @@ public class TelaJogo extends JPanel implements Runnable {
                 // Adiciona o jogador na lista com a imagem apropriada
                 jogadoresNoChao.add(new Jogador(x, y, caminhoImagem)); 
                 ver++;
-                contagem++;
+                
             }
         }
     }
-
-
-    private boolean posicaoOcupada(int x, int y) {
+   
+    
+    private boolean existePedraNaPosicao(int x, int y) {
         for (Pedra pedra : pedras) {
             if (pedra.getX() == x && pedra.getY() == y) {
                 return true;
             }
         }
-
-        for (Laranja laranjaChao : laranjasNoChao) {
+        return false;
+    }
+    
+    private boolean posicaoOcupadaPorFruta (int x, int y) {
+    	
+    	for (Laranja laranjaChao : laranjasNoChao) {
             if (laranjaChao.getX() == x && laranjaChao.getY() == y) {
                 return true;
             }
@@ -547,12 +838,89 @@ public class TelaJogo extends JPanel implements Runnable {
                 return true;
             }
         }
-
+        
         for (Maracuja maracujaChao : maracujasNoChao) {
             if (maracujaChao.getX() == x && maracujaChao.getY() == y) {
                 return true;
             }
           }
+        
+        for (Coco cocoChao : cocoNoChao) {
+            if (cocoChao.getX() == x && cocoChao.getY() == y) {
+                return true;
+                }
+        }
+        
+        for (Acerola acerolaChao : acerolaNoChao) {
+            if (acerolaChao.getX() == x && acerolaChao.getY() == y) {
+                return true;
+                }
+        }
+        
+        for (Amora amoraChao : amoraNoChao) {
+            if (amoraChao.getX() == x && amoraChao.getY() == y) {
+                return true;
+                }
+            }
+        for (Goiaba goiabaChao : goiabaNoChao) {
+            if (goiabaChao.getX() == x && goiabaChao.getY() == y) {
+                return true;
+                }
+            }
+       
+        return false;
+    }
+
+
+
+    private boolean posicaoOcupada(int x, int y) {
+    	for (Laranja laranjaChao : laranjasNoChao) {
+            if (laranjaChao.getX() == x && laranjaChao.getY() == y) {
+                return true;
+            }
+        }
+
+        for (Abacate abacateChao : abacatesNoChao) {
+            if (abacateChao.getX() == x && abacateChao.getY() == y) {
+                return true;
+            }
+        }
+        
+        for (Maracuja maracujaChao : maracujasNoChao) {
+            if (maracujaChao.getX() == x && maracujaChao.getY() == y) {
+                return true;
+            }
+          }
+        
+        for (Coco cocoChao : cocoNoChao) {
+            if (cocoChao.getX() == x && cocoChao.getY() == y) {
+                return true;
+                }
+        }
+        
+        for (Acerola acerolaChao : acerolaNoChao) {
+            if (acerolaChao.getX() == x && acerolaChao.getY() == y) {
+                return true;
+                }
+        }
+        
+        for (Amora amoraChao : amoraNoChao) {
+            if (amoraChao.getX() == x && amoraChao.getY() == y) {
+                return true;
+                }
+            }
+        for (Goiaba goiabaChao : goiabaNoChao) {
+            if (goiabaChao.getX() == x && goiabaChao.getY() == y) {
+                return true;
+                }
+            }
+        for (Pedra pedra : pedras) {
+            if (pedra.getX() == x && pedra.getY() == y) {
+                return true;
+            }
+        }
+
+        
        for (Laranjeira laranjeiraChao : laranjeiraNoChao) {
             if (laranjeiraChao.getX() == x && laranjeiraChao.getY() == y) {
                 return true;
@@ -563,11 +931,7 @@ public class TelaJogo extends JPanel implements Runnable {
                return true;
                }
        }
-       for (Coco cocoChao : cocoNoChao) {
-           if (cocoChao.getX() == x && cocoChao.getY() == y) {
-               return true;
-               }
-       }
+      
        for (Coqueiro coqueiroChao : coqueiroNoChao) {
            if (coqueiroChao.getX() == x && coqueiroChao.getY() == y) {
                return true;
@@ -575,31 +939,19 @@ public class TelaJogo extends JPanel implements Runnable {
            
        }
        
-       for (Acerola acerolaChao : acerolaNoChao) {
-           if (acerolaChao.getX() == x && acerolaChao.getY() == y) {
-               return true;
-               }
-       }
+       
        for (Aceroleira aceroleiraChao : aceroleiraNoChao) {
            if (aceroleiraChao.getX() == x && aceroleiraChao.getY() == y) {
                return true;
                }
            }
-       for (Amora amoraChao : amoraNoChao) {
-           if (amoraChao.getX() == x && amoraChao.getY() == y) {
-               return true;
-               }
-           }
+       
        for (Amoreiro amoreiraChao : amoreiraNoChao) {
            if (amoreiraChao.getX() == x && amoreiraChao.getY() == y) {
                return true;
                }
            }
-       for (Goiaba goiabaChao : goiabaNoChao) {
-           if (goiabaChao.getX() == x && goiabaChao.getY() == y) {
-               return true;
-               }
-           }
+       
        for (Goiabeira goiabeiraChao : goiabeiraNoChao) {
            if (goiabeiraChao.getX() == x && goiabeiraChao.getY() == y) {
                return true;
@@ -700,19 +1052,17 @@ public class TelaJogo extends JPanel implements Runnable {
         for (Jogador jogador : jogadoresNoChao) {
             jogador.desenhar(g, tamanhoTile); // Chama o método de desenhar do jogador
         }
-        
-
     }
 
-	    /*public static void main(String[] args) {
+	    public static void main(String[] args) {
 	        SwingUtilities.invokeLater(() -> {
 	            JFrame frame = new JFrame("Jogo de Laranjas");
 	            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	            frame.setResizable(false);
-	            frame.setContentPane(new TelaJogo("config.txt")); // Passando o caminho do arquivo de configuração
+	            frame.setContentPane(new TelaJogo("src/Arquivo/configuracaoJogo.txt")); // Passando o caminho do arquivo de configuração
 	            frame.pack();
 	            frame.setLocationRelativeTo(null);
 	            frame.setVisible(true);
 	        });
-	    }*/
-	}
+	    }
+}

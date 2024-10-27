@@ -9,6 +9,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * A classe Personagens é um painel que permite a entrada dos nomes de dois jogadores
+ * e fornece opções para importar um arquivo ou definir configurações do jogo.
+ * 
+ * Este painel é exibido em um JFrame e interage com o usuário para coletar
+ * informações necessárias antes de iniciar o jogo.
+ */
 public class Personagens extends JPanel {
     // Referência ao JFrame que contém esta instância de Personagens
     private JFrame parentFrame;
@@ -17,13 +24,26 @@ public class Personagens extends JPanel {
     String nomeJogador1 = "";
     String nomeJogador2 = "";
 
-    // Construtor para receber o JFrame pai
+    /**
+     * Construtor da classe Personagens.
+     * 
+     * Este construtor recebe um JFrame pai e configura o layout do painel.
+     * 
+     * @param frame o JFrame que contém este painel de personagens.
+     */
     public Personagens(JFrame frame) {
         this.parentFrame = frame;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         iniciarConfiguracoes();
     }
 
+    /**
+     * Inicia as configurações, permitindo que o usuário insira os nomes dos jogadores
+     * e escolha entre importar um arquivo ou definir configurações.
+     * 
+     * Este método apresenta um diálogo até que os nomes dos jogadores sejam
+     * inseridos corretamente.
+     */
     private void iniciarConfiguracoes() {
         // Loop até que os nomes dos jogadores sejam inseridos
         while (true) {
@@ -77,13 +97,18 @@ public class Personagens extends JPanel {
                     configFrame.setLocationRelativeTo(null);
                     configFrame.add(new Configuração());
                     configFrame.setVisible(true);
-   
                 }
                 break; // Sai do loop após processar os nomes com sucesso
             }
         }
     }
 
+    /**
+     * Permite ao usuário importar um arquivo.
+     * 
+     * Este método exibe um JFileChooser para que o usuário selecione um arquivo.
+     * Se um arquivo for selecionado, inicia o jogo com base no arquivo importado.
+     */
     private void importarArquivo() {
         JFileChooser fileChooser = new JFileChooser();
         int retorno = fileChooser.showOpenDialog(null);
@@ -93,7 +118,6 @@ public class Personagens extends JPanel {
 
             // Iniciar o jogo com base no arquivo importado
             try {
-            	
                 JFrame gameWindow = new JFrame("Cata Frutas");
                 gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Apenas fechar a janela
                 gameWindow.setResizable(false);

@@ -21,8 +21,10 @@ public class LerArquivo {
      *         e os valores são as definições correspondentes. Se ocorrer um erro ao ler o arquivo,
      *         uma mensagem de erro será exibida no console e o HashMap retornado será vazio.
      */
+
 	public static HashMap<String, String> carregarConfiguracoes() {
 	    HashMap<String, String> configuracoes = new HashMap<>();
+
 
 	    // Obtém o diretório do usuário
 	    String userDir = System.getProperty("user.home");
