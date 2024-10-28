@@ -177,7 +177,7 @@ public class TelaInicial extends JFrame {
                          configFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Usar DISPOSE_ON_CLOSE
                          configFrame.setSize(800, 600);
                          configFrame.setLocationRelativeTo(null);
-                         configFrame.add(new Configuração());
+                         configFrame.add(new Configuração(nomeJogador1, nomeJogador2));
                          configFrame.setVisible(true);
                          setVisible(false);
                          pararMusica();
@@ -270,7 +270,7 @@ public class TelaInicial extends JFrame {
                 gameWindow.setResizable(false);
 
                 // Passa o caminho do arquivo selecionado para a TelaJogo
-                TelaJogo gamePainel = new TelaJogo(arquivo.getAbsolutePath());
+                TelaJogo gamePainel = new TelaJogo(arquivo.getAbsolutePath(), nomeJogador1, nomeJogador2);
                 gameWindow.getContentPane().add(gamePainel);
                 gameWindow.pack();
                 gameWindow.setLocationRelativeTo(null);
