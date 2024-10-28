@@ -56,6 +56,31 @@ public class Jogador {
         }
     }
     
+    public int getQuantidadeFrutasMochila() {
+        return mochila.size();
+    }
+    
+    public List<Frutas> removerFrutas(int quantidade) {
+        List<Frutas> frutasRemovidas = new ArrayList<>();
+        Iterator<Frutas> iterador = mochila.iterator();
+        
+        while (iterador.hasNext() && frutasRemovidas.size() < quantidade) {
+            frutasRemovidas.add(iterador.next());
+            iterador.remove(); // Remove da mochila
+        }
+        return frutasRemovidas;
+    }
+
+    
+ // Método setter para o nome
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    // Método getter para o nome
+    public String getNome() {
+        return nome;
+    }
 
     public boolean venceu(int quantidadeMaracujasTotal) {
         return quantFrutasOuro > (quantidadeMaracujasTotal / 2);
