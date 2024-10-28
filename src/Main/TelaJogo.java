@@ -1,8 +1,6 @@
-
 package Main;
 
 import javax.swing.*;
-
 
 import Botões.BotaoEncerrarJogada;
 import Botões.BotaoSair;
@@ -124,8 +122,6 @@ public class TelaJogo extends JPanel implements Runnable {
     private String nomeJogadorA;
     private String nomeJogadorB;
     
-    private int quantForca = 0;
-    
     private int quantFrutasDerrubadas;
     private int empurrao;
 
@@ -210,8 +206,10 @@ public class TelaJogo extends JPanel implements Runnable {
                     if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
                         keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
                         keyCode == KeyEvent.VK_ENTER) {
+                    	
                     	if (keyCode == KeyEvent.VK_ENTER) {
                     	    if (posicaoOcupadaPorFruta(posx, posy)) {
+
                     	    	if (isFrutaBichada(posx, posy)) {
                     	    	    JOptionPane.showMessageDialog(null, 
                     	    	            "Você encontrou uma fruta bichada!", 
@@ -265,13 +263,17 @@ public class TelaJogo extends JPanel implements Runnable {
                     	                	jogadorAtual.lidarComBichada();                    	                }
                     	            }
                     	        }
+
                     	    } else {
                     	        JOptionPane.showMessageDialog(null, 
-                    	                "Não tem fruta!", 
-                    	                "Aviso", 
-                    	                JOptionPane.WARNING_MESSAGE);
+                    	            "Não tem fruta!", 
+                    	            "Aviso", 
+                    	            JOptionPane.WARNING_MESSAGE);
                     	    }
                     	}
+  
+
+                    	
 
                     	if(somaPassos > 0) {
                     		switch (keyCode) {
@@ -381,7 +383,7 @@ public class TelaJogo extends JPanel implements Runnable {
                     		}
                     		labelDado1.setText("Passos: " + somaPassos);
                     		jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
-                    		forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getForca());
+                    		forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
                     	} else {
                     		JOptionPane.showMessageDialog(null, 
                             "Você não tem mais pontos para movimentação!", 
@@ -510,6 +512,7 @@ public class TelaJogo extends JPanel implements Runnable {
         
         JButton botaoSortear = new JButton("Sortear");
         botaoSortear.addActionListener(e -> {
+
             // Obtém o jogador ativo
             Jogador jogadorAtual = jogadoresNoChao.get(jogadorAtivo);
 
@@ -535,6 +538,7 @@ public class TelaJogo extends JPanel implements Runnable {
                 }
             } else {
                 // Se o jogador estiver bloqueado, muda para o próximo jogador
+
                 mudarJogador();
                 // Verifica se o próximo jogador também está bloqueado
                 Jogador proximoJogador = jogadoresNoChao.get(jogadorAtivo);
