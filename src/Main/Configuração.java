@@ -26,6 +26,8 @@ import java.io.IOException;
  */
 
 public class Configuração extends JPanel {
+	private String nomeJogadorA;
+	private String nomeJogadorB;
 
     private static final long serialVersionUID = 1L;
     /** Botão para iniciar o jogo. */
@@ -174,7 +176,10 @@ public class Configuração extends JPanel {
      * Inicializa o painel, configura a interface gráfica e 
      * adiciona os componentes.
      */
-    public Configuração() {
+    public Configuração(String nomeJogador1, String nomeJogador2) {
+    	nomeJogadorA = nomeJogador1;
+    	nomeJogadorB = nomeJogador2;
+    	
         setLayout(null);
         setPreferredSize(new Dimension(800, 600));
         //setBackground(Color.decode("#e08475"));
@@ -624,7 +629,7 @@ public class Configuração extends JPanel {
 	            String caminhoConfiguracao = userDir + File.separator + "configuracaoJogo.txt";
 	
 	            // Passa o caminho para o construtor TelaJogo
-	            TelaJogo gamePainel = new TelaJogo(caminhoConfiguracao);
+	            TelaJogo gamePainel = new TelaJogo(caminhoConfiguracao, nomeJogadorA, nomeJogadorB);
 	
 	            //TelaJogo gamePainel = new TelaJogo("src/Arquivo/configuracaoJogo.txt");
 	            gameWindow.getContentPane().add(gamePainel);
