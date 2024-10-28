@@ -1,8 +1,6 @@
-
 package Main;
 
 import javax.swing.*;
-
 
 import Botões.BotaoEncerrarJogada;
 import Botões.BotaoSair;
@@ -124,8 +122,6 @@ public class TelaJogo extends JPanel implements Runnable {
     private String nomeJogadorA;
     private String nomeJogadorB;
     
-    private int quantForca = 0;
-    
     private int quantFrutasDerrubadas;
     private int empurrao;
 
@@ -210,8 +206,10 @@ public class TelaJogo extends JPanel implements Runnable {
                     if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
                         keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
                         keyCode == KeyEvent.VK_ENTER) {
+                    	
                     	if (keyCode == KeyEvent.VK_ENTER) {
                     	    if (posicaoOcupadaPorFruta(posx, posy)) {
+
                     	    	if (isFrutaBichada(posx, posy)) {
                     	    	    JOptionPane.showMessageDialog(null, 
                     	    	            "Você encontrou uma fruta bichada!", 
@@ -219,7 +217,8 @@ public class TelaJogo extends JPanel implements Runnable {
                     	    	            JOptionPane.WARNING_MESSAGE);
                     	    	    
                     	    	    // Aqui, você chamaria o método lidarComBichada do jogador
-                    	    	    jogadorAtual.lidarComBichada();
+                    	    	    jogadoresNoChao.get(jogadorAtivo).lidarComBichada();
+                    	    	    pegarFruta(jogadorAtual, frutasNoChao);
                     	    	}
                     	    		else {
                     	            int opcao = JOptionPane.showOptionDialog(null,
@@ -246,24 +245,35 @@ public class TelaJogo extends JPanel implements Runnable {
                     	                // Verifica se comeu coco e calcula os passos
                     	                boolean comeuCoco = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, somaPassos);
                     	                if (comeuCoco) {
-                    	                    somaPassos -= 1; // Reduz a soma de passos se comeu coco
+                    	                    somaPassos = somaPassos *2; // Reduz a soma de passos se comeu coco
                     	                }
 
                     	                // Verifica se comeu abacate e dobra a força e os passos, caso positivo
                     	                boolean comeuAbacate = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, jogadorAtual.getQuantidadeFrutasMochila());
                     	                if (comeuAbacate) {
                     	                    jogadorAtual.dobrarForca();
-                    	                    somaPassos = jogadorAtual.getPontosMovimento(); // Ajusta somaPassos para o valor atual de pontos de movimento
+                    	                    somaPassos = jogadorAtual.getPontosMovimento() - 1;
+                    	                    // Ajusta somaPassos para o valor atual de pontos de movimento
                     	                }
+                    	                
+                    	           
+                    	                boolean comeuLaranja = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, somaPassos);
+                    	                if (comeuLaranja) {
+                    	                	somaPassos = jogadorAtual.getPontosMovimento()-1;
+                    	                	jogadorAtual.lidarComBichada();                    	                }
                     	            }
                     	        }
+
                     	    } else {
                     	        JOptionPane.showMessageDialog(null, 
-                    	                "Não tem fruta!", 
-                    	                "Aviso", 
-                    	                JOptionPane.WARNING_MESSAGE);
+                    	            "Não tem fruta!", 
+                    	            "Aviso", 
+                    	            JOptionPane.WARNING_MESSAGE);
                     	    }
                     	}
+  
+
+                    	
 
                     	if(somaPassos > 0) {
                     		switch (keyCode) {
@@ -373,7 +383,7 @@ public class TelaJogo extends JPanel implements Runnable {
                     		}
                     		labelDado1.setText("Passos: " + somaPassos);
                     		jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
-                    		forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getForca());
+                    		forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
                     	} else {
                     		JOptionPane.showMessageDialog(null, 
                             "Você não tem mais pontos para movimentação!", 
@@ -423,8 +433,7 @@ public class TelaJogo extends JPanel implements Runnable {
         // Adiciona o botão "Sair" ao painel de botões
         painelBotoes.add(botaoSair.getBotao());
          
-       // BotaoEncerrarJogada botaoEncerrar = new BotaoEncerrarJogada(jogadaSorteada);
-        //painelBotoes.add(botaoEncerrar.getBotao());
+     // Botão para encerrar a jogada
         JButton botaoEncerrar = new JButton("Encerrar jogada");
         botaoEncerrar.addActionListener(e -> {
         	if (!jogadaSorteada) { // Verifica se os dados foram sorteados
@@ -456,6 +465,7 @@ public class TelaJogo extends JPanel implements Runnable {
         	requestFocusInWindow();
         });
         painelBotoes.add(botaoEncerrar);
+
         
         
         // Painel para as informações dos jogadores
@@ -466,11 +476,7 @@ public class TelaJogo extends JPanel implements Runnable {
         
         jogador1Label = new JLabel("Jogador ?: ? passos");
         forca = new JLabel("Força: ?");
-        //painelJogadores.add(jogador1Label);
-
-        // Informações do Jogador 2
-        //JLabel jogador2Label = new JLabel("Jogador 2: 0 passos");
-        //painelJogadores.add(jogador2Label);
+ 
 
         // Painel dos dados e botão "Sortear"
         JPanel painelDados = new JPanel();
@@ -491,23 +497,25 @@ public class TelaJogo extends JPanel implements Runnable {
         
 
         
-        // Cria uma instância do botão "Sortear"
-        //BotaoSortear botaoSortear = new BotaoSortear(labelDado1);
-        // Adiciona o botão "Sortear" ao painel de botões
-        //painelBotoes.add(botaoSortear.getBotao());
         JButton botaoSortear = new JButton("Sortear");
         botaoSortear.addActionListener(e -> {
-        	if(!jogadaSorteada || somaPassos == 0 || !jogadoresNoChao.get(jogadorAtivo).getMovimentoBloqueado()) {
-        		int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
-            	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
-                labelDado1.setText("N° Sorteado: " + somaPassos); // Atualiza o label com a soma dos passos
-                mudarJogador();
+        	if(!jogadaSorteada || somaPassos == 0) {
+        		mudarJogador();
+        		if(!jogadoresNoChao.get(jogadorAtivo).getMovimentoBloqueado()) {
+        			int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
+                	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
+                    labelDado1.setText("N° Sorteado: " + somaPassos); // Atualiza o label com a soma dos passos
+                    
 
-                verificarVencedor(jogadoresNoChao.get(jogadorAtivo));
-                jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
-                forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
-                jogadaSorteada = true;
-                jogadaEncerrada = false;
+                    verificarVencedor(jogadoresNoChao.get(jogadorAtivo));
+                    jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
+                    forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
+                    jogadaSorteada = true;
+                    jogadaEncerrada = false;
+        		}else {
+        			jogadaSorteada = false;
+        		}
+        		
         	}else {
         		JOptionPane.showMessageDialog(null, 
                 "Os dados não podem ser sorteados, novamente, antes de encerrar a jogada!", 
@@ -517,6 +525,9 @@ public class TelaJogo extends JPanel implements Runnable {
         	
         	requestFocusInWindow();
         });
+        painelBotoes.add(botaoSortear);
+
+
         painelBotoes.add(botaoSortear);
 
         // Adiciona o painel de dados ao painel de jogadores
@@ -749,7 +760,7 @@ public class TelaJogo extends JPanel implements Runnable {
                         quantidadeGoiabaNoChao = Integer.parseInt(valoresGoiaba[1].trim());
                         break;
                     case "bichadas":
-                        quantidadeBichadas = 100;//Integer.parseInt(valor);; //Integer.parseInt(valor);
+                        quantidadeBichadas = Integer.parseInt(valor);; //Integer.parseInt(valor);
                         break;
                     case "mochila":
                         tamanhoMochila = Integer.parseInt(valor);

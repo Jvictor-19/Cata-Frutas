@@ -42,6 +42,8 @@ public class Jogador {
     private String nome;
 	private int quantidadeLaranjas;
 	private boolean movimentoBloqueado;
+    private int bloqueadoPorRodadas;
+	private int rodadasBloqueio;
 
     public Jogador(int x, int y, String caminhoImagem) {
     	this.quantFrutasOuro = 0;
@@ -68,6 +70,78 @@ public class Jogador {
         return getQuantidadeFrutasMochila() * multiplicadorDeForca;
     }
     
+    public void setRodadasBloqueio(int rodadas) {
+        this.bloqueadoPorRodadas = rodadas;
+        this.movimentoBloqueado = rodadas > 0;
+    }
+    public int getRodadasBloqueio() {
+        return rodadasBloqueio; // Retorna o número de rodadas bloqueadas
+    }
+
+    public boolean getMovimentoBloqueado() {
+        return movimentoBloqueado;
+    }
+
+    public void decrementarBloqueio() {
+        if (bloqueadoPorRodadas > 0) {
+            bloqueadoPorRodadas--;
+            if (bloqueadoPorRodadas == 0) {
+                movimentoBloqueado = false;
+            }
+        }
+    }
+
+    // Método para consumir uma laranja
+    private void consumirLaranja() {
+        for (Frutas fruta : mochila) {
+            if (fruta instanceof Laranja) {
+                mochila.remove(fruta);
+                break;
+            }
+        }
+    }
+
+ 
+
+    // Método lidarComBichada
+    public void lidarComBichada() {
+        int quantidadeLaranjas = contarLaranjas();
+
+        if (quantidadeLaranjas > 0) {
+            int opcao = JOptionPane.showOptionDialog(null,
+                    "Você tem " + quantidadeLaranjas + " laranja(s) na mochila. Deseja consumir uma para anular o efeito da fruta bichada?",
+                    "Fruta Bichada",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new Object[]{"Sim", "Não"},
+                    "Sim");
+
+            if (opcao == JOptionPane.YES_OPTION) {
+                consumirLaranja();
+                JOptionPane.showMessageDialog(null,
+                        "Você consumiu uma laranja e anulou o efeito da fruta bichada!",
+                        "Antídoto Consumido",
+                        JOptionPane.INFORMATION_MESSAGE);
+                this.setMovimentoBloqueado(false); // Remove o bloqueio
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Você decidiu não consumir a laranja. Seu movimento está bloqueado nas próximas duas rodadas.",
+                        "Efeito da Fruta Bichada",
+                        JOptionPane.WARNING_MESSAGE);
+                this.setMovimentoBloqueado(true); // Bloqueia o movimento por uma rodadas
+            }
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Você não tem laranjas na mochila. Seu movimento está bloqueado por uma rodada.",
+                    "Efeito da Fruta Bichada",
+                    JOptionPane.WARNING_MESSAGE);
+            this.setMovimentoBloqueado(true); // Bloqueia o movimento por uma rodadas
+        }
+    }
+
+    
+  
  // Método que retorna a quantidade de laranjas na mochila
     public int contarLaranjas() {
         int contagem = 0; // Inicializa a contagem de laranjas
@@ -83,45 +157,8 @@ public class Jogador {
     	this.movimentoBloqueado = estado;
     }
     
-    public boolean getMovimentoBloqueado () {
-    	return this.movimentoBloqueado;
-    }
-    public void lidarComBichada() {
-    	quantidadeLaranjas = contarLaranjas();
-        if (quantidadeLaranjas > 0) {
-            int opcao = JOptionPane.showOptionDialog(null,
-                    "Você tem " + quantidadeLaranjas + " laranja(s) na mochila. Deseja consumir uma para anular o efeito da fruta bichada?",
-                    "Fruta Bichada",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    new Object[]{"Sim", "Não"},
-                    "Sim");
+   
 
-            if (opcao == JOptionPane.YES_OPTION) {
-                // Consome uma laranja
-                quantidadeLaranjas--;
-                JOptionPane.showMessageDialog(null, 
-                        "Você consumiu uma laranja e anulou o efeito da fruta bichada!", 
-                        "Antídoto Consumido", 
-                        JOptionPane.INFORMATION_MESSAGE);
-                this.setMovimentoBloqueado(false);; // Permite o movimento na próxima rodada
-            } else {
-                JOptionPane.showMessageDialog(null, 
-                        "Você decidiu não consumir a laranja. Seu movimento está bloqueado na próxima rodada.", 
-                        "Efeito da Fruta Bichada", 
-                        JOptionPane.WARNING_MESSAGE);
-                this.setMovimentoBloqueado(true); // Bloqueia o movimento na próxima rodada
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, 
-                    "Você não tem laranjas na mochila. Seu movimento está bloqueado na próxima rodada.", 
-                    "Efeito da Fruta Bichada", 
-                    JOptionPane.WARNING_MESSAGE);
-                this.setMovimentoBloqueado(true); // Bloqueia o movimento na próxima rodada
-        }
-    }
-    
     public List<Frutas> removerFrutas(int quantidade) {
         List<Frutas> frutasRemovidas = new ArrayList<>();
         Iterator<Frutas> iterador = mochila.iterator();
