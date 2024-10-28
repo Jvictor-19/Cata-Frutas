@@ -36,17 +36,22 @@ public class Jogador {
     private boolean antidotoAtivo = false; // Efeito da laranja (antídoto)
     private int pontosVitoria = 0;         // Pontuação do jogador
     private boolean comeuCoco; // Indica se o jogador comeu um coco
+    private boolean comeuAbacate;
+    private int multiplicadorDeForca;
     
-   
 
     private int quantFrutasOuro;
     private String nome;
+	private int quantidadeLaranjas;
+	private boolean movimentoBloqueado;
 
     public Jogador(int x, int y, String caminhoImagem) {
     	this.quantFrutasOuro = 0;
         this.x = x;
         this.y = y;
         this.mochila = new ArrayList<>();
+        this.multiplicadorDeForca = 1; // Começa com força normal
+        this.movimentoBloqueado = false;
         URL imagemURL = getClass().getResource(caminhoImagem);
         if (imagemURL != null) {
             this.imagem = new ImageIcon(imagemURL);
@@ -59,6 +64,59 @@ public class Jogador {
     public int getQuantidadeFrutasMochila() {
         return mochila.size();
     }
+    
+    public int getForca() {
+        return getQuantidadeFrutasMochila() * multiplicadorDeForca;
+    }
+    
+    public int contarLaranjas() {
+        return (int) mochila.stream().filter(fruta -> fruta.getNome().equalsIgnoreCase("Laranja")).count();
+    }
+
+    public void setMovimentoBloqueado(boolean estado) {
+        this.movimentoBloqueado = estado;
+    }
+    
+    public boolean getMovimentoBloqueado() {
+        return movimentoBloqueado;
+    }
+
+    public void lidarComBichada() {
+        int quantidadeLaranjas = contarLaranjas();
+        if (quantidadeLaranjas > 0) {
+            int opcao = JOptionPane.showOptionDialog(null,
+                    "Você tem " + quantidadeLaranjas + " laranja(s) na mochila. Deseja consumir uma para anular o efeito da fruta bichada?",
+                    "Fruta Bichada",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new Object[]{"Sim", "Não"},
+                    "Sim");
+
+            if (opcao == JOptionPane.YES_OPTION) {
+                // Consome uma laranja
+                mochila.removeIf(fruta -> fruta.getNome().equalsIgnoreCase("Laranja"));
+                JOptionPane.showMessageDialog(null, 
+                        "Você consumiu uma laranja e anulou o efeito da fruta bichada!", 
+                        "Antídoto Consumido", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                setMovimentoBloqueado(false);
+            } else {
+                setMovimentoBloqueado(true); 
+                JOptionPane.showMessageDialog(null, 
+                        "Você decidiu não consumir a laranja. Seu movimento está bloqueado na próxima rodada.", 
+                        "Efeito da Fruta Bichada", 
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            setMovimentoBloqueado(true);
+            JOptionPane.showMessageDialog(null, 
+                    "Você não tem laranjas na mochila. Seu movimento está bloqueado na próxima rodada.", 
+                    "Efeito da Fruta Bichada", 
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
     
     public List<Frutas> removerFrutas(int quantidade) {
         List<Frutas> frutasRemovidas = new ArrayList<>();
@@ -130,8 +188,8 @@ public class Jogador {
 
     public boolean comerFruta(Jogador jogador, List<List<? extends Frutas>> frutasNoChao,int passos) {
         boolean frutaComida = false;
-        boolean comeuCoco = false; // Variável para verificar se comeu um coco
-
+        comeuCoco = false; // Variável para verificar se comeu um coco
+        comeuAbacate = false;
         // Itera sobre cada lista de frutas no chão
         for (List<? extends Frutas> listaFrutas : frutasNoChao) {
             Iterator<? extends Frutas> iterator = listaFrutas.iterator();
@@ -170,10 +228,7 @@ public class Jogador {
 
         // Caso o jogador não esteja em uma posição com fruta
         if (!frutaComida) {
-            JOptionPane.showMessageDialog(null,
-                    "Não há frutas no local para comer!",
-                    "Aviso",
-                    JOptionPane.WARNING_MESSAGE);
+       
         }
 
         // Retorna se a fruta foi comida e se foi um coco
@@ -195,7 +250,7 @@ public class Jogador {
     }
 
     public void dobrarForca() {
-        this.forca *= 2; // Dobra a força do jogador
+        multiplicadorDeForca *= 2;
         JOptionPane.showMessageDialog(null,
                 "Sua força foi dobrada!",
                 "Efeito do Abacate",
@@ -233,6 +288,8 @@ public class Jogador {
 		// TODO Auto-generated method stub
 		return pontosMovimento;
 	}
+	
+	
 
 }
 

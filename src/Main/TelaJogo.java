@@ -124,6 +124,8 @@ public class TelaJogo extends JPanel implements Runnable {
     private String nomeJogadorA;
     private String nomeJogadorB;
     
+    private int quantForca = 0;
+    
     private int quantFrutasDerrubadas;
     private int empurrao;
 
@@ -208,58 +210,60 @@ public class TelaJogo extends JPanel implements Runnable {
                     if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
                         keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
                         keyCode == KeyEvent.VK_ENTER) {
-                    	
                     	if (keyCode == KeyEvent.VK_ENTER) {
                     	    if (posicaoOcupadaPorFruta(posx, posy)) {
-                    	    	if(isFrutaBichada(posx, posy)) {
-                    				JOptionPane.showMessageDialog(null, 
-                                            "Você encontrou uma fruta bichada!", 
-                                            "Aviso", 
-                                            JOptionPane.WARNING_MESSAGE);
-                    						
-                    			}else {
-                    				int opcao = JOptionPane.showOptionDialog(null,
-                            	            "Você encontrou uma fruta! O que deseja fazer?",
-                            	            "Escolha uma Ação",
-                            	            JOptionPane.YES_NO_OPTION,
-                            	            JOptionPane.QUESTION_MESSAGE,
-                            	            null,
-                            	            new Object[]{"Pegar Fruta", "Comer Fruta"},
-                            	            "Pegar Fruta");
+                    	    	if (isFrutaBichada(posx, posy)) {
+                    	    	    JOptionPane.showMessageDialog(null, 
+                    	    	            "Você encontrou uma fruta bichada!", 
+                    	    	            "Aviso", 
+                    	    	            JOptionPane.WARNING_MESSAGE);
+                    	    	    
+                    	    	    // Aqui, você chamaria o método lidarComBichada do jogador
+                    	    	    jogadorAtual.lidarComBichada();
+                    	    	}
+                    	    		else {
+                    	            int opcao = JOptionPane.showOptionDialog(null,
+                    	                    "Você encontrou uma fruta! O que deseja fazer?",
+                    	                    "Escolha uma Ação",
+                    	                    JOptionPane.YES_NO_OPTION,
+                    	                    JOptionPane.QUESTION_MESSAGE,
+                    	                    null,
+                    	                    new Object[]{"Pegar Fruta", "Comer Fruta"},
+                    	                    "Pegar Fruta");
 
-                            	        if (opcao == JOptionPane.YES_OPTION) { // Opção "Pegar Fruta" selecionada
-                            	            JOptionPane.showMessageDialog(null, 
-                            	                "Pegando fruta!", 
-                            	                "Aviso", 
-                            	                JOptionPane.WARNING_MESSAGE);
-                            	            pegarFruta(jogadorAtual, frutasNoChao);
-                            	        } else if (opcao == JOptionPane.NO_OPTION) { // Opção "Comer Fruta" selecionada
-                            	            JOptionPane.showMessageDialog(null, 
-                            	                "Comendo fruta!", 
-                            	                "Aviso", 
-                            	                JOptionPane.WARNING_MESSAGE);
-                            	            
-                            	            // Verifica se comeu coco e calcula os passos
-                            	            boolean comeuCoco = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao,somaPassos);
-                            	            if (comeuCoco) {
-                            	            	somaPassos -= 1;
-                            	                somaPassos = jogadorAtual.getPontosMovimento(); // Dobra a soma de passos
-                            	            } else {
-                            	                somaPassos -= 1; // Reduz a soma de passos se não comeu coco
-                            	            }
-                            	        }
-                    			}
-                    	        
+                    	            if (opcao == JOptionPane.YES_OPTION) { // Opção "Pegar Fruta" selecionada
+                    	                JOptionPane.showMessageDialog(null, 
+                    	                        "Pegando fruta!", 
+                    	                        "Aviso", 
+                    	                        JOptionPane.WARNING_MESSAGE);
+                    	                pegarFruta(jogadorAtual, frutasNoChao);
+                    	            } else if (opcao == JOptionPane.NO_OPTION) { // Opção "Comer Fruta" selecionada
+                    	                JOptionPane.showMessageDialog(null, 
+                    	                        "Comendo fruta!", 
+                    	                        "Aviso", 
+                    	                        JOptionPane.WARNING_MESSAGE);
+                    	                
+                    	                // Verifica se comeu coco e calcula os passos
+                    	                boolean comeuCoco = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, somaPassos);
+                    	                if (comeuCoco) {
+                    	                    somaPassos -= 1; // Reduz a soma de passos se comeu coco
+                    	                }
+
+                    	                // Verifica se comeu abacate e dobra a força e os passos, caso positivo
+                    	                boolean comeuAbacate = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, jogadorAtual.getQuantidadeFrutasMochila());
+                    	                if (comeuAbacate) {
+                    	                    jogadorAtual.dobrarForca();
+                    	                    somaPassos = jogadorAtual.getPontosMovimento(); // Ajusta somaPassos para o valor atual de pontos de movimento
+                    	                }
+                    	            }
+                    	        }
                     	    } else {
                     	        JOptionPane.showMessageDialog(null, 
-                    	            "Não tem fruta!", 
-                    	            "Aviso", 
-                    	            JOptionPane.WARNING_MESSAGE);
+                    	                "Não tem fruta!", 
+                    	                "Aviso", 
+                    	                JOptionPane.WARNING_MESSAGE);
                     	    }
                     	}
-  
-
-                    	
 
                     	if(somaPassos > 0) {
                     		switch (keyCode) {
@@ -369,7 +373,7 @@ public class TelaJogo extends JPanel implements Runnable {
                     		}
                     		labelDado1.setText("Passos: " + somaPassos);
                     		jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
-                    		forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
+                    		forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getForca());
                     	} else {
                     		JOptionPane.showMessageDialog(null, 
                             "Você não tem mais pontos para movimentação!", 
