@@ -231,11 +231,6 @@ public class Jogador {
             if (frutaComida) break; // Sai do loop principal se a fruta foi comida
         }
 
-        // Caso o jogador não esteja em uma posição com fruta
-        if (!frutaComida) {
-       
-        }
-
         // Retorna se a fruta foi comida e se foi um coco
         return frutaComida; // Retorna se a fruta foi comida
     }

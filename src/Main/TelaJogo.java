@@ -497,7 +497,7 @@ public class TelaJogo extends JPanel implements Runnable {
         //painelBotoes.add(botaoSortear.getBotao());
         JButton botaoSortear = new JButton("Sortear");
         botaoSortear.addActionListener(e -> {
-        	if(!jogadaSorteada || somaPassos == 0) {
+        	if(!jogadaSorteada || somaPassos == 0 || !jogadoresNoChao.get(jogadorAtivo).getMovimentoBloqueado()) {
         		int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
             	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
                 labelDado1.setText("N° Sorteado: " + somaPassos); // Atualiza o label com a soma dos passos
