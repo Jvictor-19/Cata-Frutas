@@ -28,8 +28,7 @@ public class Jogador {
     private List<Frutas> mochila; 
     private ImageIcon imagem;
     private ImageIcon imagemPadrao; // Adiciona uma imagem padrão
-
-    
+  
     // Atributos adicionais para efeitos de frutas
     private int pontosMovimento = 1;      // Efeito do coco (agilidade)
     private int forca = 1;                // Efeito do abacate (força)
@@ -38,7 +37,6 @@ public class Jogador {
     private boolean comeuCoco; // Indica se o jogador comeu um coco
     private boolean comeuAbacate;
     private int multiplicadorDeForca;
-    
 
     private int quantFrutasOuro;
     private String nome;
@@ -64,6 +62,7 @@ public class Jogador {
     public int getQuantidadeFrutasMochila() {
         return mochila.size();
     }
+    
     
     public int getForca() {
         return getQuantidadeFrutasMochila() * multiplicadorDeForca;
