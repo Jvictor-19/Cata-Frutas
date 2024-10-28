@@ -512,7 +512,7 @@ public class TelaJogo extends JPanel implements Runnable {
         botaoSortear.addActionListener(e -> {
             // Obtém o jogador ativo
             Jogador jogadorAtual = jogadoresNoChao.get(jogadorAtivo);
-
+            
             // Verifica se o jogador ativo pode jogar
             if (!jogadorAtual.getMovimentoBloqueado()) { // O jogador não pode estar bloqueado
                 if (somaPassos == 0) {
@@ -531,7 +531,7 @@ public class TelaJogo extends JPanel implements Runnable {
                     jogadaSorteada = true;
                     jogadaEncerrada = false;
                 } else {
-                    mudarJogador();
+                   mudarJogador();
                 }
             } else {
                 // Se o jogador estiver bloqueado, muda para o próximo jogador
@@ -539,19 +539,19 @@ public class TelaJogo extends JPanel implements Runnable {
                 // Verifica se o próximo jogador também está bloqueado
                 Jogador proximoJogador = jogadoresNoChao.get(jogadorAtivo);
                 if (proximoJogador.getMovimentoBloqueado()) {
-                    // Se o próximo jogador também estiver bloqueado, informa o bloqueio e retorna ao jogador atual
+                    // Se o próximo jogador também estiver bloqueado, volta para o jogador atual
                     JOptionPane.showMessageDialog(null, 
-                        jogadorAtual.getNome() + " não pode sortear os dados, pois está bloqueado!", 
+                        jogadorAtual.getNome()  + " não pode sortear os dados, pois está bloqueado!", 
                         "Aviso", 
                         JOptionPane.WARNING_MESSAGE);
-                    // Volta para o jogador original, já que o próximo também está bloqueado
-                    jogadorAtivo = jogadoresNoChao.indexOf(jogadorAtual); 
+                    mudarJogador();
                 } else {
-                    // Exibe mensagem de mudança de jogador
+                	mudarJogador();
                     JOptionPane.showMessageDialog(null, 
                         "Jogador " + proximoJogador.getNome() + " agora é o ativo!", 
                         "Mudança de Jogador", 
                         JOptionPane.INFORMATION_MESSAGE);
+                    
                 }
             }
 
