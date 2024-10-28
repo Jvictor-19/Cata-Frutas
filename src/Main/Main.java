@@ -1,7 +1,4 @@
 package Main;
-
-import javax.swing.*;
-
 /**
  * A classe principal que inicia a aplicação.
  * 
