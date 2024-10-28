@@ -1,8 +1,6 @@
-
 package Main;
 
 import javax.swing.*;
-
 
 import Botões.BotaoEncerrarJogada;
 import Botões.BotaoSair;
@@ -124,8 +122,6 @@ public class TelaJogo extends JPanel implements Runnable {
     private String nomeJogadorA;
     private String nomeJogadorB;
     
-    private int quantForca = 0;
-    
     private int quantFrutasDerrubadas;
     private int empurrao;
 
@@ -210,8 +206,10 @@ public class TelaJogo extends JPanel implements Runnable {
                     if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
                         keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT ||
                         keyCode == KeyEvent.VK_ENTER) {
+                    	
                     	if (keyCode == KeyEvent.VK_ENTER) {
                     	    if (posicaoOcupadaPorFruta(posx, posy)) {
+
                     	    	if (isFrutaBichada(posx, posy)) {
                     	    	    JOptionPane.showMessageDialog(null, 
                     	    	            "Você encontrou uma fruta bichada!", 
@@ -254,17 +252,28 @@ public class TelaJogo extends JPanel implements Runnable {
                     	                boolean comeuAbacate = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, jogadorAtual.getQuantidadeFrutasMochila());
                     	                if (comeuAbacate) {
                     	                    jogadorAtual.dobrarForca();
+                    	                    somaPassos = jogadorAtual.getPontosMovimento() - 1;
                     	                    // Ajusta somaPassos para o valor atual de pontos de movimento
                     	                }
+                    	                
+                    	           
+                    	                boolean comeuLaranja = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, somaPassos);
+                    	                if (comeuLaranja) {
+                    	                	somaPassos = jogadorAtual.getPontosMovimento()-1;
+                    	                	jogadorAtual.lidarComBichada();                    	                }
                     	            }
                     	        }
+
                     	    } else {
                     	        JOptionPane.showMessageDialog(null, 
-                    	                "Não tem fruta!", 
-                    	                "Aviso", 
-                    	                JOptionPane.WARNING_MESSAGE);
+                    	            "Não tem fruta!", 
+                    	            "Aviso", 
+                    	            JOptionPane.WARNING_MESSAGE);
                     	    }
                     	}
+  
+
+                    	
 
                     	if(somaPassos > 0) {
                     		switch (keyCode) {
@@ -374,7 +383,7 @@ public class TelaJogo extends JPanel implements Runnable {
                     		}
                     		labelDado1.setText("Passos: " + somaPassos);
                     		jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
-                    		forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getForca());
+                    		forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
                     	} else {
                     		JOptionPane.showMessageDialog(null, 
                             "Você não tem mais pontos para movimentação!", 
@@ -424,40 +433,37 @@ public class TelaJogo extends JPanel implements Runnable {
         // Adiciona o botão "Sair" ao painel de botões
         painelBotoes.add(botaoSair.getBotao());
          
-       // BotaoEncerrarJogada botaoEncerrar = new BotaoEncerrarJogada(jogadaSorteada);
-        //painelBotoes.add(botaoEncerrar.getBotao());
      // Botão para encerrar a jogada
         JButton botaoEncerrar = new JButton("Encerrar jogada");
         botaoEncerrar.addActionListener(e -> {
-            if (!jogadaSorteada) { // Verifica se os dados foram sorteados
+        	if (!jogadaSorteada) { // Verifica se os dados foram sorteados
                 // Exibe um aviso para informar que o jogador deve sortear os dados primeiro
                 JOptionPane.showMessageDialog(null, 
                         "Você deve sortear os dados antes de encerrar a jogada!", 
                         "Aviso", 
                         JOptionPane.WARNING_MESSAGE);
 
-            } else if (!jogadaEncerrada) { // Verifica se a jogada ainda não foi encerrada
-                int resposta = JOptionPane.showConfirmDialog(null, 
-                                "Deseja realmente encerrar a jogada?", 
-                                "Confirmação de Encerramento", 
-                                JOptionPane.YES_NO_OPTION);
-                if(resposta == JOptionPane.YES_OPTION) {
-                    jogadaEncerrada = true;
-                    jogadaSorteada = false;
-                    labelDado1.setText("N° Sorteado: ?");
-                    jogador1Label.setText("Jogador ?: ? passos");
-                    mudarJogador();
-                }
+        	}else if (!jogadaEncerrada) { // Verifica se as condições para encerrar estão atendidas
+            	int resposta = JOptionPane.showConfirmDialog(null, 
+		                        "Deseja realmente encerrar a jogada?", 
+		                        "Confirmação de Encerramento", 
+		                        JOptionPane.YES_NO_OPTION);
+            	if(resposta == JOptionPane.YES_NO_OPTION) {
+            		jogadaEncerrada = true;
+            		jogadaSorteada = false;
+            		labelDado1.setText("N° Sorteado: ?");
+            		jogador1Label.setText("Jogador ?: ? passos");
+            		
+            	}
+                
             } else {
-                JOptionPane.showMessageDialog(null, 
+            	JOptionPane.showMessageDialog(null, 
                         "A jogada já foi encerrada!", 
                         "Aviso", 
                         JOptionPane.WARNING_MESSAGE);
             }
-            requestFocusInWindow();
+        	requestFocusInWindow();
         });
-
-        // Adiciona o botão ao painel de botões
         painelBotoes.add(botaoEncerrar);
 
         
@@ -491,46 +497,51 @@ public class TelaJogo extends JPanel implements Runnable {
         
 
         
-        // Cria uma instância do botão "Sortear"
-        //BotaoSortear botaoSortear = new BotaoSortear(labelDado1);
-        // Adiciona o botão "Sortear" ao painel de botões
-        //painelBotoes.add(botaoSortear.getBotao());
         JButton botaoSortear = new JButton("Sortear");
         botaoSortear.addActionListener(e -> {
-            // Verifica se o jogador ativo pode jogar
-            if (!jogadaSorteada && (somaPassos == 0 || jogadoresNoChao.get(jogadorAtivo).getMovimentoBloqueado()==false)) {
-                int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
-                somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
-                labelDado1.setText("N° Sorteado: " + somaPassos); // Atualiza o label com a soma dos passos
+        	if(!jogadaSorteada || somaPassos == 0) {
+        		mudarJogador();
+        		if(!jogadoresNoChao.get(jogadorAtivo).getMovimentoBloqueado()) {
+        			int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
+                	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
+                    labelDado1.setText("N° Sorteado: " + somaPassos); // Atualiza o label com a soma dos passos
+                    
 
-                // Atualiza a informação sobre o jogador ativo
-                jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
-                forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
-
-                // Lógica para verificar se o jogador deve ser movido ou se algo mais deve acontecer
-                verificarVencedor(jogadoresNoChao.get(jogadorAtivo));
-           
-
-                // Permite nova jogada
-                jogadaSorteada = true;
-                jogadaEncerrada = false;
-            } else {
-                String mensagem;
-                if (jogadoresNoChao.get(jogadorAtivo).getMovimentoBloqueado()) {
-                    mensagem = "Você está bloqueado e não pode jogar até consumir um antídoto!";
-                 // Permite nova jogada
+                    verificarVencedor(jogadoresNoChao.get(jogadorAtivo));
+                    jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
+                    forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
                     jogadaSorteada = true;
                     jogadaEncerrada = false;
-                    // Muda para o próximo jogador após a jogada
-                    mudarJogador();
-                } else {
-                    mensagem = "Os dados não podem ser sorteados novamente antes de encerrar a jogada ou tomar um antídoto!";
-                }
-                JOptionPane.showMessageDialog(null, mensagem, "Aviso", JOptionPane.WARNING_MESSAGE);
-            }
+        		}else {
+        			jogadoresNoChao.get(jogadorAtivo).setMovimentoBloqueado(false);
+        			JOptionPane.showMessageDialog(null, 
+        	                "Esta rodada " + jogadoresNoChao.get(jogadorAtivo).getNome() + "está envenenado pelo efeito da fruta bichada!" , 
+        	                "Aviso", 
+        	                JOptionPane.WARNING_MESSAGE);
+        			mudarJogador();
+        			int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
+                	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
+                    labelDado1.setText("N° Sorteado: " + somaPassos); // Atualiza o label com a soma dos passos
+                    
 
-            requestFocusInWindow();
+                    verificarVencedor(jogadoresNoChao.get(jogadorAtivo));
+                    jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
+                    forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
+                    jogadaSorteada = true;
+                    jogadaEncerrada = false;
+        		}
+        		
+        	}else {
+        		JOptionPane.showMessageDialog(null, 
+                "Os dados não podem ser sorteados, novamente, antes de encerrar a jogada!", 
+                "Aviso", 
+                JOptionPane.WARNING_MESSAGE);
+        	}
+        	
+        	requestFocusInWindow();
         });
+        painelBotoes.add(botaoSortear);
+
 
         painelBotoes.add(botaoSortear);
 
