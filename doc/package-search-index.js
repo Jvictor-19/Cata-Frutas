@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"Arquivo"},{"l":"Botões"},{"l":"Elementos.ElementosDinamicos"},{"l":"Elementos.ElementosEstáticos"},{"l":"Fonte"},{"l":"Frutas"},{"l":"Main"},{"l":"musica"}];updateSearchResults();

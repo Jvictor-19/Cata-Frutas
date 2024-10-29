@@ -1285,7 +1285,7 @@ public class TelaJogo extends JPanel implements Runnable {
 
 	    public static void main(String[] args) {
 	        SwingUtilities.invokeLater(() -> {
-	            JFrame frame = new JFrame("Jogo de Laranjas");
+	            JFrame frame = new JFrame("Jogo Cata Frutas");
 	            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	            frame.setResizable(false);
 	            frame.setContentPane(new TelaJogo("src/Arquivo/configuracaoJogo.txt", "gabriella", "gabi")); // Passando o caminho do arquivo de configuração
