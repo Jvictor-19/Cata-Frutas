@@ -10,8 +10,6 @@ import Frutas.Frutas;
 import Frutas.Laranja;
 import Frutas.Maracuja;
 
-
-import Frutas.Frutas;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,69 +18,101 @@ import java.util.Random;
 
 /**
  * A classe Jogador representa o jogador em um jogo, com uma posição (x, y) e uma imagem associada.
- * O jogador é desenhado em uma célula do tabuleiro e seu tamanho é ajustado para ocupar 80% da célula.
+ * O jogador pode mover-se pelo tabuleiro, coletar frutas, aplicar efeitos e interagir com elementos do jogo.
  */
 public class Jogador {
     private int x;
     private int y;
     private List<Frutas> mochila; 
     private ImageIcon imagem;
-    private ImageIcon imagemPadrao; // Adiciona uma imagem padrão
+    private ImageIcon imagemPadrao;
 
-    
     // Atributos adicionais para efeitos de frutas
-    private int pontosMovimento = 1;      // Efeito do coco (agilidade)
-    private int forca = 1;                // Efeito do abacate (força)
-    private boolean antidotoAtivo = false; // Efeito da laranja (antídoto)
-    private int pontosVitoria = 0;         // Pontuação do jogador
-    private boolean comeuCoco; // Indica se o jogador comeu um coco
-    private boolean comeuAbacate;
-    private int multiplicadorDeForca;
-    
+    private int pontosMovimento = 1;
+    private int forca = 1;
+    private boolean antidotoAtivo = false;
+    private int pontosVitoria = 0;
+    private int multiplicadorDeForca = 1;
 
     private int quantFrutasOuro;
     private String nome;
-	private int quantidadeLaranjas;
-	private boolean movimentoBloqueado;
+    private int quantidadeLaranjas;
+    private boolean movimentoBloqueado;
     private int bloqueadoPorRodadas;
-	private int rodadasBloqueio;
+    private int rodadasBloqueio;
 
+    /**
+     * Construtor da classe Jogador.
+     * 
+     * @param x             A posição X inicial do jogador.
+     * @param y             A posição Y inicial do jogador.
+     * @param caminhoImagem O caminho para a imagem do jogador.
+     */
     public Jogador(int x, int y, String caminhoImagem) {
-    	this.quantFrutasOuro = 0;
+        this.quantFrutasOuro = 0;
         this.x = x;
         this.y = y;
         this.mochila = new ArrayList<>();
-        this.multiplicadorDeForca = 1; // Começa com força normal
+        this.multiplicadorDeForca = 1;
         this.movimentoBloqueado = false;
         URL imagemURL = getClass().getResource(caminhoImagem);
         if (imagemURL != null) {
             this.imagem = new ImageIcon(imagemURL);
         } else {
             System.err.println("Imagem não encontrada: " + caminhoImagem);
-            this.imagem = imagemPadrao; // Define imagem padrão caso a imagem não seja encontrada
+            this.imagem = imagemPadrao;
         }
     }
-    
+
+    /**
+     * Retorna a quantidade de frutas na mochila.
+     *
+     * @return O número de frutas na mochila.
+     */
     public int getQuantidadeFrutasMochila() {
         return mochila.size();
     }
-    
+
+    /**
+     * Retorna a força do jogador, baseada na quantidade de frutas e multiplicador.
+     *
+     * @return A força atual do jogador.
+     */
     public int getForca() {
         return getQuantidadeFrutasMochila() * multiplicadorDeForca;
     }
-    
+
+    /**
+     * Define o número de rodadas em que o movimento do jogador está bloqueado.
+     *
+     * @param rodadas O número de rodadas de bloqueio.
+     */
     public void setRodadasBloqueio(int rodadas) {
         this.bloqueadoPorRodadas = rodadas;
         this.movimentoBloqueado = rodadas > 0;
     }
+
+    /**
+     * Retorna o número de rodadas de bloqueio.
+     *
+     * @return O número de rodadas de bloqueio restantes.
+     */
     public int getRodadasBloqueio() {
-        return rodadasBloqueio; // Retorna o número de rodadas bloqueadas
+        return rodadasBloqueio;
     }
 
+    /**
+     * Verifica se o movimento do jogador está bloqueado.
+     *
+     * @return True se o movimento está bloqueado, false caso contrário.
+     */
     public boolean getMovimentoBloqueado() {
         return movimentoBloqueado;
     }
 
+    /**
+     * Decrementa o contador de rodadas de bloqueio, liberando o movimento se o contador chegar a zero.
+     */
     public void decrementarBloqueio() {
         if (bloqueadoPorRodadas > 0) {
             bloqueadoPorRodadas--;
@@ -92,7 +122,9 @@ public class Jogador {
         }
     }
 
-    // Método para consumir uma laranja
+    /**
+     * Consome uma laranja da mochila para anular o efeito de bloqueio.
+     */
     private void consumirLaranja() {
         for (Frutas fruta : mochila) {
             if (fruta instanceof Laranja) {
@@ -102,9 +134,9 @@ public class Jogador {
         }
     }
 
- 
-
-    // Método lidarComBichada
+    /**
+     * Lida com o efeito de uma fruta bichada. O jogador pode consumir uma laranja para anular o efeito.
+     */
     public void lidarComBichada() {
         int quantidadeLaranjas = contarLaranjas();
 
@@ -124,41 +156,47 @@ public class Jogador {
                         "Você consumiu uma laranja e anulou o efeito da fruta bichada!",
                         "Antídoto Consumido",
                         JOptionPane.INFORMATION_MESSAGE);
-                this.setMovimentoBloqueado(false); // Remove o bloqueio
+                this.setMovimentoBloqueado(false);
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Você decidiu não consumir a laranja. Seu movimento está bloqueado nas próximas duas rodadas.",
                         "Efeito da Fruta Bichada",
                         JOptionPane.WARNING_MESSAGE);
-                this.setMovimentoBloqueado(true); // Bloqueia o movimento por uma rodadas
+                this.setMovimentoBloqueado(true);
             }
         } else {
             JOptionPane.showMessageDialog(null,
                     "Você não tem laranjas na mochila. Seu movimento está bloqueado por uma rodada.",
                     "Efeito da Fruta Bichada",
                     JOptionPane.WARNING_MESSAGE);
-            this.setMovimentoBloqueado(true); // Bloqueia o movimento por uma rodadas
+            this.setMovimentoBloqueado(true);
         }
     }
 
-    
-  
- // Método que retorna a quantidade de laranjas na mochila
+    /**
+     * Conta a quantidade de laranjas na mochila do jogador.
+     *
+     * @return A quantidade de laranjas.
+     */
     public int contarLaranjas() {
-        int contagem = 0; // Inicializa a contagem de laranjas
+        int contagem = 0;
         for (Frutas item : mochila) {
-            if (item.getNome().equalsIgnoreCase("Laranja")) { // Verifica se o item é uma laranja
-                contagem += 1; // Soma a quantidade de laranjas
+            if (item.getNome().equalsIgnoreCase("Laranja")) {
+                contagem += 1;
             }
         }
-        return contagem; // Retorna a contagem total de laranjas
+        return contagem;
     }
 
-    public void setMovimentoBloqueado (boolean estado) {
-    	this.movimentoBloqueado = estado;
+    /**
+     * Define o estado de bloqueio de movimento do jogador.
+     *
+     * @param estado True para bloquear o movimento, false para desbloquear.
+     */
+    public void setMovimentoBloqueado(boolean estado) {
+        this.movimentoBloqueado = estado;
     }
-    
-   
+
 
     public List<Frutas> removerFrutas(int quantidade) {
         List<Frutas> frutasRemovidas = new ArrayList<>();
@@ -228,10 +266,13 @@ public class Jogador {
         }
     }
 
-    public boolean comerFruta(Jogador jogador, List<List<? extends Frutas>> frutasNoChao,int passos) {
+    public boolean comerFruta(Jogador jogador, List<List<? extends Frutas>> frutasNoChao, int passos) {
         boolean frutaComida = false;
-        comeuCoco = false; // Variável para verificar se comeu um coco
-        comeuAbacate = false;
+        boolean comeuCoco = false;      // Reseta a variável para verificar se comeu um coco
+        boolean comeuAbacate = false;   // Reseta a variável para verificar se comeu um abacate
+        boolean comeuLaranja = false;
+        boolean comeuMaracuja = false;
+
         // Itera sobre cada lista de frutas no chão
         for (List<? extends Frutas> listaFrutas : frutasNoChao) {
             Iterator<? extends Frutas> iterator = listaFrutas.iterator();
@@ -250,17 +291,20 @@ public class Jogador {
                             "Você comeu uma " + fruta.getNome() + "!",
                             "Comendo Fruta",
                             JOptionPane.INFORMATION_MESSAGE);
-                    
+
                     // Verifica o tipo da fruta comida e aplica o efeito correspondente
                     if (fruta instanceof Coco) {
                         jogador.aplicarEfeitoCoco(passos); // Chama o método que dobra os passos
                         comeuCoco = true; // Marca que comeu um coco
                     } else if (fruta instanceof Abacate) {
                         jogador.dobrarForca(); // Aplica o efeito do abacate
+                        comeuAbacate = true; // Marca que comeu um abacate
                     } else if (fruta instanceof Laranja) {
                         jogador.ativarAntidoto(); // Aplica o efeito da laranja
+                        comeuLaranja = true;
                     } else if (fruta instanceof Maracuja) {
                         jogador.adicionarPontoVitoria(); // Aplica o efeito do maracujá
+                        comeuMaracuja = true;
                     }
                     break; // Sai do loop após comer a fruta
                 }
@@ -268,15 +312,12 @@ public class Jogador {
             if (frutaComida) break; // Sai do loop principal se a fruta foi comida
         }
 
-        // Retorna se a fruta foi comida e se foi um coco
-        return frutaComida; // Retorna se a fruta foi comida
+        // Retorna se a fruta foi comida
+        return frutaComida;
     }
 
 
-    // Método adicional para saber se comeu coco
-    public boolean comeuCoco() {
-        return comeuCoco; // Método que deve ser chamado após comer a fruta para verificar se comeu um coco
-    }
+ 
 
     public void aplicarEfeitoCoco(int numeroAtualPassos) {
         this.pontosMovimento = 2 * numeroAtualPassos; // Dobra os pontos de movimento
@@ -326,5 +367,3 @@ public class Jogador {
 		return pontosMovimento;
 	}
 }
-	
-
