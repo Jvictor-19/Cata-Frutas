@@ -8,4 +8,4 @@ acerola: 2 1
 amora: 1 2
 goiaba: 1 2
 bichadas: 40
-mochila: 0
+mochila: 3

@@ -209,16 +209,47 @@ public class TelaJogo extends JPanel implements Runnable {
                     	
                     	if (keyCode == KeyEvent.VK_ENTER) {
                     	    if (posicaoOcupadaPorFruta(posx, posy)) {
-
                     	    	if (isFrutaBichada(posx, posy)) {
-                    	    	    JOptionPane.showMessageDialog(null, 
-                    	    	            "Você encontrou uma fruta bichada!", 
-                    	    	            "Aviso", 
-                    	    	            JOptionPane.WARNING_MESSAGE);
-                    	    	    
+                    	    	    int opcao = JOptionPane.showOptionDialog(null,
+                    	                    "Você encontrou uma fruta BICHADA! O que deseja fazer?",
+                    	                    "Escolha uma Ação",
+                    	                    JOptionPane.YES_NO_OPTION,
+                    	                    JOptionPane.QUESTION_MESSAGE,
+                    	                    null,
+                    	                    new Object[]{"Pegar Fruta", "Comer Fruta"},
+                    	                    "Pegar Fruta");
+
+                    	            if (opcao == JOptionPane.YES_OPTION) { // Opção "Pegar Fruta" selecionada
+                    	                
+                    	                pegarFruta(jogadorAtual, frutasNoChao);
+                    	            } else if (opcao == JOptionPane.NO_OPTION) { // Opção "Comer Fruta" selecionada
+                    	                JOptionPane.showMessageDialog(null, 
+                    	                        "Comendo fruta!", 
+                    	                        "Aviso", 
+                    	                        JOptionPane.WARNING_MESSAGE);
+                    	                
+                    	                // Verifica se comeu coco e calcula os passos
+                    	                boolean comeuCoco = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, somaPassos);
+                    	                if (comeuCoco) {
+                    	                    jogadorAtual.aplicarEfeitoCoco(somaPassos);// Reduz a soma de passos se comeu coco
+                    	                }
+
+                    	                // Verifica se comeu abacate e dobra a força e os passos, caso positivo
+                    	                boolean comeuAbacate = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, jogadorAtual.getQuantidadeFrutasMochila());
+                    	                if (comeuAbacate) {
+                    	                    jogadorAtual.dobrarForca();
+                    	                }
+                    	                
+                    	           
+                    	                boolean comeuLaranja = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, somaPassos);
+                    	                if (comeuLaranja) {
+                    	                	somaPassos = jogadorAtual.getPontosMovimento()-1;
+                    	                	jogadorAtual.lidarComBichada();                    	                }
+                    	            }
+                    	    
+
                     	    	    // Aqui, você chamaria o método lidarComBichada do jogador
                     	    	    jogadoresNoChao.get(jogadorAtivo).lidarComBichada();
-                    	    	    pegarFruta(jogadorAtual, frutasNoChao);
                     	    	}
                     	    		else {
                     	            int opcao = JOptionPane.showOptionDialog(null,
@@ -231,10 +262,7 @@ public class TelaJogo extends JPanel implements Runnable {
                     	                    "Pegar Fruta");
 
                     	            if (opcao == JOptionPane.YES_OPTION) { // Opção "Pegar Fruta" selecionada
-                    	                JOptionPane.showMessageDialog(null, 
-                    	                        "Pegando fruta!", 
-                    	                        "Aviso", 
-                    	                        JOptionPane.WARNING_MESSAGE);
+                    	                
                     	                pegarFruta(jogadorAtual, frutasNoChao);
                     	            } else if (opcao == JOptionPane.NO_OPTION) { // Opção "Comer Fruta" selecionada
                     	                JOptionPane.showMessageDialog(null, 
@@ -245,15 +273,13 @@ public class TelaJogo extends JPanel implements Runnable {
                     	                // Verifica se comeu coco e calcula os passos
                     	                boolean comeuCoco = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, somaPassos);
                     	                if (comeuCoco) {
-                    	                    somaPassos = somaPassos *2; // Reduz a soma de passos se comeu coco
+                    	                    jogadorAtual.aplicarEfeitoCoco(somaPassos);// Reduz a soma de passos se comeu coco
                     	                }
 
                     	                // Verifica se comeu abacate e dobra a força e os passos, caso positivo
                     	                boolean comeuAbacate = jogadorAtual.comerFruta(jogadorAtual, frutasNoChao, jogadorAtual.getQuantidadeFrutasMochila());
                     	                if (comeuAbacate) {
                     	                    jogadorAtual.dobrarForca();
-                    	                    somaPassos = jogadorAtual.getPontosMovimento() - 1;
-                    	                    // Ajusta somaPassos para o valor atual de pontos de movimento
                     	                }
                     	                
                     	           
@@ -262,6 +288,8 @@ public class TelaJogo extends JPanel implements Runnable {
                     	                	somaPassos = jogadorAtual.getPontosMovimento()-1;
                     	                	jogadorAtual.lidarComBichada();                    	                }
                     	            }
+                    	            
+                    	            //jogadoresNoChao.get(jogadorAtivo).lidarComBichada();
                     	        }
 
                     	    } else {
@@ -381,9 +409,9 @@ public class TelaJogo extends JPanel implements Runnable {
                                 break;
 
                     		}
-                    		labelDado1.setText("Passos: " + somaPassos);
+                    		labelDado1.setText("Passos: " + jogadoresNoChao.get(jogadorAtivo).getPontosMovimento());
                     		jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
-                    		forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
+                    		forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getForca());
                     	} else {
                     		JOptionPane.showMessageDialog(null, 
                             "Você não tem mais pontos para movimentação!", 
@@ -513,7 +541,22 @@ public class TelaJogo extends JPanel implements Runnable {
                     jogadaSorteada = true;
                     jogadaEncerrada = false;
         		}else {
-        			jogadaSorteada = false;
+        			jogadoresNoChao.get(jogadorAtivo).setMovimentoBloqueado(false);
+        			JOptionPane.showMessageDialog(null, 
+        	                "Esta rodada " + jogadoresNoChao.get(jogadorAtivo).getNome() + " está envenenado pelo efeito da fruta bichada!" , 
+        	                "Aviso", 
+        	                JOptionPane.WARNING_MESSAGE);
+        			mudarJogador();
+        			int[] resultados = SorteioDados.sortearDados(); // Chama o método para sortear os dados
+                	somaPassos = resultados[0] + resultados[1]; // Calcula a soma dos dois dados
+                    labelDado1.setText("N° Sorteado: " + somaPassos); // Atualiza o label com a soma dos passos
+                    
+
+                    verificarVencedor(jogadoresNoChao.get(jogadorAtivo));
+                    jogador1Label.setText(jogadoresNoChao.get(jogadorAtivo).getNome() + ": " + somaPassos + " passos");
+                    forca.setText("Força: " + jogadoresNoChao.get(jogadorAtivo).getQuantidadeFrutasMochila());
+                    jogadaSorteada = true;
+                    jogadaEncerrada = false;
         		}
         		
         	}else {
@@ -671,15 +714,28 @@ public class TelaJogo extends JPanel implements Runnable {
 
                 // Verifica se a posição do jogador é igual à da fruta
                 if (jogador.getX() == fruta.getX() && jogador.getY() == fruta.getY()) {
-                	if (fruta instanceof Maracuja) {
-                        // Lógica específica para maracujá (se necessário)
-                        System.out.println("O jogador coletou um maracujá!");
-                        jogador.coletarMaracuja();
-                    }
-                    jogador.adicionarNaMochila(fruta); // Adiciona fruta na mochila do jogador
-                    iterator.remove(); // Remove a fruta do terreno
-                    System.out.println("Fruta " + fruta.getClass().getSimpleName() + " foi adicionada à mochila do jogador!" + jogadorAtivo); // Usar o nome da classe da fruta
-                    break; // Para sair do loop após pegar uma fruta
+                	if(jogador.getQuantidadeFrutasMochila() <= tamanhoMochila-1 ) {
+                		JOptionPane.showMessageDialog(null, 
+    	                        "Pegando fruta!", 
+    	                        "Aviso", 
+    	                        JOptionPane.WARNING_MESSAGE);
+                		System.out.println(tamanhoMochila);
+                		if (fruta instanceof Maracuja) {
+                            // Lógica específica para maracujá (se necessário)
+                            System.out.println("O jogador coletou um maracujá!");
+                            jogador.coletarMaracuja();
+                        }
+                        jogador.adicionarNaMochila(fruta); // Adiciona fruta na mochila do jogador
+                        iterator.remove(); // Remove a fruta do terreno
+                        System.out.println("Fruta " + fruta.getClass().getSimpleName() + " foi adicionada à mochila do jogador!" + jogadorAtivo); // Usar o nome da classe da fruta
+                        break; // Para sair do loop após pegar uma fruta
+                	}else {
+                		JOptionPane.showMessageDialog(null, 
+        	            "Você atingiu o limite de armazenamento na mochila!", 
+        	            "Aviso", 
+        	            JOptionPane.WARNING_MESSAGE);
+                	}
+                	
                 }
             }
         }

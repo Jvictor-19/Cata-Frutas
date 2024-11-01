@@ -58,7 +58,7 @@ public class TelaInicial extends JFrame {
         tocarMusica("musica/homescreen.wav"); // Tocar música de fundo
 
      // Carregar a imagem de fundo
-        backgroundIcon = new ImageIcon("src/imagens/backgraund1.jpg");
+        backgroundIcon = new ImageIcon(getClass().getResource("/imagens/backgraund1.jpg"));
         background = new JLabel(backgroundIcon);
         background.setBounds(0, 0, 1472, 832);
         add(background);
